@@ -1,0 +1,159 @@
+<h2 class="text-center m-2">Tour Manager Statistics</h2>
+
+<h3 class="m-2">Today</h3>
+<!-- Sale & Revenue Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-line fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Price</p>
+                    <h6 class="mb-0">{{todayStatistic?.totalPrice}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Avg Price</p>
+                    <h6 class="mb-0">{{todayStatistic?.avgPrice}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-area fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Ticker</p>
+                    <h6 class="mb-0">{{todayStatistic?.totalTicket}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Avg Ticket</p>
+                    <h6 class="mb-0">{{todayStatistic?.avgTicket}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sale & Revenue End -->
+
+<h3 class="m-2">Yesterday</h3>
+<!-- Sale & Revenue Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-line fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Price</p>
+                    <h6 class="mb-0">{{yesterdayStatistic?.totalPrice}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Avg Price</p>
+                    <h6 class="mb-0">{{yesterdayStatistic?.avgPrice}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-area fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Ticker</p>
+                    <h6 class="mb-0">{{yesterdayStatistic?.totalTicket}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Avg Ticket</p>
+                    <h6 class="mb-0">{{yesterdayStatistic?.avgTicket}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sale & Revenue End -->
+
+<h3 class="m-2">Total revenue</h3>
+<div class="container">
+    <div class="form-group form-inline row">
+        <!-- Filter by Month -->
+        <div class="col-md-4 col-12 d-flex align-items-center mb-2">
+            <label for="monthFilter" class="m-2">Filter by Month</label>
+            <select class="form-control mr-md-3" id="monthFilter" name="monthFilter" [(ngModel)]="selectedMonth" style="width: auto;">
+                <option value="0">-- Select Month --</option>
+                <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+            </select>
+        </div>
+    
+        <!-- Year -->
+        <div class="col-md-4 col-12 d-flex align-items-center mb-2">
+            <label for="yearFilter" class="mr-2">Year</label>
+            <select class="form-control mr-md-3" id="yearFilter" name="yearFilter" [(ngModel)]="selectedYear" style="width: auto;">
+                <option value="0">-- Select Year --</option>
+                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+            </select>
+        </div>
+    
+        <!-- Filter Button -->
+        <div class="col-md-4 col-12 d-flex justify-content-md-start justify-content-center align-items-center mb-2">
+            <button class="btn btn-primary" (click)="filterMonth()">Filter</button>
+        </div>
+    </div>   
+</div>
+<!-- Sale & Revenue Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-line fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Sale</p>
+                    <h6 class="mb-0">{{monthStatistic?.totalPrice}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Mean Sale</p>
+                    <h6 class="mb-0">{{monthStatistic?.avgPrice}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-area fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Ticker</p>
+                    <h6 class="mb-0">{{monthStatistic?.totalTicket}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Mean Ticker</p>
+                    <h6 class="mb-0">{{monthStatistic?.avgTicket}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sale & Revenue End -->

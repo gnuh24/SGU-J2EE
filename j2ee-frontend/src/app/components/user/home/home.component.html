@@ -1,0 +1,103 @@
+<section id="banner" class="position-relative overflow-hidden" style="height: 580px;">
+    <video autoplay muted loop playsinline class="w-100 h-100 object-fit-cover">
+        <source [src]="homeData.url" type="video/mp4">
+    </video>
+    <!-- navbar.component.html -->
+    <section class="tab-section position-absolute bottom-0 w-100">
+        <div class="container-tab">
+          <div class="tabs d-flex text-dark">
+            <div class="tab-item" *ngFor="let tab of tabs" [class.active]="tab === selectedTab"
+                 (click)="selectTab(tab)">
+              <a class="tab-link" [class.active]="tab === selectedTab">
+                <span class="tab-text">{{ tab.label }}</span>
+                <i [class]="tab.icon"></i>
+              </a>
+      
+              <!-- menu địa điểm cho cả hai tab -->
+              <div class="dropdown-menu" *ngIf="isDropdownVisible[tab.label] && (tab.label === 'Thuê Xe' || tab.label === 'Đặt Vé' || tab.label === 'Thuê Khách Sạn')">
+                <ul class="location-list">
+                  <li *ngFor="let location of locations" (click)="selectLocation(location)">
+                    <a class="location-link">{{ location }}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+</section>
+
+<div class="container py-5 card-container">
+    <div class="row card-info">
+        <div class="col-lg-4 col-md-6 mb-4" *ngFor="let data of detailData; let i = index">
+            <div class="card fadeInWrapper">
+                <div class="img-item position-relative">
+                    <img [src]="data.url" class="card-img-top" alt="{{data.name}}" />
+                    <div class="img-caption fadeInRight position-absolute bottom-0 start-0 text-white p-4">
+                        <h5 class="card-title">{{ data.name }}</h5>
+                        <p class="card-text">{{data.description}}</p>
+                    </div>
+                </div>
+                <div class="card-body fadeInRight">
+                    <button *ngIf="i== 0" (click)="navigateTo('location-list')" class="btn btn-info">Thông tin</button>
+                    <button *ngIf="i == 1" (click)="navigateTo('ticket-list')" class="btn btn-info">Thông tin</button>
+                    <button *ngIf="i == 2" (click)="navigateTo('hotel-list')" class="btn btn-info">Thông tin</button>
+                    <div class="tags mt-3">
+                        <span class="badge bg-light text-dark">#photography</span>
+                        <span class="badge bg-light text-dark">#travel</span>
+                        <span class="badge bg-light text-dark">#winter</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section>
+    <div class="memory-home">
+        <div class="head-memory">
+            <div class="container fadeInRight">
+                <img class="lazy" data-src="https://hoianmemoriesland.com/public/media/thumb/memory-img-294x150.png"
+                    alt="memory-img.png" src="https://hoianmemoriesland.com/public/media/thumb/memory-img-294x150.png">
+            </div>
+        </div>
+        <div class="container-memory">
+            <div class="row">
+                <div class="col-lg-8 fadeInLeft">
+                    <div class="cas-memory cas-v1 owl-carousel owl-loaded owl-drag">
+                        <div class="slider-container">
+                            <div class="owl-carousel owl-theme">
+                                <div class="item" *ngFor="let img of images">
+                                    <img [src]="footerData?.url" alt="Slide" />
+                                    <div class="flash"></div>
+                                </div>
+                            </div>
+                            <button class="prev">&#10094;</button>
+                            <button class="next">&#10095;</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 offset-lg-1 ">
+                    <div class="ct-memory ">
+                        <h3 class="title fadeInUp">
+                            {{footerData?.name}}
+                        </h3>
+                        <div class="desc fadeInUp delay02">
+                            {{footerData?.description}}
+                        </div>
+                        <div class="control">
+                            <a href="https://hoianmemoriesland.com/en/the-real-world-performance-s1"
+                                title="Khám phá show" class="btn-pri fadeInLeft">Khám phá show</a>
+                            <a target="_blank" rel="noreferrer"
+                                href="https://booking.hoianmemoriesland.com/en/front-page.html" title="Đặt vé ngay"
+                                class="btn-pri v1 fadeInRight">Đặt vé ngay</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

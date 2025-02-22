@@ -1,0 +1,179 @@
+<h2 class="text-center m-2">Promotion Manager</h2>
+
+<nav class="d-flex navbar navbar-expand-lg navbar-light bg-light navbackground">
+  <div class="form-inline my-2 my-lg-0 mr-auto">
+    <input [(ngModel)]="searchQuery" name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+      (keyup.enter)="searchTour()">
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="searchTour()">Search</button>
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="reset()">Show all</button>
+  </div>
+  <button type="button" class="m-3 btn btn-success ml-auto" (click)="displayFormCreate()">Add Promotion</button>
+</nav>
+
+<div class="container" *ngIf="getPromotionResponse.length > 0; else noData">
+  <h6 class="mb-4">Responsive Table with Pagination</h6>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Discount Rate</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Description</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of pagedData">
+          <th scope="row">{{ item.id }}</th>
+          <td>{{ item.name }}</td>
+          <td>{{ item.discountRate }}%</td>
+          <td>{{ item.startDate | date }}</td>
+          <td>{{ item.endDate | date }}</td>
+          <td>{{ item.description}}</td>
+          <td>
+            <button class="btn btn-warning m-2" (click)="displayFormUpdate(item)">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination Controls -->
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <a class="page-link" (click)="goToPage(currentPage - 1)">Previous</a>
+      </li>
+      <li class="page-item" *ngFor="let page of pages" [class.active]="currentPage === page">
+        <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<!-- Create Promotion Form -->
+<div *ngIf="isDisplayCreate" class="modal fade show" tabindex="-1" role="dialog"
+  style="display: block; background: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content slide-in">
+      <div class="modal-body">
+        <form (ngSubmit)="onCreatePromotion()">
+          <div class="row">
+            <div class="col-md-12 col-sm-12">
+              <h5 class="modal-title">Promotion Information</h5>
+              <button type="button" class="close" aria-label="Close" (click)="closeFormCreate()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" [(ngModel)]="createPromotionRequest.name" name="name"
+                  placeholder="Enter promotion name" required #nameInput="ngModel" />
+                <div *ngIf="nameInput.invalid && nameInput.touched" class="text-danger">
+                  Promotion name is required.
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="discountRate">Discount Rate (%)</label>
+                <input type="number" class="form-control" id="discountRate" [(ngModel)]="createPromotionRequest.discountRate"
+                  name="discountRate" placeholder="Enter discount rate" required min="0" max="100" #rateInput="ngModel" />
+                <div *ngIf="rateInput.invalid && rateInput.touched" class="text-danger">
+                  Discount rate must be between 0 and 100.
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" class="form-control" id="startDate" [(ngModel)]="createPromotionRequest.startDate"
+                  name="startDate" required #startDateInput="ngModel" />
+                <div *ngIf="startDateInput.invalid && startDateInput.touched" class="text-danger">
+                  Start date is required.
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="date" class="form-control" id="endDate" [(ngModel)]="createPromotionRequest.endDate"
+                  name="endDate" required #endDateInput="ngModel" />
+                <div *ngIf="endDateInput.invalid && endDateInput.touched" class="text-danger">
+                  End date is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="m-1 btn btn-secondary" (click)="closeFormCreate()">Cancel</button>
+          <button type="submit" class="m-1 btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update Promotion Form -->
+<div *ngIf="isDisplayUpdate" class="modal fade show" tabindex="-1" role="dialog"
+  style="display: block; background: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content slide-in">
+      <div class="modal-body">
+        <form (ngSubmit)="onUpdatePromotion()">
+          <div class="row">
+            <div class="col-md-12 col-sm-12">
+              <h5 class="modal-title">Promotion Information</h5>
+              <button type="button" class="close" aria-label="Close" (click)="closeFormUpdate()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <input type="hidden" [(ngModel)]="updatePromotionRequest.id" name="id" />
+
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" [(ngModel)]="updatePromotionRequest.name" name="name"
+                  placeholder="Enter promotion name" required #nameInput="ngModel" />
+                <div *ngIf="nameInput.invalid && nameInput.touched" class="text-danger">
+                  Promotion name is required.
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="discountRate">Discount Rate (%)</label>
+                <input type="number" class="form-control" id="discountRate" [(ngModel)]="updatePromotionRequest.discountRate"
+                  name="discountRate" placeholder="Enter discount rate" required min="0" max="100" #rateInput="ngModel" />
+                <div *ngIf="rateInput.invalid && rateInput.touched" class="text-danger">
+                  Discount rate must be between 0 and 100.
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="startDate">End Date</label>
+                <input type="date" class="form-control" id="startDate" [(ngModel)]="updatePromotionRequest.startDate"
+                  name="startDate" required #startDateInput="ngModel" />
+                <div *ngIf="startDateInput.invalid && startDateInput.touched" class="text-danger">
+                  End date is required.
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="date" class="form-control" id="endDate" [(ngModel)]="updatePromotionRequest.endDate"
+                  name="endDate" required #endDateInput="ngModel" />
+                <div *ngIf="endDateInput.invalid && endDateInput.touched" class="text-danger">
+                  End date is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="m-1 btn btn-secondary" (click)="closeFormUpdate()">Cancel</button>
+          <button type="submit" class="m-1 btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noData>
+  <app-no-data-found></app-no-data-found>
+</ng-template>

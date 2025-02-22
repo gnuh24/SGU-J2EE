@@ -1,0 +1,142 @@
+<div class="container">
+    <h2 class="my-4">Khám Phá Địa Điểm Đầy Hấp Dẫn: Tour, Khách Sạn & Hoạt Động Tại {{ location }}</h2>
+    <div *ngIf="!(hotels$ | async)?.length && !(tours$ | async)?.length && !(tourism$ | async)?.length" style="text-align: center; margin: 20px 0;">
+        <h1 style="color: #FF5733;">Không có tour, khách sạn hoặc hoạt động du lịch nào bạn cần tìm.</h1>
+    </div>
+    
+    <!-- Tour Section -->
+    <div class="row mb-5" *ngIf="(tours$ | async)?.length > 0">
+        <h3>Khám Phá Các Tour</h3>
+        <div class="col-md-3 mb-4"
+            *ngFor="let tour of (tours$ | async)?.slice((currentTourPage - 1) * itemsPerPage, currentTourPage * itemsPerPage)">
+            <div class="card location-card" (click)="goToLocationDetail(tour.id.toString(), 'tour')"
+                style="cursor: pointer;">
+                <img [src]="tour.image || 'https://via.placeholder.com/200x150'" alt="{{ tour.name }}"
+                    class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">{{ tour.startLocation }} - {{ tour.endLocation }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Tour Pagination -->
+    <nav aria-label="Tour navigation" *ngIf="(tours$ | async)?.length > 0">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" [class.disabled]="currentTourPage === 1">
+                <a class="page-link" (click)="changePage('tour', currentTourPage - 1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" *ngFor="let page of [].constructor(getTotalPages(totalTours)); let i = index">
+                <a class="page-link" (click)="changePage('tour', i + 1)">{{ i + 1 }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentTourPage === getTotalPages(totalTours)">
+                <a class="page-link" (click)="changePage('tour', currentTourPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Hotel Section -->
+    <div class="row mb-5" *ngIf="(hotels$ | async)?.length > 0">
+        <h3>Khách Sạn Nổi Bật</h3>
+        <div class="col-md-3 mb-4"
+            *ngFor="let hotel of (hotels$ | async)?.slice((currentHotelPage - 1) * itemsPerPage, currentHotelPage * itemsPerPage)">
+            <div class="card location-card" (click)="goToLocationDetail(hotel.id.toString(), 'hotel')"
+                style="cursor: pointer;">
+                <img [src]="hotel.image || 'https://via.placeholder.com/200x150'" alt="{{ hotel.name }}"
+                    class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">{{ hotel.name }}</h5>
+                    <p class="card-text">Giá mỗi đêm: {{ hotel.pricePerNight }}đ</p>
+                    <div class="d-flex align-items-center">
+                        <p class="card-text me-2" style="margin-bottom: 0;">Đánh giá: {{ hotel.rating }}</p>
+                        <div>
+                            <ng-container
+                                *ngFor="let star of [].constructor(getStars(hotel.rating || 0).full); let i = index">
+                                <i class="bi bi-star-fill text-warning"></i>
+                            </ng-container>
+                            <ng-container *ngIf="getStars(hotel.rating || 0).half">
+                                <i class="bi bi-star-half text-warning"></i>
+                            </ng-container>
+                            <ng-container
+                                *ngFor="let star of [].constructor(5 - getStars(hotel.rating || 0).full - (getStars(hotel.rating || 0).half ? 1 : 0)); let i = index">
+                                <i class="bi bi-star text-secondary"></i>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hotel Pagination -->
+    <nav aria-label="Hotel navigation" *ngIf="(hotels$ | async)?.length > 0">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" [class.disabled]="currentHotelPage === 1">
+                <a class="page-link" (click)="changePage('hotel', currentHotelPage - 1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" *ngFor="let page of [].constructor(getTotalPages(totalHotels)); let i = index">
+                <a class="page-link" (click)="changePage('hotel', i + 1)">{{ i + 1 }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentHotelPage === getTotalPages(totalHotels)">
+                <a class="page-link" (click)="changePage('hotel', currentHotelPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Tourism Section -->
+    <div class="row mb-5" *ngIf="(tourism$ | async)?.length > 0">
+        <h3>Hoạt Động Du Lịch Đặc Sắc</h3>
+        <div class="col-md-3 mb-4"
+            *ngFor="let activity of (tourism$ | async)?.slice((currentTourismPage - 1) * itemsPerPage, currentTourismPage * itemsPerPage)">
+            <div class="card location-card" (click)="goToLocationDetail(activity.id.toString(), 'tourism')"
+                style="cursor: pointer;">
+                <img [src]="activity.image || 'https://via.placeholder.com/200x150'" alt="{{ activity.name }}"
+                    class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">{{ activity.name }}</h5>
+                    <p class="card-text">{{ activity.description }}</p>
+                    <div class="d-flex align-items-center">
+                        <p class="card-text me-2" style="margin-bottom: 0;">Đánh giá: {{ activity.rating }}</p>
+                        <div>
+                            <ng-container
+                                *ngFor="let star of [].constructor(getStars(activity.rating || 0).full); let i = index">
+                                <i class="bi bi-star-fill text-warning"></i>
+                            </ng-container>
+                            <ng-container *ngIf="getStars(activity.rating || 0).half">
+                                <i class="bi bi-star-half text-warning"></i>
+                            </ng-container>
+                            <ng-container
+                                *ngFor="let star of [].constructor(5 - getStars(activity.rating || 0).full - (getStars(activity.rating || 0).half ? 1 : 0)); let i = index">
+                                <i class="bi bi-star text-secondary"></i>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Tourism Pagination -->
+    <nav aria-label="Tourism navigation" *ngIf="(tourism$ | async)?.length > 0">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" [class.disabled]="currentTourismPage === 1">
+                <a class="page-link" (click)="changePage('tourism', currentTourismPage - 1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" *ngFor="let page of [].constructor(getTotalPages(totalTourism)); let i = index">
+                <a class="page-link" (click)="changePage('tourism', i + 1)">{{ i + 1 }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentTourismPage === getTotalPages(totalTourism)">
+                <a class="page-link" (click)="changePage('tourism', currentTourismPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

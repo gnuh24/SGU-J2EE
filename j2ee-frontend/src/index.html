@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Angular</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="assets/img/LOGO RANPOLARIS/LOGO hinh.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+  <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"> -->
+
+
+
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    app-root {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    app-navbar {
+      display: block;
+      width: 100%;
+    }
+  </style>
+
+</head>
+
+<body>
+  <app-root></app-root>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    $(document).ready(function () {
+      var owl = $(".owl-carousel");
+      var autoPlayTimeout = 3000; // Thời gian tự động chuyển ảnh lại sau khi dừng
+      var autoPlayTimer;
+
+      // Khởi động Owl Carousel
+      owl.owlCarousel({
+        items: 1,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: autoPlayTimeout,
+        smartSpeed: 500,
+        nav: false,
+        dots: false,
+        animateOut: 'fadeOut',
+        animateIn: 'fadeIn'
+      });
+
+      function restartAutoplay() {
+        owl.trigger('stop.owl.autoplay'); // Dừng autoplay
+        clearTimeout(autoPlayTimer); // Xóa timeout cũ
+        autoPlayTimer = setTimeout(function () {
+          owl.trigger('play.owl.autoplay', [autoPlayTimeout]); // Khởi động lại autoplay
+        }, autoPlayTimeout);
+      }
+
+      function startAutoplay() {
+        owl.trigger('play.owl.autoplay', [autoPlayTimeout]); // Khởi động autoplay
+      }
+
+      // Khi nhấn nút, dừng autoplay và khởi động lại sau 3 giây nếu không có hành động
+      $('.prev').click(function () {
+        owl.trigger('prev.owl.carousel');
+        restartAutoplay();
+      });
+
+      $('.next').click(function () {
+        owl.trigger('next.owl.carousel');
+        restartAutoplay();
+      });
+
+      owl.on('translate.owl.carousel', function () {
+        // Khi bắt đầu chuyển đổi ảnh, kích hoạt hiệu ứng chớp sáng
+        $('.owl-item.active .flash').addClass('flash-active');
+
+        // Đặt thời gian chờ để tắt chớp sáng sau 0.5 giây
+        setTimeout(function () {
+          $('.owl-item.active .flash').removeClass('flash-active');
+        }, 350); // Thời gian chớp sáng
+      });
+      // Khởi động autoplay ngay khi trang tải
+      startAutoplay();
+
+      // Cài đặt bộ hẹn giờ để khôi phục autoplay nếu không có hành động nào được thực hiện trong 3 giây
+      var inactivityTimer = setTimeout(startAutoplay, autoPlayTimeout);
+
+      // Xóa bộ hẹn giờ và đặt lại khi người dùng nhấn nút
+      function resetInactivityTimer() {
+        clearTimeout(inactivityTimer);
+        inactivityTimer = setTimeout(startAutoplay, autoPlayTimeout);
+      }
+
+      $('.prev, .next').on('click', resetInactivityTimer);
+    });
+
+  </script>
+</body>
+
+</html>

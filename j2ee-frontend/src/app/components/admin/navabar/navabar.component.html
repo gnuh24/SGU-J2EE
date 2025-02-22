@@ -1,0 +1,358 @@
+    <div class="container-fluid position-relative bg-white d-flex p-0">
+
+        <div class="sidebar pe-4 pb-3" [ngClass]="{'open': isSidebarOpen}">
+            <nav class="navbar bg-light navbar-light">
+                <a href="#" class="navbar-brand mx-4 mb-3">
+                    <img class="" src="../../../../assets/img/LOGO/LOGO_1.png" alt="" style="width: 100%; height: 40px;">
+                </a>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <div class="position-relative">
+                        <img class="rounded-circle" src="assets/img/DEFAULT/default-user.png" alt="" style="width: 40px; height: 40px;">
+                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                    </div>
+                    <div class="ms-3">
+                        <h6 class="mb-0">ABC JOIN {{CurrentUser.name}}</h6>
+                        <span>Admin</span>
+                    </div>
+                </div>
+                <div class="navbar-nav w-100">
+                    <a routerLink="statistics" routerLinkActive="active" class="nav-item nav-link">
+                        <i class="fa fa-chart-bar me-2"></i>Statistics
+                    </a>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fa fa-globe me-2"></i>Tour Manager
+                        </a>
+                        <div class="dropdown-menu bg-transparent border-0 dropdown-slide">
+                            <a routerLink="tour-manager/tour" routerLinkActive="active" class="dropdown-item">
+                                <i class="fa fa-plane me-2"></i>Tour
+                            </a>
+                            <a routerLink="tour-manager/tour-schedule" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="dropdown-item">
+                                <i class="fa fa-calendar me-2"></i>Schedule
+                            </a>
+                            <a routerLink="tour-manager/tour-statistics" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="dropdown-item">
+                                <i class="fa fa-chart-bar me-2"></i>Statistics
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" data-bs-toggle="dropdown">
+                            <i class="fa fa-suitcase me-2"></i>Tourism Manager
+                        </a>
+                        <div class="dropdown-menu bg-transparent border-0 dropdown-slide">
+                            <a routerLink="tourism-manager/tourism" routerLinkActive="active" class="dropdown-item">
+                                <i class="fa fa-map-marked-alt me-2"></i>Tourism
+                            </a>
+                            <a routerLink="tourism-manager/ticket" routerLinkActive="active" class="dropdown-item">
+                                <i class="fa fa-ticket-alt me-2"></i>Ticket
+                            </a>
+                            <a routerLink="tourism-manager/tourism-statistics" routerLinkActive="active" class="dropdown-item">
+                                <i class="fa fa-chart-line me-2"></i>Statistics
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" routerLinkActive="active" data-bs-toggle="dropdown">
+                            <i class="fa fa-hotel me-2"></i>Hotel Manager
+                        </a>
+                        <div class="dropdown-menu bg-transparent border-0 dropdown-slide">
+                            <a routerLink="hotel-manager/hotel" routerLinkActive="active" class="dropdown-item">
+                                <i class="fa fa-bed me-2"></i>Hotel
+                            </a>
+                            <a routerLink="hotel-manager/hotel-booking" routerLinkActive="active" class="dropdown-item">
+                                <i class="fa fa-calendar-check me-2"></i>Booking
+                            </a>
+                            <a routerLink="hotel-manager/hotel-statistics" routerLinkActive="active" class="dropdown-item">
+                                <i class="fa fa-chart-bar me-2"></i>Statistics
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" routerLinkActive="active" data-bs-toggle="dropdown">
+                            <i class="fa fa-tasks me-2"></i>Booking Manager
+                        </a>
+                        <div class="dropdown-menu bg-transparent border-0 dropdown-slide">
+                            <a routerLink="booking/pending" routerLinkActive="active" class="dropdown-item">
+                                <i class="fa fa-hourglass-half me-2"></i>Pending
+                            </a>
+                            <a routerLink="booking/accept" routerLinkActive="active" class="dropdown-item">
+                                <i class="fa fa-check-circle me-2"></i>Accept
+                            </a>
+                            <a routerLink="booking/cancel" routerLinkActive="active" class="dropdown-item">
+                                <i class="fa fa-times-circle me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </div>                
+
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" routerLinkActive="active" data-bs-toggle="dropdown">
+                            <i class="fa fa-calendar-alt me-2"></i>Event
+                        </a>
+                        <div class="dropdown-menu bg-transparent border-0 dropdown-slide">
+                            <a routerLink="promotion-manager/promotion" routerLinkActive="active" class="dropdown-item">
+                                <i class="fa fa-tag me-2"></i>Promotion
+                            </a>
+                            <a routerLink="promotion-manager/voucher" routerLinkActive="active" class="dropdown-item">
+                                <i class="fa fa-ticket-alt me-2"></i>Voucher
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" routerLinkActive="active" data-bs-toggle="dropdown">
+                            <i class="far fa-file-alt me-2"></i>Pages
+                        </a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a routerLink="page-manager/home" routerLinkActive="active" class="dropdown-item">
+                                <i class="fa fa-home me-2"></i>Page Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+                <a class="navbar-brand d-flex d-lg-none me-4">
+                    <img class="" src="../../../../assets/img/LOGO/LOGO_1.png" alt="" style="width: 100%; height: 40px;">
+                </a>
+                <a class="sidebar-toggler flex-shrink-0" (click)="toggleSidebar()">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <div class="navbar-nav align-items-center ms-auto">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="assets/img/DEFAULT/default-user.png" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex">{{CurrentUser.name}}</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a class="dropdown-item" (click)="logout()">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+            <router-outlet></router-outlet>
+            
+        </div>
+
+        
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="path/to/your/util.js"></script>
+
+    <script>
+        (function ($) {
+            "use strict";
+        
+            // Spinner
+            var spinner = function () {
+                setTimeout(function () {
+                    if ($('#spinner').length > 0) {
+                        $('#spinner').removeClass('show');
+                    }
+                }, 1);
+            };
+            spinner();
+            
+            
+            // Back to top button
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 300) {
+                    $('.back-to-top').fadeIn('slow');
+                } else {
+                    $('.back-to-top').fadeOut('slow');
+                }
+            });
+            $('.back-to-top').click(function () {
+                $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
+                return false;
+            });
+        
+        
+            // Sidebar Toggler
+            $('.sidebar-toggler').click(function () {
+                $('.sidebar, .content').toggleClass("open");
+                return false;
+            });
+        
+        
+            // Progress Bar
+            $('.pg-bar').waypoint(function () {
+                $('.progress .progress-bar').each(function () {
+                    $(this).css("width", $(this).attr("aria-valuenow") + '%');
+                });
+            }, {offset: '80%'});
+        
+        
+            // Calender
+            $('#calender').datetimepicker({
+                inline: true,
+                format: 'L'
+            });
+        
+        
+            // Testimonials carousel
+            $(".testimonial-carousel").owlCarousel({
+                autoplay: true,
+                smartSpeed: 1000,
+                items: 1,
+                dots: true,
+                loop: true,
+                nav : false
+            });
+        
+        
+            // Worldwide Sales Chart
+            var ctx1 = $("#worldwide-sales").get(0).getContext("2d");
+            var myChart1 = new Chart(ctx1, {
+                type: "bar",
+                data: {
+                    labels: ["2016", "2017", "2018", "2019", "2020", "2021", "2022"],
+                    datasets: [{
+                            label: "USA",
+                            data: [15, 30, 55, 65, 60, 80, 95],
+                            backgroundColor: "rgba(0, 156, 255, .7)"
+                        },
+                        {
+                            label: "UK",
+                            data: [8, 35, 40, 60, 70, 55, 75],
+                            backgroundColor: "rgba(0, 156, 255, .5)"
+                        },
+                        {
+                            label: "AU",
+                            data: [12, 25, 45, 55, 65, 70, 60],
+                            backgroundColor: "rgba(0, 156, 255, .3)"
+                        }
+                    ]
+                    },
+                options: {
+                    responsive: true
+                }
+            });
+        
+        
+            // Salse & Revenue Chart
+            var ctx2 = $("#salse-revenue").get(0).getContext("2d");
+            var myChart2 = new Chart(ctx2, {
+                type: "line",
+                data: {
+                    labels: ["2016", "2017", "2018", "2019", "2020", "2021", "2022"],
+                    datasets: [{
+                            label: "Salse",
+                            data: [15, 30, 55, 45, 70, 65, 85],
+                            backgroundColor: "rgba(0, 156, 255, .5)",
+                            fill: true
+                        },
+                        {
+                            label: "Revenue",
+                            data: [99, 135, 170, 130, 190, 180, 270],
+                            backgroundColor: "rgba(0, 156, 255, .3)",
+                            fill: true
+                        }
+                    ]
+                    },
+                options: {
+                    responsive: true
+                }
+            });
+            
+        
+        
+            // Single Line Chart
+            var ctx3 = $("#line-chart").get(0).getContext("2d");
+            var myChart3 = new Chart(ctx3, {
+                type: "line",
+                data: {
+                    labels: [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+                    datasets: [{
+                        label: "Salse",
+                        fill: false,
+                        backgroundColor: "rgba(0, 156, 255, .3)",
+                        data: [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        
+        
+            // Single Bar Chart
+            var ctx4 = $("#bar-chart").get(0).getContext("2d");
+            var myChart4 = new Chart(ctx4, {
+                type: "bar",
+                data: {
+                    labels: ["Italy", "France", "Spain", "USA", "Argentina"],
+                    datasets: [{
+                        backgroundColor: [
+                            "rgba(0, 156, 255, .7)",
+                            "rgba(0, 156, 255, .6)",
+                            "rgba(0, 156, 255, .5)",
+                            "rgba(0, 156, 255, .4)",
+                            "rgba(0, 156, 255, .3)"
+                        ],
+                        data: [55, 49, 44, 24, 15]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        
+        
+            // Pie Chart
+            var ctx5 = $("#pie-chart").get(0).getContext("2d");
+            var myChart5 = new Chart(ctx5, {
+                type: "pie",
+                data: {
+                    labels: ["Italy", "France", "Spain", "USA", "Argentina"],
+                    datasets: [{
+                        backgroundColor: [
+                            "rgba(0, 156, 255, .7)",
+                            "rgba(0, 156, 255, .6)",
+                            "rgba(0, 156, 255, .5)",
+                            "rgba(0, 156, 255, .4)",
+                            "rgba(0, 156, 255, .3)"
+                        ],
+                        data: [55, 49, 44, 24, 15]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        
+        
+            // Doughnut Chart
+            var ctx6 = $("#doughnut-chart").get(0).getContext("2d");
+            var myChart6 = new Chart(ctx6, {
+                type: "doughnut",
+                data: {
+                    labels: ["Italy", "France", "Spain", "USA", "Argentina"],
+                    datasets: [{
+                        backgroundColor: [
+                            "rgba(0, 156, 255, .7)",
+                            "rgba(0, 156, 255, .6)",
+                            "rgba(0, 156, 255, .5)",
+                            "rgba(0, 156, 255, .4)",
+                            "rgba(0, 156, 255, .3)"
+                        ],
+                        data: [55, 49, 44, 24, 15]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        
+            
+        })(jQuery);
+        
+        
+    </script>

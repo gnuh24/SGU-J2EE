@@ -1,0 +1,21 @@
+.width-content-social{
+    width: 80%;
+}
+
+/* html:41 */
+.slide-in-home{
+    width: 130%;
+    left: -15%;
+}
+
+.video-container {
+    width: 200px; /* You can adjust the size as needed */
+    height: 200px; 
+    overflow: hidden; /* Ensure the video fits within the container */
+}
+
+.video-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the video covers the container with cropping if necessary */
+}

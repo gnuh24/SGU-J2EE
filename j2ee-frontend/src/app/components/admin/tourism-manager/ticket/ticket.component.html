@@ -1,0 +1,254 @@
+<h2 class="text-center m-2">Ticket Manager</h2>
+
+<nav class="d-flex navbar navbar-expand-lg navbar-light bg-light navbackground">
+    <div class="form-inline my-2 my-lg-0 mr-auto">
+        <input [(ngModel)]="searchQuery" name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+          (keyup.enter)="searchTour()">
+        <button class="btn btn-outline-success my-2 my-sm-0" (click)="searchTour()">Search</button>
+        <button class="btn btn-outline-success my-2 my-sm-0" (click)="reset()">Show all</button>
+      </div>
+    <button type="button" class="m-3 btn btn-success ml-auto" (click)="aaddNewTicket()">New Ticket</button>
+</nav>
+
+<!-- Hiển thị danh sách Tourism -->
+<div *ngIf="getTourismResponse.length > 0" class="container mt-4">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Tourism</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3" *ngFor="let tourism of paginatedTourisms">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">ID: {{ tourism.id }}</h5>
+                    <p class="card-text">Name: {{ tourism.name }}</p>
+                    <p class="card-text">Location: {{ tourism.location }}</p>
+                    <p class="card-text">Rating: {{ tourism.rating }}</p>
+                    <button class="btn btn-primary" (click)="viewDetails(tourism)">Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination for Tourism -->
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <button class="m-1 btn btn-secondary" (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+            <button class="m-1 btn btn-secondary" (click)="nextPage()" [disabled]="currentPage >= getTourismResponse.length / itemsPerPage">Next</button>
+        </div>
+    </div>
+</div>
+
+<!-- Hiển thị danh sách vé -->
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="text-center">Tickets</h2>
+        </div>
+    </div>
+    <div class="container">
+        <!-- Dùng d-flex để căn hàng ngang -->
+        <div class="form-group d-flex align-items-center">
+            <!-- Thẻ select -->
+            <label for="tourismFilter" class="mr-2">Filter by Tourism</label>
+            <select class="form-control mr-3" id="tourismFilter" [(ngModel)]="selectedTourismId" name="tourismFilter" style="width: auto;">
+                <option value="0">-- Select Tourism --</option>
+                <option *ngFor="let tourism of getTourismResponse" [value]="tourism.id">{{ tourism.name }}</option>
+            </select>
+            <!-- Nút Filter -->
+            <button class="btn btn-primary" (click)="filterTickets()">Filter</button>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Start Date</th>
+                        <th>Tourism ID</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ticket of pagedTickets">
+                        <th scope="row">{{ ticket.id }}</th>
+                        <td>{{ ticket.startDate | date:'short' }}</td>
+                        <td>{{ ticket.idTourism }}</td>
+                        <td>{{ ticket.tourPrice | currency }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      
+        <!-- Pagination Controls -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <!-- Nút Previous -->
+                <li class="page-item" [class.disabled]="currentPageTicket === 1">
+                    <a class="page-link" (click)="!stateFilter ? goToPage(currentPageTicket - 1) : goToPageFilter(currentPageTicket - 1)">Previous</a>
+                </li>
+            
+                <!-- Các số trang -->
+                <li class="page-item" *ngFor="let page of pages" [class.active]="currentPageTicket === page">
+                    <a class="page-link" (click)="!stateFilter ? goToPage(page) : goToPageFilter(page)">{{ page }}</a>
+                </li>
+            
+                <!-- Nút Next -->
+                <li class="page-item" [class.disabled]="currentPageTicket === totalPages">
+                    <a class="page-link" (click)="!stateFilter ? goToPage(currentPageTicket + 1): goToPageFilter(currentPageTicket + 1)">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>      
+</div>
+
+<!-- Form Hiển thị chi tiết Tourism -->
+<div *ngIf="isDisplayDetails" class="modal fade show" tabindex="-1" role="dialog"
+    style="display: block; background: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content slide-in">
+            <div class="modal-body d-flex">
+                <!-- Phần bên trái: Thông tin Tourism -->
+                <div class="col-md-6 col-sm-12">
+                    <h5 class="modal-title">Tourism Information</h5>
+                    <button type="button" class="close" aria-label="Close" (click)="cancel()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" [disabled]="true" class="form-control" id="name" [(ngModel)]="tourismDetail.name" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" [disabled]="true" class="form-control" id="location" [(ngModel)]="tourismDetail.location" name="location">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" [disabled]="true" id="description" [(ngModel)]="tourismDetail.description" name="description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="rating">Rating</label>
+                            <input type="number" [disabled]="true" class="form-control" id="rating" [(ngModel)]="tourismDetail.rating" name="rating">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Phần bên phải: Danh sách Ticket -->
+                <div class="col-md-6 col-sm-12" style="max-height: 500px; overflow-y: auto;">
+                    <h5 class="modal-title">Tickets</h5>
+                    <div *ngFor="let ticket of getTicketsByTourismId" class="mb-2 border p-2">
+                        <div>
+                            <strong>Ticket ID:</strong> {{ ticket.id }}
+                        </div>
+                        <div>
+                            <strong>Start Date:</strong> {{ ticket.startDate | date: 'dd/MM/yyyy' }}
+                        </div>
+                        <div>
+                            <strong>Price:</strong> {{ ticket.tourPrice | currency }}
+                        </div>
+                        <button type="button" class="btn btn-info mt-1" (click)="updateTicket(ticket, tourismDetail)">View</button>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="m-1 btn btn-secondary" (click)="cancel()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for adding/updating ticket -->
+<!-- Modal cho việc tạo hoặc cập nhật Ticket -->
+<div *ngIf="isUpdateTicket" class="modal fade show" tabindex="-1" role="dialog"
+    style="display: block; background: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content slide-in-update">
+            <div class="modal-body-update m-4">
+                <form>
+                    <h5 class="modal-title">{{ isEditMode ? 'Update' : 'Add' }} Ticket</h5>
+                    <button type="button" class="close" aria-label="Close" (click)="isUpdateTicket ? cancelUpdate() : closeCreate()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    
+                    <!-- Chọn Tourism -->
+                    <div class="form-group">
+                        <label for="tourismSelect">Select Tourism</label>
+                        <select class="form-control" id="tourismSelect" [(ngModel)]="updateTicketRequest.idTourism" name="tourismSelect" required>
+                            <option value="0" disabled>-- Select Tourism --</option>
+                            <option *ngFor="let tourism of getTourismResponse" [value]="tourism.id">{{ tourism.name }}</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Giá vé -->
+                    <div class="form-group">
+                        <label for="ticketPrice">Price</label>
+                        <input type="number" class="form-control" id="ticketPrice" [(ngModel)]="updateTicketRequest.tourPrice" name="ticketPrice" placeholder="Enter price" required>
+                    </div>
+                    
+                    <!-- Ngày bắt đầu -->
+                    <div class="form-group">
+                        <label for="startDate">Start Date</label>
+                        <input type="text" class="form-control" id="startDate" [(ngModel)]="updateTicketRequest.startDate" name="startDate" required>
+                    </div>
+
+                    <!-- Ngày kết thúc (chỉ khi tạo mới) -->
+                    <div *ngIf="!isUpdateTicket" class="form-group">
+                        <label for="endDate">End Date</label>
+                        <input type="date" class="form-control" id="endDate" [(ngModel)]="endDate" name="endDate" required>
+                    </div>
+                    
+                    <!-- Nút Hủy bỏ và Thêm/Cập nhật -->
+                    <button type="button" class="m-1 btn btn-secondary" (click)="isUpdateTicket ? cancelUpdate() : closeCreate()">Cancel</button>
+                    <button type="button" class="m-1 btn btn-primary" (click)="isUpdateTicket ? saveUpdate() : onCreate()">{{ isEditMode ? 'Update' : 'Add' }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isCreateTicket" class="modal fade show" tabindex="-1" role="dialog"
+    style="display: block; background: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content slide-in-update">
+            <div class="modal-body-update m-4">
+                <form>
+                    <h5 class="modal-title">{{ isEditMode ? 'Update' : 'Add' }} Ticket</h5>
+                    <button type="button" class="close" aria-label="Close" (click)="isUpdateTicket ? cancelUpdate() : closeCreate()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    
+                    <!-- Chọn Tourism -->
+                    <div class="form-group">
+                        <label for="tourismSelect">Select Tourism</label>
+                        <select class="form-control" id="tourismSelect" [(ngModel)]="createTicketRequest.idTourism" name="tourismSelect" required>
+                            <option value="0" disabled>-- Select Tourism --</option>
+                            <option *ngFor="let tourism of getTourismResponse" [value]="tourism.id">{{ tourism.name }}</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Giá vé -->
+                    <div class="form-group">
+                        <label for="ticketPrice">Price</label>
+                        <input type="number" class="form-control" id="ticketPrice" [(ngModel)]="createTicketRequest.tourPrice" name="ticketPrice" placeholder="Enter price" required>
+                    </div>
+                    
+                    <!-- Ngày bắt đầu -->
+                    <div class="form-group">
+                        <label for="startDate">Start Date</label>
+                        <input type="date" class="form-control" id="startDate" [(ngModel)]="startDate" name="startDate" required>
+                    </div>
+
+                    <!-- Ngày kết thúc (chỉ khi tạo mới) -->
+                    <div *ngIf="!isUpdateTicket" class="form-group">
+                        <label for="endDate">End Date</label>
+                        <input type="date" class="form-control" id="endDate" [(ngModel)]="endDate" name="endDate" required>
+                    </div>
+                    
+                    <!-- Nút Hủy bỏ và Thêm/Cập nhật -->
+                    <button type="button" class="m-1 btn btn-secondary" (click)="isUpdateTicket ? cancelUpdate() : closeCreate()">Cancel</button>
+                    <button type="button" class="m-1 btn btn-primary" (click)="isUpdateTicket ? saveUpdate() : onCreate()">{{ isEditMode ? 'Update' : 'Add' }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

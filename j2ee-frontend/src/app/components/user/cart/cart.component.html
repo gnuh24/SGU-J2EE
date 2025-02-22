@@ -1,0 +1,61 @@
+<app-notification></app-notification>
+<div class="container mt-5 cart-container">
+    <h2 class="mb-4 text-center">Giỏ hàng của bạn</h2>
+
+    <!-- Product list -->
+    <ul class="list-group mb-4" *ngIf="products.length > 0">
+        <li *ngFor="let product of products"
+            class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+            <div class="d-flex align-items-center flex-column flex-md-row">
+                <img [src]="product.image" alt="{{ product.name }}" class="img-thumbnail mr-3 mb-3 mb-md-0"
+                    style="width: 100px;">
+                <div class="product-info ml-md-3 text-center text-md-left">
+                    <h5>{{ product.name }}</h5>
+
+                    <div *ngIf="product.type === 'tour' && product.schedule">
+                        <p><strong>Ngày bắt đầu:</strong> {{ product.schedule.timeStartTour | date:'dd/MM/yyyy HH:mm' }}
+                        </p>
+                        <p><strong>Điểm bắt đầu:</strong> {{ product.startLocation }}</p>
+                        <p><strong>Điểm kết thúc:</strong> {{ product.endLocation }}</p>
+                    </div>
+
+                    <div *ngIf="product.type === 'hotel'">
+                        <p><strong>Thời gian check-in:</strong> {{ product.startDate | date:'dd/MM/yyyy' }}</p>
+                        <p><strong>Số ngày:</strong> {{ product.quantity}}</p>
+                        <p><strong>Vị trí:</strong> {{ product.location }}</p>
+                    </div>
+
+                    <div *ngIf="product.type === 'ticket'">
+                        <p><strong>Địa điểm:</strong> {{ product.venue }}</p>
+                        <p><strong>Ngày diễn ra:</strong> {{ product.dateEvent | date:'dd/MM/yyyy' }}</p>
+                        <p><strong>Sự kiện:</strong> {{ product.name }}</p>
+                    </div>
+
+                    <p class="price mb-0">Giá: {{ product.price | number }} đ</p>
+                </div>
+            </div>
+            <div class="quantity-controls d-flex align-items-center">
+                <button class="btn btn-sm btn-light" (click)="decreaseQuantity(product)">-</button>
+                <input type="text" [(ngModel)]="product.quantity" class="form-control text-center quantity-input"
+                    readonly>
+                <button class="btn btn-sm btn-light" (click)="increaseQuantity(product)">+</button>
+            </div>
+            <button class="btn btn-sm btn-danger ml-3" (click)="removeProduct(product)">Xóa</button>
+        </li>
+    </ul>
+
+    <!-- Total Price and Checkout -->
+    <div *ngIf="products.length > 0" class="d-flex justify-content-between align-items-center total-container">
+        <h4 class="total-label">Tổng cộng:</h4>
+        <h4 class="total-price">{{ total | number }} đ</h4>
+    </div>
+
+    <div *ngIf="products.length > 0" class="text-right mt-4">
+        <button class="btn btn-success btn-checkout" (click)="updateBookingType()">Thanh toán</button>
+    </div>
+
+     <!-- Empty cart message -->
+     <div *ngIf="products.length === 0" class="empty-cart-message text-center mt-4">
+        <p>Giỏ hàng của bạn trống</p>
+    </div>
+</div>

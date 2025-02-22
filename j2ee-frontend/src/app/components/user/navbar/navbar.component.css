@@ -1,0 +1,679 @@
+/* General Navigation Styling */
+header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+}
+
+nav {
+    background-color: #1c1c1c;
+}
+
+.navbar {
+    width: 100%;
+    padding: 0;
+    position: relative;
+}
+
+/* Chỉnh cho thanh navbar của web */
+.navbar-nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar-brand {
+    height: 40px;
+}
+
+.navbar-toggler {
+    position: fixed;
+    right: 25px;
+    top: 22px;
+    z-index: 1050;
+}
+
+.header-content .nav-link {
+    color: #fff;
+    font-size: 24px;
+}
+
+.d-lg-none {
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar-brand.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Hide Desktop Navigation on Mobile */
+.d-none.d-lg-block {
+    display: none;
+}
+
+.navbar-brand {
+    display: flex;
+    justify-content: center;
+}
+
+.container-fluid {
+    padding: 0;
+}
+
+
+.navbar-nav .nav-link {
+    color: #fff;
+    font-size: 24px;
+    padding: 5px;
+    border: 1px solid transparent;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ddd;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.btn {
+    padding: 10px 20px; /* Consistent padding */
+    font-size: 16px;    /* Uniform font size */
+    display: inline-flex;
+    align-items: center; /* Ensure the text and icons are centered */
+    height: 100%; /* Ensure height consistency */
+    margin: 0; /* Remove any default margin if needed */
+  }
+/* Button Styles in Navbar */
+.navbar .btn {
+    color: #fff;
+    font-size: 16px;
+    padding: 13px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 0;
+}
+
+.btn-secondary {
+    background-color: #666;
+}
+
+.btn-danger {
+    background-color: #c62828;
+}
+
+/* Ensure the button icons are aligned properly */
+.btn-danger i {
+    margin-right: 5px;
+}
+
+/* Header Content Styling */
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background-color: #4a4a4a;
+    padding: 10px 20px;
+}
+
+.header-content .logo {
+    height: 30px;
+}
+
+.navbar-toggler {
+    display: block;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+}
+
+/* Logo Styling */
+.logo {
+    height: 40px;
+}
+
+/* Search Container Styling */
+.search-container {
+    position: relative;
+    width: 30%;
+}
+
+/* Input Field Styling */
+.search-box {
+    background-color: #4a4a4a;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 8px 12px;
+    padding-left: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+    width: 100%;
+    font-size: 16px;
+}
+
+/* Placeholder Text Styling */
+.search-box::placeholder {
+    color: #fff;
+    opacity: 0.7;
+}
+
+/* Search Icon Styling */
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 32%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 18px;
+}
+
+/* Extra Options Container */
+.extra-options {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.dropdown-toggle::after {
+    color: rgb(52, 58, 64);
+    vertical-align: .2em;
+    margin-left: 8px;
+}
+
+/* Custom Select Styling */
+.currency-selector {
+    background-color: #4a4a4a;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 8px 12px;
+    padding-right: 40px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+}
+
+/* Custom Arrow */
+.currency-selector::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: solid #fff;
+    border-width: 0 3px 3px 3px;
+    height: 0.5em;
+    width: 0.5em;
+    transform: rotate(45deg);
+}
+
+/* Remove default arrow in IE */
+.currency-selector::-ms-expand {
+    display: none;
+}
+
+
+
+.vietnam-flag {
+    height: 20px;
+}
+
+
+/* Help and Cart Styling */
+.help,
+.cart {
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.help:hover,
+.cart:hover {
+    color: #ddd;
+}
+
+/* Menu Toggle Button for Mobile */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.collapse {
+    display: block;
+}
+
+.d-lg-none .collapse {
+    display: none;
+}
+
+.d-lg-none .collapse.show {
+    display: block;
+}
+
+.user-icon {
+    display: flex;
+    align-items: center;
+}
+
+.user-icon i {
+    font-size: 24px;
+    color: #fff;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+        background-color: #1c1c1c;
+        align-items: flex-start;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        padding: 10px;
+    }
+
+    .navbar-nav.active {
+        display: flex;
+    }
+
+    .navbar-nav .nav-item {
+        margin: 10px 0;
+        width: 100%;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .d-lg-none {
+        display: block !important;
+    }
+
+    .d-lg-block {
+        display: none !important;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 18px;
+        text-align: left;
+    }
+
+    .navbar-nav .btn {
+        width: 100%;
+        text-align: center;
+        border-radius: 0;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        padding: 10px 20px;
+    }
+
+    .social-icons .nav-link {
+        font-size: 24px;
+        text-align: left;
+    }
+
+    .collapse {
+        display: block;
+    }
+
+    .navbar-collapse.show {
+        display: flex;
+    }
+
+    .navbar-collapse {
+        display: none;
+        width: 100%;
+        background-color: #1c1c1c;
+    }
+
+    .d-lg-none .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .header-content .navbar-toggler {
+        display: block;
+    }
+
+    .header-content .logo {
+        height: 30px;
+    }
+
+    .header-content .nav-link {
+        display: flex;
+        align-items: center;
+    }
+
+    .d-flex.flex-column.align-items-start {
+        margin-top: 10px;
+    }
+
+    .navbar .btn {
+        text-align: left;
+    }
+
+    .d-flex.flex-column.align-items-start {
+        margin-top: 10px;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 18px;
+        text-align: left;
+    }
+
+    .navbar-nav .btn {
+        width: 100%;
+        text-align: center;
+        border-radius: 0;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+        padding: 10px 20px;
+    }
+
+    .social-icons .nav-link {
+        font-size: 24px;
+    }
+
+    .search-container,
+    .extra-options,
+    .currency-selector,
+    .help,
+    .cart {
+        display: none;
+    }
+
+    /* thanh cố định */
+    .header-content {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #1c1c1c;
+        padding: 10px;
+        justify-content: space-between;
+    }
+
+    .header-content .menu-toggle {
+        display: block;
+        color: #fff;
+        font-size: 24px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .header-content .logo {
+        height: 30px;
+    }
+
+    .header-content .social-icons,
+    .header-content .search-container,
+    .header-content .currency-selector {
+        display: none;
+    }
+
+    .user-icon {
+        display: flex;
+        align-items: center;
+        color: #fff;
+        /* Đảm bảo màu sắc của biểu tượng */
+        font-size: 24px;
+        /* Điều chỉnh kích thước nếu cần */
+    }
+
+    .user-icon i {
+        display: block;
+        /* Đảm bảo biểu tượng hiển thị */
+    }
+}
+
+body {
+    padding-top: 70px;
+}
+
+/* Lap */
+.d-none.d-lg-block {
+    display: block;
+}
+
+@media (min-width: 769px) {
+    .d-lg-none {
+        display: none;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 24px;
+    }
+
+    .navbar-nav .btn {
+        font-size: 16px;
+        padding: 12px 20px;
+    }
+
+    header {
+        position: relative;
+    }
+
+    .user-icon {
+        display: none;
+    }
+}
+
+.menu-toggle {
+    display: none;
+}
+
+#banner {
+    position: relative;
+    overflow: hidden;
+    height: 500px;
+    width: 100%;
+}
+
+#banner video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Dropdown Menu Styles */
+.dropdown-menu {
+    display: none;
+}
+
+.dropdown-menu.show {
+    display: block;
+    inset: 40px auto auto 0px !important;
+}
+
+@media (max-width: 768px) {
+    .dropdown-menu {
+        position: absolute;
+        margin-left: 18px;
+        width: 90% !important;
+        overflow-y: hidden;
+        inset: 30px auto auto 0px !important;
+        background: none !important;
+        border: none !important;
+        box-shadow: none !important;
+
+    }
+
+    .dropdown-menu::-webkit-scrollbar {
+        display: none;
+    }
+
+    .dropdown-item {
+        color: #fff !important;
+        transform: none !important;
+        padding: 0px 10px;
+        background: none !important;
+    }
+
+    .dropdown-item img {
+        width: 20px !important;
+        height: 20px !important;
+
+
+    }
+}
+
+
+@keyframes fadeInScale {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+.header-content * {
+    animation: fadeInScale 1s ease-out forwards;
+    opacity: 0;
+
+}
+
+.header-content img,
+.header-content .search-container,
+.header-content .extra-options {
+    animation-delay: 0.1s;
+}
+
+.header-content .search-container {
+    animation-delay: 0.2s;
+}
+
+.header-content .extra-options {
+    animation-delay: 0.3s;
+}
+
+.header-content .extra-options div {
+    animation-delay: 0.4s;
+}
+
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Apply Slide Animation */
+#navbarNav .nav-item {
+    animation: slideInFromLeft 1s ease-out forwards;
+    opacity: 0;
+    display: inline-block;
+    /* Ensure elements start invisible for animation */
+}
+
+#navbarNav .nav-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+#navbarNav .nav-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+#navbarNav .nav-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+#navbarNav .nav-item:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+#navbarNav .nav-item:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+#navbarNav .nav-item:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+#navbarNav .nav-item:nth-child(7) {
+    animation-delay: 0.7s;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.navbar-nav .nav-link i {
+    animation: pulse 2s infinite;
+}
+
+.social-icons .nav-link i {
+    animation: pulse 2s infinite;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
