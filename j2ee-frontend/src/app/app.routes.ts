@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { HomeComponent } from './components/user/home/home.component'; // ĐẢM BẢO dòng này CÓ
 import { LocationListComponent } from './components/user/location-list/location-list.component';
 import { NavbarComponent } from './components/user/navbar/navbar.component';
 import { LoginComponent } from './components/auth/login/login.component';
@@ -6,7 +7,6 @@ import { LocationDetailComponent } from './components/user/location-detail/locat
 import { BookingComponent } from './components/user/booking/booking.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { PaymentComponent } from './components/user/payment/payment.component';
-import { HomeComponent } from './components/user/home/home.component';
 import { HotelListComponent } from './components/user/hotel-list/hotel-list.component';
 import { TicketListComponent } from './components/user/ticket-list/ticket-list.component';
 import { TicketDetailComponent } from './components/user/ticket-detail/ticket-detail.component';
@@ -15,93 +15,94 @@ import { CartComponent } from './components/user/cart/cart.component';
 import { HistoryComponent } from './components/user/history/history.component';
 import { SearchComponent } from './components/user/search/search.component';
 
-
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'auth/login',
-    pathMatch: 'full'
+    redirectTo: '/home', // Chuyển hướng đến /home khi truy cập đường dẫn gốc
+    pathMatch: 'full',
   },
   {
     path: 'location-list/:location',
-    component: LocationListComponent
+    component: LocationListComponent,
   },
   {
     path: 'ticket-list/:location',
-    component: TicketListComponent
+    component: TicketListComponent,
   },
   {
     path: 'hotel-list/:location',
-    component: HotelListComponent
+    component: HotelListComponent,
   },
   {
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
+  },
+  {
+    path: 'lich-trinh',
+    component: CartComponent,
+  },
+  {
+    path: 'tra-cuu-ve',
+    component: HomeComponent,
   },
   {
     path: 'auth',
     children: [
       {
         path: '',
-        redirectTo: 'login',  
-        pathMatch: 'full'    
+        redirectTo: 'login',
+        pathMatch: 'full',
       },
       {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
       },
       {
         path: 'register',
-        component: RegisterComponent
-      }
-    ]
+        component: RegisterComponent,
+      },
+    ],
   },
   {
     path: 'location-detail',
-    component: LocationDetailComponent
+    component: LocationDetailComponent,
   },
-  { path: 'location-details/:id',
-    component: LocationDetailComponent 
-  },
-  { path: 'ticket-details/:id',
-    component: TicketDetailComponent
-  },
-  { path: 'hotel-details/:id',
-    component: HotelDetailComponent
-  },
+  { path: 'location-details/:id', component: LocationDetailComponent },
+  { path: 'ticket-details/:id', component: TicketDetailComponent },
+  { path: 'hotel-details/:id', component: HotelDetailComponent },
   {
     path: 'admin',
-    loadChildren: () => import('./components/admin/router/admin.modules').then(m => m.AdminModule)
+    loadChildren: () =>
+      import('./components/admin/router/admin.modules').then(
+        (m) => m.AdminModule
+      ),
   },
   {
     path: 'booking',
-    component: BookingComponent
+    component: BookingComponent,
   },
   {
     path: 'payment',
-    component: PaymentComponent
-
+    component: PaymentComponent,
   },
   {
     path: 'navbar',
-    component: NavbarComponent
+    component: NavbarComponent,
   },
   {
     path: 'cart',
-    component: CartComponent
+    component: CartComponent,
   },
   {
     path: 'order-history',
-    component: HistoryComponent
+    component: HistoryComponent,
   },
   {
     path: 'search',
-    component: SearchComponent
+    component: SearchComponent,
   },
   {
     path: '**',
-    redirectTo: 'auth/login',
-    pathMatch: 'full'
-  }
- 
+    redirectTo: '/home', // Chuyển hướng đến /home cho các route không xác định
+  },
 ];

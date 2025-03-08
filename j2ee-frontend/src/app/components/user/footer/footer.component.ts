@@ -10,7 +10,7 @@ import { UserService } from '../../../services/user/user.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'app-footer',
   standalone: true,
   imports: [
     CommonModule,
@@ -19,12 +19,12 @@ import { FormsModule } from '@angular/forms';
     RouterLinkActive, // Thêm RouterLinkActive vào imports
     RouterModule, // Thêm RouterModule vào imports
   ],
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
+  templateUrl: './footer.component.html',
+  styleUrls: ['./footer.component.scss'],
 })
-export class NavbarComponent implements OnInit {
+export class footerComponent implements OnInit {
   CurrentUser: string | null = null;
-  mobileNavbarContent: string = '';
+  mobilefooterContent: string = '';
   socialLinks: { icon: string; url: string }[] = [
     { icon: 'fa-brands fa-facebook', url: '#' },
     { icon: 'fa-brands fa-x', url: '#' },
@@ -33,7 +33,7 @@ export class NavbarComponent implements OnInit {
     { icon: 'fa-brands fa-instagram', url: '#' },
   ];
 
-  navbarContent: {
+  footerContent: {
     label: string;
     routerLink?: string;
     action?: (event?: MouseEvent) => void;
@@ -63,7 +63,7 @@ export class NavbarComponent implements OnInit {
       }
     }
 
-    this.updateNavbarContent();
+    this.updatefooterContent();
     this.dataLoaded = true;
   }
 
@@ -77,14 +77,14 @@ export class NavbarComponent implements OnInit {
     localStorage.removeItem('authToken');
     localStorage.removeItem('token');
     this.CurrentUser = null;
-    this.updateNavbarContent();
+    this.updatefooterContent();
 
     // Navigate to login page
     this.router.navigate(['/auth/login']);
   }
-  updateNavbarContent(): void {
+  updatefooterContent(): void {
     if (this.CurrentUser) {
-      this.navbarContent = [
+      this.footerContent = [
         {
           label: 'Logout',
           action: (event?: MouseEvent) => this.logout(event),
@@ -94,7 +94,7 @@ export class NavbarComponent implements OnInit {
         { label: 'View History', routerLink: '/order-history', isUser: false },
       ];
     } else {
-      this.navbarContent = [
+      this.footerContent = [
         { label: 'Sign Up', routerLink: '/auth/login', isUser: false },
         { label: 'My Account', isUser: true },
       ];

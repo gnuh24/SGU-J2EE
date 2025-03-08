@@ -1,7 +1,7 @@
 .header-home-page {
   background-image: url("../../../../assets/img/DEFAULT/home_banner.png");
   background-size: cover;
-  min-height: 180px;
+  min-height: 150px;
   font-size: 13px !important;
   background-color: rgb(255, 255, 255) !important;
   .header-first-component {
@@ -177,6 +177,10 @@
       font-weight: 500 !important;
       text-transform: uppercase !important;
       color: rgb(255 255 255) !important;
+      &.active {
+        font-weight: bold;
+        border-bottom: 4px solid white;
+      }
     }
     a:hover {
       color: white;

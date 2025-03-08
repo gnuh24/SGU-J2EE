@@ -4,8 +4,8 @@
     <div class="header-first-component">
       <div style="display: block; width: 336px"></div>
       <div class="header-first-logo">
-        <a href="/"
-          ><img
+        <a routerLink="/">
+          <img
             alt="logo_banner"
             loading="lazy"
             width="295"
@@ -14,19 +14,21 @@
             data-nimg="1"
             style="color: transparent"
             src="https://futabus.vn/_next/static/media/logo_new.8a0251b8.svg"
-        /></a>
+          />
+        </a>
       </div>
       <div class="header-first-log">
         <div class="flex items-start gap-4 text-center text-sm font-medium">
           <a
             class="flex h-8 w-44 cursor-pointer items-center gap-3 rounded-2xl bg-white p-2 text-black"
-            ><img
+          >
+            <img
               src="../../../../assets/img/LOGO/person.svg"
               alt="person"
               width="20"
               height="20"
-            />Đăng nhập / Đăng ký</a
-          >
+            />Đăng nhập / Đăng ký
+          </a>
         </div>
       </div>
     </div>
@@ -34,45 +36,46 @@
     <div class="header-second-component">
       <a
         class="mx-2 w-32 pb-3 text-center text-sm uppercase text-white hover:font-bold hover:text-white border-b-4 border-b-white font-bold"
-        rel="noopener noreferrer"
-        target="_self"
-        href="/"
+        routerLink="/home"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
         >Trang chủ</a
-      ><a
+      >
+      <a
         class="mx-2 w-32 pb-3 text-center text-sm uppercase text-white hover:font-bold hover:text-white font-medium"
-        rel="noopener noreferrer"
-        target="_self"
-        href="/lich-trinh"
+        routerLink="/lich-trinh"
+        routerLinkActive="active"
         >Lịch trình</a
-      ><a
+      >
+      <a
         class="mx-2 w-32 pb-3 text-center text-sm uppercase text-white hover:font-bold hover:text-white font-medium"
-        rel="noopener noreferrer"
-        target="_self"
-        href="/tra-cuu-ve"
+        routerLink="/tra-cuu-ve"
+        routerLinkActive="active"
         >Tra cứu vé</a
-      ><a
+      >
+      <a
         class="mx-2 w-32 pb-3 text-center text-sm uppercase text-white hover:font-bold hover:text-white font-medium"
-        rel="noopener noreferrer"
-        target="_self"
-        href="/tin-tuc"
+        routerLink="/tin-tuc"
+        routerLinkActive="active"
         >Tin tức</a
-      ><a
+      >
+      <a
         class="mx-2 w-32 pb-3 text-center text-sm uppercase text-whiteF hover:font-bold hover:text-white font-medium"
         rel="noopener noreferrer"
         target="_blank"
         href="https://hoadon.futabus.vn/#/tracuuhoadon/tracuu"
         >Hóa đơn</a
-      ><a
+      >
+      <a
         class="mx-2 w-32 pb-3 text-center text-sm uppercase text-white hover:font-bold hover:text-white font-medium"
-        rel="noopener noreferrer"
-        target="_self"
-        href="/lien-he"
+        routerLink="/lien-he"
+        routerLinkActive="active"
         >Liên hệ</a
-      ><a
+      >
+      <a
         class="mx-2 w-32 pb-3 text-center text-sm uppercase text-white hover:font-bold hover:text-white font-medium"
-        rel="noopener noreferrer"
-        target="_self"
-        href="/ve-chung-toi"
+        routerLink="/ve-chung-toi"
+        routerLinkActive="active"
         >Về chúng tôi</a
       >
     </div>
