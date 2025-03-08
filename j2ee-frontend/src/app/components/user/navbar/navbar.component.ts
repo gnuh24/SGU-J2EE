@@ -7,27 +7,36 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink,FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
   CurrentUser: string | null = null;
   mobileNavbarContent: string = '';
-  socialLinks: { icon: string, url: string }[] = [
+  socialLinks: { icon: string; url: string }[] = [
     { icon: 'fa-brands fa-facebook', url: '#' },
     { icon: 'fa-brands fa-x', url: '#' },
     { icon: 'fa-brands fa-youtube', url: '#' },
     { icon: 'fa-brands fa-tiktok', url: '#' },
     { icon: 'fa-brands fa-instagram', url: '#' },
   ];
-  
-  navbarContent: { label: string, routerLink?: string,action?: (event?: MouseEvent) => void, isUser?: boolean }[] = [];
+
+  navbarContent: {
+    label: string;
+    routerLink?: string;
+    action?: (event?: MouseEvent) => void;
+    isUser?: boolean;
+  }[] = [];
   dataLoaded: boolean = false;
 
   searchQuery: string = '';
 
-  constructor(private userService: UserService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
     this.loadCurrentUser();
@@ -38,13 +47,13 @@ export class NavbarComponent implements OnInit {
       const user = localStorage.getItem('currentUser');
       if (user) {
         this.CurrentUser = JSON.parse(user).name;
-      } else { 
-        this.CurrentUser = null; 
+      } else {
+        this.CurrentUser = null;
       }
     }
-    
+
     this.updateNavbarContent();
-    this.dataLoaded = true; 
+    this.dataLoaded = true;
   }
 
   logout(event?: MouseEvent) {
@@ -56,7 +65,7 @@ export class NavbarComponent implements OnInit {
     localStorage.removeItem('idBooking');
     localStorage.removeItem('authToken');
     localStorage.removeItem('token');
-    this.CurrentUser = null; 
+    this.CurrentUser = null;
     this.updateNavbarContent();
 
     // Navigate to login page
@@ -65,21 +74,27 @@ export class NavbarComponent implements OnInit {
   updateNavbarContent(): void {
     if (this.CurrentUser) {
       this.navbarContent = [
-        { label: 'Logout', action: (event?: MouseEvent) => this.logout(event) , isUser: false },
+        {
+          label: 'Logout',
+          action: (event?: MouseEvent) => this.logout(event),
+          isUser: false,
+        },
         { label: `${this.CurrentUser}`, isUser: true },
-        { label: 'View History', routerLink: '/order-history', isUser: false }
+        { label: 'View History', routerLink: '/order-history', isUser: false },
       ];
     } else {
       this.navbarContent = [
         { label: 'Sign Up', routerLink: '/auth/login', isUser: false },
-        { label: 'My Account', isUser: true }
+        { label: 'My Account', isUser: true },
       ];
     }
   }
 
   onSearch() {
     if (this.searchQuery) {
-      this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
+      this.router.navigate(['/search'], {
+        queryParams: { query: this.searchQuery },
+      });
     }
   }
 
@@ -88,5 +103,4 @@ export class NavbarComponent implements OnInit {
       window.location.reload();
     });
   }
-  
 }
