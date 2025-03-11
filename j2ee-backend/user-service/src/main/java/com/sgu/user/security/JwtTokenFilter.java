@@ -4,6 +4,8 @@ import com.sgu.user.exceptions.AuthException.AuthExceptionHandler;
 import com.sgu.user.exceptions.JwtException.InvalidJWTSignatureException;
 import com.sgu.user.exceptions.JwtException.TokenExpiredException;
 import com.sgu.user.exceptions.JwtException.UsernameNotFound;
+import com.sgu.user.redis.RedisContants;
+import com.sgu.user.redis.RedisService;
 import com.sgu.user.services.AccountService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -30,6 +32,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private RedisService redisService;
 
     @Autowired
     @Lazy
@@ -57,6 +61,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
              *  Hàm tách username ra từ chuỗi JWT -> Lấy được email
              */
             jwtToken = authHeader.substring(7);
+            if(!redisService.exists(RedisContants.TOKEN+jwtToken)){
+                authExceptionHandler.commence(request, response, new TokenExpiredException("Access Token đã hết hạn sử dụng."));
+                return;
+            }
 
             try {
                 userEmail = jwtTokenProvider.getUsername(jwtToken);

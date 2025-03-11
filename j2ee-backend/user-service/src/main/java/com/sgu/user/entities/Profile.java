@@ -29,8 +29,6 @@ public class Profile {
     @Column
     private Boolean gender;
 
-    @Temporal(TemporalType.DATE)
-    private Date birthday;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -46,9 +44,7 @@ public class Profile {
     public enum Status {
 	    ACTIVE,        // 🟢 Nhân viên đang làm việc bình thường
 	    INACTIVE,      // ⚪ Nhân viên bị vô hiệu hóa (tạm thời ngừng làm việc)
-	    SUSPENDED,     // 🟡 Nhân viên bị đình chỉ do vi phạm hoặc lý do khác
-	    TERMINATED,    // 🔴 Nhân viên đã nghỉ việc, hợp đồng chấm dứt
-	    ON_LEAVE,       // 🔵 Nhân viên đang nghỉ phép dài hạn
+
             DELETED
     }
 }

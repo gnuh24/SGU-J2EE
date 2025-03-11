@@ -27,8 +27,8 @@ public class EmailServiceImpl implements EmailService {
     private JavaMailSender mailSender;
 
     @Override
-    public void sendRegistrationUserConfirm(String email, OTP otp) {
-        String confirmationUrl = "http://localhost:8080/accounts/active-account=" + otp.getCode();
+    public void sendRegistrationUserConfirm(String email, String otp) {
+        String confirmationUrl ="ma dang ki cua ban" + otp;
 
         String subject = "Xác Nhận Đăng Ký Tài khoản";
         String content = getEmailContentForRegistration(confirmationUrl);

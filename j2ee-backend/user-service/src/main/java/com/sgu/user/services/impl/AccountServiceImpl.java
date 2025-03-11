@@ -5,7 +5,10 @@ import com.sgu.user.dto.request.account.*;
 import com.sgu.user.dto.request.auth.UserRegistrationForm;
 import com.sgu.user.entities.Account;
 import com.sgu.user.entities.Position;
+import com.sgu.user.entities.Profile;
 import com.sgu.user.entities.ProfilePosition;
+import com.sgu.user.redis.RedisContants;
+import com.sgu.user.redis.RedisService;
 import com.sgu.user.security.JwtTokenProvider;
 import com.sgu.user.repositories.AccountRepository;
 import com.sgu.user.services.EmailService;
@@ -51,6 +54,9 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private RedisService redisService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return accountRepository.findByEmail(username)
@@ -78,33 +84,41 @@ public class AccountServiceImpl implements AccountService {
     @Override
 //    @Cacheable(value = "account:email", key = "#email", unless = "#result == null")
     public boolean isEmailExists(String username) {
-        return accountRepository.existsByEmail(username);
+
+        if(redisService.hashExists(RedisContants.EMAIL_EXIST,username)){
+            return true;
+        }
+
+        if (accountRepository.existsByEmail(username)){
+            redisService.hashSet(RedisContants.EMAIL_EXIST,username,true);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 
     @Override
-    public Account createAccount(String email, Date birthday, ProfilePosition profilePosition) {
-        if (isEmailExists(email)){
-            throw new RuntimeException("Email :" + email + " đã tồn tại trong hệ thống !");
+    public Account createAccount(UserRegistrationForm userRegistrationForm, Profile profile) {
+        if (isEmailExists(userRegistrationForm.getEmail())){
+            throw new RuntimeException("Email :" + userRegistrationForm.getEmail() + " đã tồn tại trong hệ thống !");
         }
 
         Account account = new Account();
-        account.setEmail(email);
+        account.setEmail(userRegistrationForm.getEmail());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        String formattedDate = sdf.format(birthday);
 
-        account.setPassword(passwordEncoder.encode(formattedDate));
 
-        Account.Role role = switch (profilePosition.getPosition().getId()) {
-	    case "POS001" -> Account.Role.HR;
-	    case "POS002" -> Account.Role.INVENTORY_MANAGER;
-	    case "POS003" -> Account.Role.BUSINESS_MANAGER;
-	    default -> null;
-	};
-	account.setRole(role);
+        account.setPassword(passwordEncoder.encode(userRegistrationForm.getPassword()));
 
-        account.setProfile(profilePosition.getProfile());
+        Account.Role role =Account.Role.USER;
+
+
+	     account.setRole(role);
+         account.setProfile(profile);
+
+
 
         return accountRepository.save(account);
     }

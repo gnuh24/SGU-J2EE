@@ -41,13 +41,10 @@ public class Account implements UserDetails {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @OneToOne
-    @JoinColumn(name = "ProfileId", nullable = false)
-    private Profile profile;
 
     // Enum Role (Viết hoa toàn bộ)
     public enum Role {
-        ADMIN, HR, INVENTORY_MANAGER, BUSINESS_MANAGER
+        ADMIN, USER
     }
 
     // Enum Status (Viết hoa toàn bộ)
@@ -64,6 +61,11 @@ public class Account implements UserDetails {
     public String getPassword() {
         return this.password;
     }
+
+    @OneToOne
+    @JoinColumn(name = "ProfileId", nullable = false)
+    private Profile profile;
+
 
     @Override
     public String getUsername() {

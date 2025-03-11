@@ -38,13 +38,13 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<ApiResponse<AuthResponseDTO>> loginUser(
-//            @RequestBody @Valid LoginRequestForm loginInputForm) {
-//
-//        AuthResponseDTO loginInfo = authService.login(loginInputForm);
-//        return ResponseEntity.ok(new ApiResponse<>(200, "Login successful", loginInfo));
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<AuthResponseDTO>> loginUser(
+            @RequestBody @Valid LoginRequestForm loginInputForm) {
+
+        AuthResponseDTO loginInfo = authService.login(loginInputForm);
+        return ResponseEntity.ok(new ApiResponse<>(200, "Login successful", loginInfo));
+   }
 
     @PostMapping("/staff-login")
     public ResponseEntity<ApiResponse<AuthResponseDTO>> loginStaff(
@@ -54,26 +54,24 @@ public class AuthController {
         return ResponseEntity.ok(new ApiResponse<>(200, "Login successful", loginInfo));
     }
 
-//    @PostMapping("/register")
-//    public ResponseEntity<ApiResponse<RegisterResponseDTO>> createAccount(@RequestBody @Valid UserRegistrationForm form) {
-//
-//        // Create the account
-//        Account account = accountService.createAccount(form);
-//
-//        // Map account entity to DTO
-//        RegisterResponseDTO authResponseDTO = new RegisterResponseDTO();
-//        authResponseDTO.setId(account.getId());
-//        authResponseDTO.setEmail(account.getEmail());
-//
-//        // Return response
-//        return ResponseEntity.ok(
-//                new ApiResponse<>(
-//                        201,
-//                        "Account created successfully. Please activate your account on your  email: " + account.getEmail() ,
-//                        authResponseDTO
-//                )
-//        );
-//    }
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse<?>> createAccount(@RequestBody @Valid UserRegistrationForm form) {
+
+        // Create the account
+      Boolean success=authService.registration(form);
+
+        // Map account entity to DTO
+
+
+        // Return response
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        201,
+                        "Account created successfully. Please activate your account on your  email: "  ,
+                        success
+                )
+        );
+    }
 
 
 //    @PostMapping("/send-otp-update-email")

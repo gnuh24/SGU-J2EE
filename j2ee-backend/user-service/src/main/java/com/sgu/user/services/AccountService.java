@@ -4,6 +4,7 @@ import com.sgu.user.dto.request.account.*;
 import com.sgu.user.dto.request.auth.UserRegistrationForm;
 import com.sgu.user.entities.Account;
 import com.sgu.user.entities.Position;
+import com.sgu.user.entities.Profile;
 import com.sgu.user.entities.ProfilePosition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,7 @@ public interface AccountService extends UserDetailsService {
 
     boolean isEmailExists(String email);
 
-    Account createAccount(String email, Date birthday,  ProfilePosition profilePosition);
+    Account createAccount(UserRegistrationForm userRegistrationForm, Profile profile);
 
     Account updateStatusOfAccount(String accountId, Account.Status status);
 

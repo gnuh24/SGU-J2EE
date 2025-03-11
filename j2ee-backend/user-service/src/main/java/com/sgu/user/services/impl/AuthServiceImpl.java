@@ -1,25 +1,36 @@
 package com.sgu.user.services.impl;
 
 import com.sgu.user.dto.request.auth.LoginRequestForm;
+import com.sgu.user.dto.request.auth.UserRegistrationForm;
+import com.sgu.user.dto.request.profile.ProfileCreateForm;
 import com.sgu.user.dto.response.auth.AuthResponseDTO;
 import com.sgu.user.entities.Account;
+import com.sgu.user.entities.Profile;
 import com.sgu.user.exceptions.AuthException.AuthExceptionHandler;
+import com.sgu.user.redis.RedisContants;
+import com.sgu.user.redis.RedisService;
 import com.sgu.user.repositories.AccountRepository;
 import com.sgu.user.security.JwtTokenProvider;
 import com.sgu.user.services.AccountService;
 import com.sgu.user.services.AuthService;
+import com.sgu.user.services.EmailService;
+import com.sgu.user.services.ProfileService;
+import com.sgu.user.utils.IdGenerator;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -38,36 +49,82 @@ public class AuthServiceImpl implements AuthService {
 
     @Autowired
     private AccountRepository accountRepository;
+	@Autowired
+	private ProfileService profileService;
 
     @Autowired
     private AuthExceptionHandler authExceptionHandler;
 
-//    @Override
-//    public AuthResponseDTO login(LoginRequestForm request)  {
-//
-//	Account user = accountService.getAccountByEmail(request.getEmail());
-//
-//	if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-//	    throw new BadCredentialsException("Email hoặc mật khẩu không đúng!");
-//	}
-//
-//	if (user.getRole() != Account.Role.USER) {
-//	    throw new BadCredentialsException("Email hoặc mật khẩu không đúng!");
-//	}
-//
-//	if (user.getStatus().toString().equals("INACTIVE")) {
-//	    throw new DisabledException("Tài khoản của bạn chưa được kích hoạt, hãy kiểm tra email " + request.getEmail());
-//	}
-//
-//	if (user.getStatus().toString().equals("BANNED")) {
-//	    throw new LockedException("Tài khoản của bạn đã bị khóa! Nếu có vấn đề, vui lòng liên hệ Admin.");
-//	}
-//
-//	// Tạo và trả về AuthResponseDTO
-//	return buildAuthResponse(user);
-//    }
+	@Autowired
+	private EmailService emailService;
 
-    @Override
+	@Autowired
+	private RedisService redisService;
+
+ @Override
+  public AuthResponseDTO login(LoginRequestForm request)  {
+
+	Account user = accountService.getAccountByEmail(request.getEmail());
+
+	if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+	    throw new BadCredentialsException("Email hoặc mật khẩu không đúng!");
+	}
+
+	if (user.getRole() != Account.Role.USER) {
+	    throw new BadCredentialsException("Email hoặc mật khẩu không đúng!");
+	}
+
+	if (user.getStatus().toString().equals("INACTIVE")) {
+	    throw new DisabledException("Tài khoản của bạn chưa được kích hoạt, hãy kiểm tra email " + request.getEmail());
+	}
+
+	if (user.getStatus().toString().equals("BANNED")) {
+	    throw new LockedException("Tài khoản của bạn đã bị khóa! Nếu có vấn đề, vui lòng liên hệ Admin.");
+	}
+
+	// Tạo và trả về AuthResponseDTO
+	return buildAuthResponse(user);
+    }
+
+	@Override
+	public boolean registration(UserRegistrationForm userRegistrationForm) {
+	    if(accountService.isEmailExists(userRegistrationForm.getEmail())){
+			throw new RuntimeException("Email :" + userRegistrationForm.getEmail() + " đã tồn tại trong hệ thống !");
+		}
+
+		String otp = IdGenerator.generateOTP();
+
+		redisService.set(RedisContants.OTP_CODE+otp,userRegistrationForm);
+		redisService.setTimeToLive(RedisContants.OTP_CODE+otp,5000);
+
+		emailService.sendRegistrationUserConfirm(userRegistrationForm.getEmail(), otp);
+		return false;
+	}
+
+	@Override
+	@Transactional
+	public boolean verifiOTP(String email, String otp) {
+	 if(!redisService.exists(RedisContants.OTP_CODE+otp)){
+		 return  false;
+	 }
+	 UserRegistrationForm userRegistrationForm=(UserRegistrationForm) redisService.get(RedisContants.OTP_CODE+otp);
+
+	 if(!Objects.equals(email, userRegistrationForm.getEmail())){
+		 return false;
+	 }
+		ProfileCreateForm form=ProfileCreateForm.builder()
+				.phone(userRegistrationForm.getPhone())
+				.gender(userRegistrationForm.getGender())
+				.email(userRegistrationForm.getEmail())
+				.fullname(userRegistrationForm.getFullname())
+				.build();
+		Profile profile=profileService.createProfile(form);
+	 Account account=accountService.createAccount(userRegistrationForm,profile);
+
+		return true;
+	}
+
+	@Override
     public AuthResponseDTO staffLogin(LoginRequestForm request)  {
 	Account user = accountService.getAccountByEmail(request.getEmail());
 	if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -96,6 +153,9 @@ public class AuthServiceImpl implements AuthService {
 	String jwt = jwtTokenProvider.generateToken(user);
 	response.setToken(jwt);
 	response.setTokenExpirationTime("30 phút");
+
+	redisService.set(RedisContants.TOKEN+jwt,true);
+
 
 	// Tạo Refresh Token
 	String refreshToken = jwtTokenProvider.generateRefreshToken(new HashMap<>(), user);

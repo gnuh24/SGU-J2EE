@@ -58,9 +58,9 @@ public class ProfileServiceImpl implements ProfileService {
 	Profile profile = modelMapper.map(form, Profile.class);
 	profile = profileRepository.save(profile);
 
-	ProfilePosition profilePosition = profilePositionService.createProfilePosition(profile, form.getProfilePositionCreateForm());
 
-	Account account = accountService.createAccount(form.getEmail(), form.getBirthday(), profilePosition);
+
+
 
 	return profile;
     }
@@ -79,7 +79,7 @@ public class ProfileServiceImpl implements ProfileService {
 	    profile.setGender(form.getGender());
 	}
 	if (form.getBirthday() != null) {
-	    profile.setBirthday(form.getBirthday());
+
 	}
 
 	// Lưu lại vào database

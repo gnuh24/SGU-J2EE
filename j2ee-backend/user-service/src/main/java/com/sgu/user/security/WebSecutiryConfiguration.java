@@ -81,7 +81,9 @@ public class WebSecutiryConfiguration {
 
 
                         // 🔹 Tạm thời mở tất cả API cho phép truy cập công khai
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/**",  "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html").permitAll()
 
                         // Xác thực tất cả các request (đã bị ghi đè bởi dòng trên)
                         .anyRequest().authenticated()

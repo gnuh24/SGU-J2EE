@@ -83,7 +83,7 @@ public class ProfileController {
 	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	Account account = (Account) authentication.getPrincipal(); // Lấy thông tin từ SecurityContext
 
-	if (account.getRole() == Account.Role.HR) {
+	if (account.getRole() == Account.Role.ADMIN) {
 	    // Admin có thể lấy thông tin của bất kỳ ai
 	    ProfileDetailResponseDTO profile = modelMapper.map(profileService.getProfileById(profileId), ProfileDetailResponseDTO.class);
 	    return ResponseEntity.ok(new ApiResponse<>(200, "Lấy thông tin profile thành công", profile));
