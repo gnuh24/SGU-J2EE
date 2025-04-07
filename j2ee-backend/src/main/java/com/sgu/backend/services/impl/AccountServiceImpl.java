@@ -3,6 +3,7 @@ package com.sgu.backend.services.impl;
 
 import com.sgu.backend.dto.request.account.*;
 import com.sgu.backend.dto.request.auth.UserRegistrationForm;
+import com.sgu.backend.dto.request.profile.ProfileCreateForm;
 import com.sgu.backend.entities.Account;
 import com.sgu.backend.entities.Profile;
 import com.sgu.backend.redis.RedisContants;
@@ -14,6 +15,7 @@ import com.sgu.backend.services.AccountService;
 import com.sgu.backend.services.OTPService;
 import com.sgu.backend.services.ProfileService;
 import com.sgu.backend.specifications.AccountSpecification;
+import com.sgu.backend.utils.IdGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -94,27 +97,33 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public Account createAccount(UserRegistrationForm userRegistrationForm, Profile profile) {
-        if (isEmailExists(userRegistrationForm.getEmail())){
-            throw new RuntimeException("Email :" + userRegistrationForm.getEmail() + " đã tồn tại trong hệ thống !");
+    @Transactional
+    public Account createAccount(UserRegistrationForm accountCreateForm) {
+
+        Profile profile = profileService.getProfileByPhone(accountCreateForm.getPhone());
+        Account account = new Account();
+
+        if (profile == null){
+            ProfileCreateForm profileCreateForm = new ProfileCreateForm();
+            profileCreateForm.setEmail(accountCreateForm.getEmail());
+            profileCreateForm.setFullname(accountCreateForm.getFullname());
+            profileCreateForm.setPhone(accountCreateForm.getPhone());
+            profile = profileService.createProfile(profileCreateForm, null);
+        }else{
+            profile.setFullname(accountCreateForm.getFullname());
+            profile.setEmail(accountCreateForm.getEmail());
+            profileService.updateProfile(profile);
         }
 
-        Account account = new Account();
-        account.setEmail(userRegistrationForm.getEmail());
+        account.setEmail(accountCreateForm.getEmail());
+        account.setPassword(passwordEncoder.encode(accountCreateForm.getPassword()));
+        account.setProfile(profile);
 
+        account = accountRepository.save(account);
 
-
-        account.setPassword(passwordEncoder.encode(userRegistrationForm.getPassword()));
-
-        Account.Role role =Account.Role.USER;
-
-
-	     account.setRole(role);
-         account.setProfile(profile);
-
-
-
-        return accountRepository.save(account);
+//        OTP otp = otpService.createOTP(account, OTP.Category.REGISTER, 25);
+//        emailService.sendRegistrationUserConfirm(account.getEmail(), otp);
+        return account;
     }
 
     @Override

@@ -18,10 +18,10 @@ public class Profile {
     @Column(length = 255)
     private String fullname;
 
-    @Column(length = 255, unique = true, nullable = false)
+    @Column(length = 255, unique = true)
     private String email;
 
-    @Column(length = 15)
+    @Column(length = 15, unique = true,  nullable = false)
     private String phone;
 
     @OneToOne(mappedBy = "profile")

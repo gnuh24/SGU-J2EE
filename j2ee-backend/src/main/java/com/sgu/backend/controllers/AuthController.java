@@ -5,6 +5,8 @@ import com.sgu.backend.apiresponse.ApiResponse;
 import com.sgu.backend.dto.request.auth.UserRegistrationForm;
 import com.sgu.backend.dto.request.auth.LoginRequestForm;
 import com.sgu.backend.dto.response.auth.AuthResponseDTO;
+import com.sgu.backend.dto.response.auth.RegisterResponseDTO;
+import com.sgu.backend.entities.Account;
 import com.sgu.backend.services.AccountService;
 import com.sgu.backend.services.AuthService;
 import jakarta.validation.Valid;
@@ -53,20 +55,22 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<?>> createAccount(@RequestBody @Valid UserRegistrationForm form) {
+    public ResponseEntity<ApiResponse<RegisterResponseDTO>> createAccount(@RequestBody @Valid UserRegistrationForm form) {
 
         // Create the account
-      Boolean success=authService.registration(form);
+        Account account = accountService.createAccount(form);
 
         // Map account entity to DTO
-
+        RegisterResponseDTO authResponseDTO = new RegisterResponseDTO();
+        authResponseDTO.setId(account.getId());
+        authResponseDTO.setEmail(account.getEmail());
 
         // Return response
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         201,
-                        "Account created successfully. Please activate your account on your  email: "  ,
-                        success
+                        "Account created successfully. Please activate your account on your  email: " + account.getEmail() ,
+                        authResponseDTO
                 )
         );
     }

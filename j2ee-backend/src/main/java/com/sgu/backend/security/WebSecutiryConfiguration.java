@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -69,12 +70,14 @@ public class WebSecutiryConfiguration {
 //                        .requestMatchers( HttpMethod.GET, "/media")                                                           .permitAll()
 //                        .requestMatchers( HttpMethod.POST, "/media/upload")                                             .permitAll()
 //
-//                        .requestMatchers(HttpMethod.POST, "/auth/user/login")                                            .permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/auth/staff/login")                                            .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/login")                                                    .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/staff-login")                                            .permitAll()
+                                .requestMatchers(HttpMethod.POST, "/auth/register")                                            .permitAll()
+
 //                        .requestMatchers(HttpMethod.POST, "/auth/send-otp-update-email")                        .hasAnyAuthority("USER")
 //                        .requestMatchers(HttpMethod.POST, "/auth/send-otp-reset-password")                    .permitAll()
-//
-//                        .requestMatchers(HttpMethod.POST, "/auth/refresh-token")                                       .permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/auth/refresh-token")                                       .permitAll()
 //                        .requestMatchers(HttpMethod.PATCH, "/auth/{id}/update-role")                                 .hasAnyAuthority("ADMIN")
 //                        .requestMatchers(HttpMethod.PATCH, "/auth/{id}/update-status")                              .hasAnyAuthority("ADMIN")
 
@@ -84,9 +87,8 @@ public class WebSecutiryConfiguration {
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html").permitAll()
 
-                        // Xác thực tất cả các request (đã bị ghi đè bởi dòng trên)
+                        // Xác thực tất cả các request (đã bị ghi đè bởi dòng trên)'
                         .anyRequest().authenticated()
-
 
                 ).httpBasic(Customizer.withDefaults())
 

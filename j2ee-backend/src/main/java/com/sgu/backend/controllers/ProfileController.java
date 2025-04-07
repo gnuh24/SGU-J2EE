@@ -2,11 +2,9 @@ package com.sgu.backend.controllers;
 
 import com.sgu.backend.apiresponse.ApiResponse;
 import com.sgu.backend.dto.request.profile.*;
-import com.sgu.backend.dto.response.position.PositionResponseDTO;
 import com.sgu.backend.dto.response.profile.ProfileDetailResponseDTO;
 import com.sgu.backend.entities.Account;
 import com.sgu.backend.entities.Profile;
-import com.sgu.backend.entities.ProfilePosition;
 import com.sgu.backend.services.ProfileService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -83,16 +81,16 @@ public class ProfileController {
 	return ResponseEntity.ok(new ApiResponse<>(200, "Lấy thông tin profile thành công", profile));
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<ProfileDetailResponseDTO>> createProfile(@RequestBody @Valid ProfileCreateForm form) {
-
-	// Tạo Profile mới
-	Profile newProfile = profileService.createProfile(form);
-	ProfileDetailResponseDTO responseDTO = modelMapper.map(newProfile, ProfileDetailResponseDTO.class);
-
-	return ResponseEntity.status(HttpStatus.CREATED)
-		.body(new ApiResponse<>(201, "Tạo Profile thành công", responseDTO));
-    }
+//    @PostMapping
+//    public ResponseEntity<ApiResponse<ProfileDetailResponseDTO>> createProfile(@RequestBody @Valid ProfileCreateForm form) {
+//
+//	// Tạo Profile mới
+//	Profile newProfile = profileService.createProfile(form, );
+//	ProfileDetailResponseDTO responseDTO = modelMapper.map(newProfile, ProfileDetailResponseDTO.class);
+//
+//	return ResponseEntity.status(HttpStatus.CREATED)
+//		.body(new ApiResponse<>(201, "Tạo Profile thành công", responseDTO));
+//    }
 
 
     @PatchMapping("/me")

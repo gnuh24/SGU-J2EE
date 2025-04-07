@@ -25,7 +25,7 @@ public class Account implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private Role role = Role.USER;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -38,8 +38,7 @@ public class Account implements UserDetails {
     private String password;
 
     @Column(nullable = false, updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
 
     // Enum Role (Viết hoa toàn bộ)

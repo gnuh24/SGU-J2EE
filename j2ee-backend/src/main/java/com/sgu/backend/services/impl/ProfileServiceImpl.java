@@ -3,6 +3,7 @@ package com.sgu.backend.services.impl;
 import com.sgu.backend.dto.request.profile.ProfileCreateForm;
 import com.sgu.backend.dto.request.profile.ProfileFilterForm;
 import com.sgu.backend.dto.request.profile.ProfileUpdateForm;
+import com.sgu.backend.entities.Account;
 import com.sgu.backend.entities.Profile;
 import com.sgu.backend.repositories.ProfileRepository;
 import com.sgu.backend.services.AccountService;
@@ -45,16 +46,24 @@ public class ProfileServiceImpl implements ProfileService {
 		.orElseThrow(() -> new EntityNotFoundException("Không tìm thấy profile với ID: " + profileId));
     }
 
+    @Override
+    public Profile getProfileByPhone(String phone) {
+	return profileRepository.findByPhone(phone).orElse(null);
+    }
 
     @Override
     @Transactional
-    public Profile createProfile(ProfileCreateForm form) {
+    public Profile createProfile(ProfileCreateForm form, Account account) {
 
 	Profile profile = modelMapper.map(form, Profile.class);
+	profile.setAccount(account);
 	profile = profileRepository.save(profile);
-
-
 	return profile;
+    }
+
+    @Override
+    public Profile updateProfile(Profile profile) {
+	return profileRepository.save(profile);
     }
 
     @Override

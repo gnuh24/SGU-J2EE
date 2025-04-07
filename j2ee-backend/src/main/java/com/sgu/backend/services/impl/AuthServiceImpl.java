@@ -117,12 +117,12 @@ public class AuthServiceImpl implements AuthService {
 	 }
 		ProfileCreateForm form=ProfileCreateForm.builder()
 				.phone(userRegistrationForm.getPhone())
-				.gender(userRegistrationForm.getGender())
 				.email(userRegistrationForm.getEmail())
 				.fullname(userRegistrationForm.getFullname())
 				.build();
-		Profile profile=profileService.createProfile(form);
-	 Account account=accountService.createAccount(userRegistrationForm,profile);
+
+//		Profile profile=profileService.createProfile(form, );
+	 Account account=accountService.createAccount(userRegistrationForm);
 
 		return true;
 	}
