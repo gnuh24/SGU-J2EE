@@ -7,7 +7,6 @@ import com.sgu.backend.dto.response.profile.ProfileDetailResponseDTO;
 import com.sgu.backend.entities.Account;
 import com.sgu.backend.entities.Profile;
 import com.sgu.backend.entities.ProfilePosition;
-import com.sgu.backend.services.ProfilePositionService;
 import com.sgu.backend.services.ProfileService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -34,8 +33,6 @@ public class ProfileController {
     @Autowired
     private ProfileService profileService;
 
-    @Autowired
-    private ProfilePositionService profilePositionService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -56,20 +53,7 @@ public class ProfileController {
 		new TypeToken<List<ProfileDetailResponseDTO>>(){}.getType()
 	);
 
-	// 🔹 Duyệt từng DTO để lấy vị trí hiện tại
-	for (ProfileDetailResponseDTO dto : dtos) {
-		ProfilePosition profilePosition = profilePositionService.getCurrentProfilePosition(dto.getId());
 
-		if (profilePosition != null) {
-		    PositionResponseDTO positionResponseDTO = modelMapper.map(
-			    profilePosition.getPosition(),
-			    PositionResponseDTO.class
-		    );
-		    dto.setPosition(positionResponseDTO);
-		} else {
-		    dto.setPosition(null);
-		}
-	}
 
 	// 🔹 Chuyển đổi danh sách thành Page
 	Page<ProfileDetailResponseDTO> profileDTOs = new PageImpl<>(dtos, pageable, profiles.getTotalElements());
@@ -125,51 +109,5 @@ public class ProfileController {
 		new ApiResponse<>(200, "Cập nhật profile thành công", responseDTO)
 	);
     }
-
-    @PatchMapping("/{profileId}/status")
-    public ResponseEntity<ApiResponse<ProfileDetailResponseDTO>> updateStatusOfProfile(
-	    @PathVariable String profileId,
-	    @RequestBody @Valid ProfileUpdateStatusForm form) {
-
-
-	Profile updatedProfile = profileService.updateStatusOfProfile(profileId, form.getStatus());
-	ProfileDetailResponseDTO responseDTO = modelMapper.map(updatedProfile, ProfileDetailResponseDTO.class);
-
-	return ResponseEntity.ok(
-		new ApiResponse<>(200, "Cập nhật profile thành công", responseDTO)
-	);
-    }
-
-    @PatchMapping("/{profileId}/position")
-    public ResponseEntity<ApiResponse<ProfileDetailResponseDTO>> updateProfilePosition(
-	    @PathVariable String profileId,
-	    @RequestBody @Valid ProfilePositionCreateForm form) {
-
-	// 🔹 Gọi service để cập nhật vị trí
-	ProfilePosition profilePosition = profilePositionService.createProfilePosition(profileId, form);
-
-	// 🔹 Convert sang DTO trả về
-	ProfileDetailResponseDTO responseDTO = modelMapper.map(profilePosition.getProfile(), ProfileDetailResponseDTO.class);
-
-	return ResponseEntity.ok(
-		new ApiResponse<>(200, "Cập nhật chức vụ thành công", responseDTO)
-	);
-    }
-
-    @DeleteMapping("/{profileId}")
-    public ResponseEntity<ApiResponse<ProfileDetailResponseDTO>> deleteProfile(
-	    @PathVariable String profileId) {
-
-	// 🔹 Gọi service để cập nhật vị trí
-	Profile profile = profileService.deleteProfile(profileId);
-
-	// 🔹 Convert sang DTO trả về
-	ProfileDetailResponseDTO responseDTO = modelMapper.map(profile, ProfileDetailResponseDTO.class);
-
-	return ResponseEntity.ok(
-		new ApiResponse<>(200, "Xóa profile thành công", responseDTO)
-	);
-    }
-
 
 }

@@ -12,5 +12,5 @@ public interface AuthService {
 
     AuthResponseDTO staffLogin(LoginRequestForm request);
 
-//    AuthResponseDTO refreshToken(String oldToken, String refreshToken);
+    AuthResponseDTO refreshToken(String oldToken, String refreshToken);
 }

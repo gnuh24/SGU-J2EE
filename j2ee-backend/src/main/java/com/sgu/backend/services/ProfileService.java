@@ -12,7 +12,4 @@ public interface ProfileService {
     Page<Profile> getAllProfile(Pageable pageable, String search, ProfileFilterForm form);
     Profile createProfile(ProfileCreateForm form);
     Profile updatePersionalInformationOfProfile(Profile profile, ProfileUpdateForm form);
-    Profile updateStatusOfProfile(String profileId, Profile.Status status);
-    Profile deleteProfile(String profileId);
-
 }

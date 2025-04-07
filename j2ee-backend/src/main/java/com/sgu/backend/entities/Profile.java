@@ -24,17 +24,6 @@ public class Profile {
     @Column(length = 15)
     private String phone;
 
-    @Column
-    private Boolean gender;
-
-
-    @Column
-    @Enumerated(EnumType.STRING)
-    private Profile.Status status = Profile.Status.ACTIVE;
-
-    @Column
-    private Boolean isFingerprintVerified = false;
-
     @OneToOne(mappedBy = "profile")
     private Account account;
 
@@ -42,7 +31,6 @@ public class Profile {
     public enum Status {
 	    ACTIVE,        // 🟢 Nhân viên đang làm việc bình thường
 	    INACTIVE,      // ⚪ Nhân viên bị vô hiệu hóa (tạm thời ngừng làm việc)
-
-            DELETED
+            BANNED
     }
 }

@@ -6,7 +6,6 @@ import com.sgu.backend.dto.request.profile.ProfileUpdateForm;
 import com.sgu.backend.entities.Profile;
 import com.sgu.backend.repositories.ProfileRepository;
 import com.sgu.backend.services.AccountService;
-import com.sgu.backend.services.ProfilePositionService;
 import com.sgu.backend.services.ProfileService;
 import com.sgu.backend.specifications.ProfileSpecification;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,9 +27,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    @Lazy
-    private ProfilePositionService profilePositionService;
+
 
     @Autowired
     @Lazy
@@ -57,9 +54,6 @@ public class ProfileServiceImpl implements ProfileService {
 	profile = profileRepository.save(profile);
 
 
-
-
-
 	return profile;
     }
 
@@ -73,32 +67,12 @@ public class ProfileServiceImpl implements ProfileService {
 	if (form.getPhone() != null) {
 	    profile.setPhone(form.getPhone());
 	}
-	if (form.getGender() != null) {
-	    profile.setGender(form.getGender());
-	}
 	if (form.getBirthday() != null) {
 
 	}
 
 	// Lưu lại vào database
 	return profileRepository.save(profile);
-    }
-
-    @Override
-    public Profile updateStatusOfProfile(String profileId, Profile.Status status) {
-	// Tìm profile theo ID
-	Profile profile = getProfileById(profileId);
-
-	// Cập nhật trạng thái
-	profile.setStatus(status);
-
-	// Lưu vào database
-	return profileRepository.save(profile);
-    }
-
-    @Override
-    public Profile deleteProfile(String profileId) {
-	return updateStatusOfProfile(profileId, Profile.Status.DELETED);
     }
 
 

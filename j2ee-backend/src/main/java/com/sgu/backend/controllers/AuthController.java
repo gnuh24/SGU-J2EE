@@ -98,23 +98,24 @@ public class AuthController {
 //                )
 //        );
 //    }
-//    @PostMapping("/refresh-token")
-//    public ResponseEntity<ApiResponse<AuthResponseDTO>> refreshToken(
-//            @RequestHeader("Authorization") String accessToken,
-//            @RequestParam("refreshToken") String refreshToken) {
-//
-//        // Loại bỏ "Bearer " nếu token có tiền tố này
-//        if (accessToken.startsWith("Bearer ")) {
-//            accessToken = accessToken.substring(7);
-//        }
-//
-//        // Gọi service để xử lý refresh token và nhận AuthResponseDTO
-//        AuthResponseDTO authResponse = authService.refreshToken(accessToken, refreshToken);
-//
-//        return ResponseEntity.ok(new ApiResponse<>(
-//                200,
-//                "Refresh token thành công",
-//                authResponse
-//        ));
-//    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<ApiResponse<AuthResponseDTO>> refreshToken(
+            @RequestHeader("Authorization") String accessToken,
+            @RequestParam("refreshToken") String refreshToken) {
+
+        // Loại bỏ "Bearer " nếu token có tiền tố này
+        if (accessToken.startsWith("Bearer ")) {
+            accessToken = accessToken.substring(7);
+        }
+
+        // Gọi service để xử lý refresh token và nhận AuthResponseDTO
+        AuthResponseDTO authResponse = authService.refreshToken(accessToken, refreshToken);
+
+        return ResponseEntity.ok(new ApiResponse<>(
+                200,
+                "Refresh token thành công",
+                authResponse
+        ));
+    }
 }

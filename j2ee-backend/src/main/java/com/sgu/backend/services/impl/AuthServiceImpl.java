@@ -7,6 +7,10 @@ import com.sgu.backend.dto.response.auth.AuthResponseDTO;
 import com.sgu.backend.entities.Account;
 import com.sgu.backend.entities.Profile;
 import com.sgu.backend.exceptions.AuthException.AuthExceptionHandler;
+import com.sgu.backend.exceptions.JwtException.InvalidJWTSignatureException;
+import com.sgu.backend.exceptions.JwtException.MismatchedTokenAccountException;
+import com.sgu.backend.exceptions.JwtException.TokenExpiredException;
+import com.sgu.backend.exceptions.JwtException.UsernameNotFound;
 import com.sgu.backend.redis.RedisContants;
 import com.sgu.backend.redis.RedisService;
 import com.sgu.backend.repositories.AccountRepository;
@@ -16,11 +20,14 @@ import com.sgu.backend.services.AuthService;
 import com.sgu.backend.services.EmailService;
 import com.sgu.backend.services.ProfileService;
 import com.sgu.backend.utils.IdGenerator;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -123,11 +130,13 @@ public class AuthServiceImpl implements AuthService {
 	@Override
     public AuthResponseDTO staffLogin(LoginRequestForm request)  {
 	Account user = accountService.getAccountByEmail(request.getEmail());
-	if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-	    throw new BadCredentialsException("Email hoặc mật khẩu không đúng!");
-	}
 
-	if (user.getStatus().toString().equals("INACTIVE")) {
+
+	    if (user == null || user.getRole().equals(Account.Role.USER) || !passwordEncoder.matches(request.getPassword(), user.getPassword()) ) {
+		throw new BadCredentialsException("Email hoặc mật khẩu không đúng!");
+	    }
+
+	    if (user.getStatus().toString().equals("INACTIVE")) {
 	    throw new DisabledException("Tài khoản của bạn chưa được kích hoạt, hãy kiểm tra email " + request.getEmail());
 	}
 
@@ -135,10 +144,50 @@ public class AuthServiceImpl implements AuthService {
 	    throw new LockedException("Tài khoản của bạn đã bị khóa! Nếu có vấn đề, vui lòng liên hệ Admin.");
 	}
 
+
 	// Tạo và trả về AuthResponseDTO
 	return buildAuthResponse(user);
     }
 
+    @Override
+    public AuthResponseDTO refreshToken(String oldToken, String refreshToken){
+
+	AuthResponseDTO response = new AuthResponseDTO();
+
+	try{
+
+	    String emailFromAccessToken = jwtTokenProvider.getUsernameWithoutExpired(oldToken);
+	    String emailFromRefreshToken = jwtTokenProvider.getUsername(refreshToken);
+
+	    if (!emailFromAccessToken.equals(emailFromRefreshToken)){
+		throw new MismatchedTokenAccountException("AccessToken và RefreshToken không khớp với cùng một tài khoản.");
+	    }
+	    //Tìm tài khoản dựa trên Email
+	    Account account = accountService.getAccountByEmail(emailFromAccessToken);
+
+	    response.setId(account.getId());
+	    response.setEmail(emailFromAccessToken);
+	    response.setRole(account.getRole().toString());
+
+	    // Tạo Token
+	    String jwt = jwtTokenProvider.generateToken(account);
+	    response.setToken(jwt);
+	    response.setTokenExpirationTime("30 phút");
+
+	    // Tạo Refresh Token
+	    response.setRefreshToken(refreshToken);
+	    response.setRefreshTokenExpirationTime("7 ngày");
+
+	} catch (ExpiredJwtException e1) {
+	    throw new TokenExpiredException("Refresh Token đã hết hạn sử dụng.");
+	} catch (SignatureException e2) {
+	    throw new InvalidJWTSignatureException("Refresh Token chứa signature không hợp lệ.");
+	} catch (UsernameNotFoundException e3) {
+	    throw new UsernameNotFound("Refresh Token chứa thông tin không tồn tại trong hệ thống.");
+	}
+
+	return response;
+    }
     private AuthResponseDTO buildAuthResponse(Account user) {
 	AuthResponseDTO response = new AuthResponseDTO();
 	response.setId(user.getId());
