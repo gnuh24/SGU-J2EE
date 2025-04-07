@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'; // Import ViewChild and ElementRef
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GetTourismResponse } from '../../../models/response/product/ticket/tourism/get-tourism-response';
 import { TourismService } from '../../../services/product/ticket/tourism/tourism.service';
@@ -13,22 +13,28 @@ import { BookingService } from '../../../services/booking/booking.service';
   standalone: true,
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    UserService
+    UserService,
   ],
-  imports: [CommonModule,RouterLink,HttpClientModule],
+  imports: [CommonModule, RouterLink, HttpClientModule],
   templateUrl: './ticket-list.component.html',
-  styleUrl: './ticket-list.component.css'
+  styleUrl: './ticket-list.component.scss',
 })
-export class TicketListComponent {
+export class TicketListComponent implements OnInit {
+  // Implement OnInit
   location: string | null = null;
-  locations: GetTourismResponse [] = [];
+  locations: GetTourismResponse[] = [];
 
-  constructor(private route: ActivatedRoute, private router:Router,
-    private tourismService : TourismService,
-  ) { }
+  @ViewChild('departureInput') departureInput!: ElementRef; // Get references to the input elements
+  @ViewChild('destinationInput') destinationInput!: ElementRef;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private tourismService: TourismService
+  ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       this.location = decodeURIComponent(params.get('location') || '');
       if (this.location) {
         this.getTourismByCategory(this.location);
@@ -37,15 +43,18 @@ export class TicketListComponent {
   }
 
   getTourismByCategory(location: string) {
-    this.tourismService.getTourismByCategory(location).subscribe(response => {
-      if (response) {
-        this.locations = response;
-      } else {
-        console.log("Thất bại");
+    this.tourismService.getTourismByCategory(location).subscribe(
+      (response) => {
+        if (response) {
+          this.locations = response;
+        } else {
+          console.log('Thất bại');
+        }
+      },
+      (error) => {
+        console.log('Error:', error);
       }
-    }, error => {
-      console.log("Error:", error);
-    });
+    );
   }
 
   goToLocationDetail(locationId?: number) {
@@ -54,11 +63,17 @@ export class TicketListComponent {
     console.log('Navigating to:', path);
   }
 
-  getStars(rating: number): { full: number, half: boolean } {
+  getStars(rating: number): { full: number; half: boolean } {
     const fullStars = Math.floor(rating);
-    const halfStar = rating % 1 !== 0; 
+    const halfStar = rating % 1 !== 0;
     return { full: fullStars, half: halfStar };
-}
+  }
 
+  switchLocation(): void {
+    const departureValue = this.departureInput.nativeElement.value;
+    const destinationValue = this.destinationInput.nativeElement.value;
 
+    this.departureInput.nativeElement.value = destinationValue;
+    this.destinationInput.nativeElement.value = departureValue;
+  }
 }

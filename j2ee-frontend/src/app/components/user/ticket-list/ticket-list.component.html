@@ -1,35 +1,195 @@
-<div class="container">
-    <h2 class="my-4">Danh sách địa điểm tại {{ location }}</h2>
-  
-    <div class="row">
-      <div class="col-md-3 mb-4" *ngFor="let loc of locations">
-        <div class="card location-card" (click)="goToLocationDetail(loc.id)" style="cursor: pointer;">
-          <img [src]="loc.image || 'https://via.placeholder.com/200x150'" 
-               alt="{{ loc.name }}" 
-               class="card-img-top">
-          <div class="card-body">
-            <h5 class="card-title">{{ loc.name }}</h5>
-            <p class="card-text">{{ loc.description }}</p>
-            <div class="d-flex align-items-center">
-              <p class="card-text me-2" style="margin-bottom: 0;">{{ loc.rating }}</p>
-              <div>
-                <!-- Hiển thị các sao đầy -->
-                <ng-container *ngFor="let star of [].constructor(getStars(loc.rating||0).full); let i = index">
-                    <i class="bi bi-star-fill text-warning"></i>
-                </ng-container>
-                <!-- Hiển thị sao nửa (nếu có) -->
-                <ng-container *ngIf="getStars(loc.rating||0).half">
-                    <i class="bi bi-star-half text-warning"></i>
-                </ng-container>
-                <!-- Hiển thị các sao rỗng -->
-                <ng-container *ngFor="let star of [].constructor(5 - getStars(loc.rating||0).full - (getStars(loc.rating||0).half ? 1 : 0)); let i = index">
-                    <i class="bi bi-star text-secondary"></i>
-                </ng-container>
+<main class="w-full">
+  <div class="ticket-list-layout">
+    <div class="shedule-input-form">
+      <span class="ant-input-affix-wrapper"
+        ><span class="ant-input-prefix"
+          ><img
+            src="https://futabus.vn/images/icons/search.svg"
+            alt="search icon"
+            style="padding-top: 5px" /></span
+        ><input
+          type="text"
+          placeholder="Nhập điểm đi"
+          class="ant-input"
+          value=""
+          #departureInput /></span
+      ><img
+        class="switch-location"
+        src="https://futabus.vn/images/icons/switch_location.svg"
+        alt="switch location icon"
+        (click)="switchLocation()"
+      /><span class="ant-input-affix-wrapper"
+        ><span class="ant-input-prefix"
+          ><img
+            src="https://futabus.vn/images/icons/search.svg"
+            alt="search icon"
+            style="padding-top: 5px" /></span
+        ><input
+          type="text"
+          placeholder="Nhập điểm đến"
+          class="ant-input"
+          value=""
+          #destinationInput
+      /></span>
+    </div>
+    <div class="shedule-results">
+      <div class="ant-row schedule-card">
+        <div class="ant-col ant-col-6">Tuyến xe</div>
+        <div class="ant-col ant-col-2">Loại xe</div>
+        <div class="ant-col ant-col-3">Quãng đường</div>
+        <div class="ant-col ant-col-4">Thời gian hành trình</div>
+        <div class="ant-col ant-col-2">Giá vé</div>
+      </div>
+      <div class="schedule-card flex w-full flex-col gap-[6px] text-left">
+        <div class="ant-row items-center">
+          <div class="ant-col ant-col-6">
+            <div class="flex w-full items-center gap-2">
+              <span class="font-medium text-orange">An Khê (Gia Lai)</span
+              ><img
+                src="https://futabus.vn/images/icons/ic_double_arrow.svg"
+                alt="arrow"
+              /><span>TP.Hồ Chí Minh</span>
             </div>
           </div>
+          <div class="ant-col ant-col-2">Limousine</div>
+          <div class="ant-col ant-col-3">640km</div>
+          <div class="ant-col ant-col-4">13 giờ</div>
+          <div class="ant-col ant-col-2">---</div>
+          <div class="ant-col ant-col-2"></div>
+          <div class="ant-col flex justify-end" style="flex: 1 1 auto">
+            <button
+              type="button"
+              class="ant-btn ant-btn-round ant-btn-default button-default mr-2"
+            >
+              <span>Tìm tuyến xe</span>
+            </button>
+          </div>
+        </div>
+        <div class="ant-row items-center">
+          <div class="ant-col ant-col-6">
+            <div class="flex w-full items-center gap-2">
+              <span class="font-medium text-orange">An Khê (Gia Lai)</span
+              ><img
+                src="https://futabus.vn/images/icons/ic_double_arrow.svg"
+                alt="arrow"
+              /><span>TP.Hồ Chí Minh</span>
+            </div>
+          </div>
+          <div class="ant-col ant-col-2">Limousine</div>
+          <div class="ant-col ant-col-3">690km</div>
+          <div class="ant-col ant-col-4">14 giờ</div>
+          <div class="ant-col ant-col-2">---</div>
+          <div class="ant-col ant-col-2"></div>
+          <div class="ant-col flex justify-end" style="flex: 1 1 auto">
+            <button
+              type="button"
+              class="ant-btn ant-btn-round ant-btn-default button-default mr-2"
+            >
+              <span>Tìm tuyến xe</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="schedule-card flex w-full flex-col gap-[6px] text-left">
+        <div class="ant-row items-center">
+          <div class="ant-col ant-col-6">
+            <div class="flex w-full items-center gap-2">
+              <span class="font-medium text-orange">An Minh (Kiên Giang)</span
+              ><img
+                src="https://futabus.vn/images/icons/ic_double_arrow.svg"
+                alt="arrow"
+              /><span>TP.Hồ Chí Minh</span>
+            </div>
+          </div>
+          <div class="ant-col ant-col-2">Limousine</div>
+          <div class="ant-col ant-col-3">295km</div>
+          <div class="ant-col ant-col-4">7 giờ</div>
+          <div class="ant-col ant-col-2">---</div>
+          <div class="ant-col ant-col-2"></div>
+          <div class="ant-col flex justify-end" style="flex: 1 1 auto">
+            <button
+              type="button"
+              class="ant-btn ant-btn-round ant-btn-default button-default mr-2"
+            >
+              <span>Tìm tuyến xe</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="schedule-card flex w-full flex-col gap-[6px] text-left">
+        <div class="ant-row items-center">
+          <div class="ant-col ant-col-6">
+            <div class="flex w-full items-center gap-2">
+              <span class="font-medium text-orange">An Nhơn</span
+              ><img
+                src="https://futabus.vn/images/icons/ic_double_arrow.svg"
+                alt="arrow"
+              /><span>TP. Hồ Chí Minh</span>
+            </div>
+          </div>
+          <div class="ant-col ant-col-2">Giường</div>
+          <div class="ant-col ant-col-3">639km</div>
+          <div class="ant-col ant-col-4">11 giờ 30 phút</div>
+          <div class="ant-col ant-col-2">---</div>
+          <div class="ant-col ant-col-2"></div>
+          <div class="ant-col flex justify-end" style="flex: 1 1 auto">
+            <button
+              type="button"
+              class="ant-btn ant-btn-round ant-btn-default button-default mr-2"
+            >
+              <span>Tìm tuyến xe</span>
+            </button>
+          </div>
+        </div>
+        <div class="ant-row items-center">
+          <div class="ant-col ant-col-6">
+            <div class="flex w-full items-center gap-2">
+              <span class="font-medium text-orange">An Nhơn</span
+              ><img
+                src="https://futabus.vn/images/icons/ic_double_arrow.svg"
+                alt="arrow"
+              /><span>TP. Hồ Chí Minh</span>
+            </div>
+          </div>
+          <div class="ant-col ant-col-2">Giường</div>
+          <div class="ant-col ant-col-3">660km</div>
+          <div class="ant-col ant-col-4">13 giờ 46 phút</div>
+          <div class="ant-col ant-col-2">---</div>
+          <div class="ant-col ant-col-2"></div>
+          <div class="ant-col flex justify-end" style="flex: 1 1 auto">
+            <button
+              type="button"
+              class="ant-btn ant-btn-round ant-btn-default button-default mr-2"
+            >
+              <span>Tìm tuyến xe</span>
+            </button>
+          </div>
+        </div>
+        <div class="ant-row items-center">
+          <div class="ant-col ant-col-6">
+            <div class="flex w-full items-center gap-2">
+              <span class="font-medium text-orange">An Nhơn</span
+              ><img
+                src="https://futabus.vn/images/icons/ic_double_arrow.svg"
+                alt="arrow"
+              /><span>TP.Hồ Chí Minh</span>
+            </div>
+          </div>
+          <div class="ant-col ant-col-2">---</div>
+          <div class="ant-col ant-col-3">627km</div>
+          <div class="ant-col ant-col-4">10 giờ 7 phút</div>
+          <div class="ant-col ant-col-2">---</div>
+          <div class="ant-col ant-col-2"></div>
+          <div class="ant-col flex justify-end" style="flex: 1 1 auto">
+            <button
+              type="button"
+              class="ant-btn ant-btn-round ant-btn-default button-default mr-2"
+            >
+              <span>Tìm tuyến xe</span>
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+</main>

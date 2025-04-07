@@ -1,0 +1,19 @@
+.login-page {
+  position: relative;
+  padding-top: 360px;
+  .card-login {
+    position: absolute;
+    top: -110px;
+    height: 471px;
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid rgba(239, 82, 34, 0.6);
+    background: #fff;
+    outline: 6px solid rgba(170, 46, 8, 0.063);
+  }
+}
+input:focus {
+  border-color: rgb(239, 82, 34);
+  outline: none;
+  box-shadow: 0 0 5px rgba(239, 82, 34, 0.5);
+}

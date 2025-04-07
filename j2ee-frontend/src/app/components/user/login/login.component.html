@@ -1,0 +1,76 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+    <!-- Tabs -->
+    <div class="flex justify-around mb-6">
+      <button
+        class="px-4 py-2 font-medium text-lg"
+        [class.text-[rgb(239,82,34)]="isLoginMode"
+        (click)="isLoginMode = true"
+      >
+        Đăng nhập
+      </button>
+      <button
+        class="px-4 py-2 font-medium text-lg"
+        [class.text-[rgb(239,82,34)]="!isLoginMode"
+        (click)="isLoginMode = false"
+      >
+        Đăng ký
+      </button>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+      <!-- Họ và Tên (Chỉ hiển thị khi đăng ký) -->
+      <div *ngIf="!isLoginMode">
+        <label class="block mb-2 text-gray-600">Họ và Tên</label>
+        <input
+          type="text"
+          formControlName="fullName"
+          class="w-full p-2 border rounded-md"
+          placeholder="Nhập họ và tên"
+        />
+      </div>
+
+      <!-- Số điện thoại -->
+      <div class="mt-4">
+        <label class="block mb-2 text-gray-600">Số điện thoại</label>
+        <input
+          type="tel"
+          formControlName="phoneNumber"
+          class="w-full p-2 border rounded-md"
+          placeholder="Nhập số điện thoại"
+        />
+      </div>
+
+      <!-- Mật khẩu -->
+      <div class="mt-4">
+        <label class="block mb-2 text-gray-600">Mật khẩu</label>
+        <input
+          type="password"
+          formControlName="password"
+          class="w-full p-2 border rounded-md"
+          placeholder="Nhập mật khẩu"
+        />
+      </div>
+
+      <!-- Nút đăng ký/đăng nhập -->
+      <button
+        type="submit"
+        class="w-full mt-6 bg-[rgb(239,82,34)] text-white py-2 rounded-md"
+      >
+        {{ isLoginMode ? "Đăng nhập" : "Đăng ký" }}
+      </button>
+    </form>
+
+    <!-- Nút chuyển đổi -->
+    <p class="mt-4 text-sm text-center">
+      {{ isLoginMode ? "Chưa có tài khoản?" : "Đã có tài khoản?" }}
+      <a
+        (click)="toggleMode()"
+        class="text-[rgb(239,82,34)] cursor-pointer font-medium"
+      >
+        {{ isLoginMode ? "Đăng ký ngay" : "Đăng nhập" }}
+      </a>
+    </p>
+  </div>
+</div>
