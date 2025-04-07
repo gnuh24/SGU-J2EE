@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/accounts")
 @CrossOrigin(origins = "*")
-
 @Tag(name = "Account API", description = "Quản lý tài khoản người dùng")
 public class AccountController {
 
@@ -83,24 +82,6 @@ public class AccountController {
         AccountResponseForAdmin responseDTO = modelMapper.map(updatedAccount, AccountResponseForAdmin.class);
 
         return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật trạng thái tài khoản thành công", responseDTO));
-    }
-
-    /**
-     * 📌 Cập nhật vai trò tài khoản
-     * @param accountId ID tài khoản cần cập nhật
-     * @param form Vai trò mới
-     * @return Thông tin tài khoản sau khi cập nhật
-     */
-    @Operation(summary = "Cập nhật vai trò tài khoản", description = "Cho phép ADMIN cập nhật vai trò tài khoản.")
-    @PatchMapping("/{accountId}/role")
-    public ResponseEntity<ApiResponse<AccountResponseForAdmin>> updateAccountRole(
-            @PathVariable String accountId,
-            @RequestBody @Valid AccountUpdateRoleForm form) {
-
-        Account updatedAccount = accountService.updateRoleOfAccount(accountId, form.getRole());
-        AccountResponseForAdmin responseDTO = modelMapper.map(updatedAccount, AccountResponseForAdmin.class);
-
-        return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật vai trò tài khoản thành công", responseDTO));
     }
 
 

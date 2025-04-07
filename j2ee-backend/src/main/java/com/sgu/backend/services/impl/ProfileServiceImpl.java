@@ -62,6 +62,13 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    public Profile createProfile(ProfileCreateForm form) {
+	Profile profile = modelMapper.map(form, Profile.class);
+	profile = profileRepository.save(profile);
+	return profile;
+    }
+
+    @Override
     public Profile updateProfile(Profile profile) {
 	return profileRepository.save(profile);
     }

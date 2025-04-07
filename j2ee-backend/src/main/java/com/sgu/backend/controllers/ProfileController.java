@@ -81,16 +81,16 @@ public class ProfileController {
 	return ResponseEntity.ok(new ApiResponse<>(200, "Lấy thông tin profile thành công", profile));
     }
 
-//    @PostMapping
-//    public ResponseEntity<ApiResponse<ProfileDetailResponseDTO>> createProfile(@RequestBody @Valid ProfileCreateForm form) {
-//
-//	// Tạo Profile mới
-//	Profile newProfile = profileService.createProfile(form, );
-//	ProfileDetailResponseDTO responseDTO = modelMapper.map(newProfile, ProfileDetailResponseDTO.class);
-//
-//	return ResponseEntity.status(HttpStatus.CREATED)
-//		.body(new ApiResponse<>(201, "Tạo Profile thành công", responseDTO));
-//    }
+    @PostMapping
+    public ResponseEntity<ApiResponse<ProfileDetailResponseDTO>> createProfile(@RequestBody @Valid ProfileCreateForm form) {
+
+	// Tạo Profile mới
+	Profile newProfile = profileService.createProfile(form);
+	ProfileDetailResponseDTO responseDTO = modelMapper.map(newProfile, ProfileDetailResponseDTO.class);
+
+	return ResponseEntity.status(HttpStatus.CREATED)
+		.body(new ApiResponse<>(201, "Tạo Profile thành công", responseDTO));
+    }
 
 
     @PatchMapping("/me")

@@ -117,7 +117,7 @@ public class AuthServiceImpl implements AuthService {
 	 }
 		ProfileCreateForm form=ProfileCreateForm.builder()
 				.phone(userRegistrationForm.getPhone())
-				.email(userRegistrationForm.getEmail())
+//				.email(userRegistrationForm.getEmail())
 				.fullname(userRegistrationForm.getFullname())
 				.build();
 

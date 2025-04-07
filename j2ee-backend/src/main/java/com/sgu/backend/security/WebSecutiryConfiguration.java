@@ -54,10 +54,9 @@ public class WebSecutiryConfiguration {
 //
 //                        .requestMatchers(HttpMethod.GET, "/accounts/{Id}")                                                .permitAll()
 //                        .requestMatchers(HttpMethod.GET, "/accounts/email")                                             .permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/accounts")                                                      .hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/accounts")                                                      .hasAnyAuthority("ADMIN")
 //                        .requestMatchers(HttpMethod.GET, "/accounts/check-email")                                  .permitAll()
 //
-//                        .requestMatchers(HttpMethod.POST, "/accounts")                                                    .permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/accounts/activate-account")                         .permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/accounts/{accountId}/account-activity-logs").hasAnyAuthority("USER")
 //

@@ -19,17 +19,4 @@ public class ProfileDetailResponseDTO {
 
     private String phone;
 
-    private Boolean gender;
-
-    private String birthday;
-
-    private Profile.Status status;
-
-    private Boolean isFingerprintVerified;
-
-    private PositionResponseDTO position;
-
-//    private List<ProfilePositionResponseDTO> profilePositions;
-
-
 }
