@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class CityUpdateForm {
-    
+
     private String name;
 
     private City.Status status;

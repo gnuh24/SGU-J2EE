@@ -42,8 +42,8 @@ VALUES
 CREATE TABLE `City` (
     `id` 		VARCHAR(10) PRIMARY KEY, 
     `name` 		VARCHAR(255) NOT NULL,  
-    `createdAt` TIMESTAMP 	, 
-    `updatedAt` TIMESTAMP 	,  
+    `createdAt` DATETIME 	, 
+    `updatedAt` DATETIME 	,  
     `status`    ENUM("ACTIVE", "INACTIVE") 
 );
 
@@ -59,8 +59,8 @@ CREATE TABLE `CoachStation` (
     `id` VARCHAR(10) PRIMARY KEY,
     `name` VARCHAR(255) NOT NULL,
     `address` VARCHAR(255) NOT NULL,
-    `createdAt` TIMESTAMP ,
-    `updatedAt` TIMESTAMP ,
+    `createdAt` DATETIME ,
+    `updatedAt` DATETIME ,
     `longitude` DECIMAL(10,6) NOT NULL,
     `latitude` DECIMAL(10,6) NOT NULL,
     `status` ENUM('ACTIVE', 'INACTIVE', 'SUSPENDED') NOT NULL ,
