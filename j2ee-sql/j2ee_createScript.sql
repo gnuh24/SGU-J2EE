@@ -52,7 +52,7 @@ INSERT INTO `City` (`id`, `name`, `createdAt`, `updatedAt`, `status`) VALUES
 ('HCM', 'Hồ Chí Minh', NOW(), NOW(), 'ACTIVE'),
 ('DANANG', 'Đà Nẵng', NOW(), NOW(), 'ACTIVE'),
 ('NHATRANG', 'Nha Trang', NOW(), NOW(), 'ACTIVE'),
-('HAIPHONG', 'Hải Phòng', NOW(), NOW(), 'ACTIVE');
+('HAIPHONG', 'Hải Phòng', NOW(), NOW(), 'INACTIVE');
 
 
 CREATE TABLE `CoachStation` (

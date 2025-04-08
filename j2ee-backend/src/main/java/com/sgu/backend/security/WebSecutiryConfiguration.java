@@ -80,8 +80,14 @@ public class WebSecutiryConfiguration {
 //                        .requestMatchers(HttpMethod.PATCH, "/auth/{id}/update-role")                                 .hasAnyAuthority("ADMIN")
 //                        .requestMatchers(HttpMethod.PATCH, "/auth/{id}/update-status")                              .hasAnyAuthority("ADMIN")
 
+                                .requestMatchers(HttpMethod.GET, "/cities")                                            .permitAll()
+                                .requestMatchers(HttpMethod.GET, "/cities/no-paging")                                            .permitAll()
+                                .requestMatchers(HttpMethod.GET, "/cities/{cityId}")                                            .permitAll()
 
-                        // 🔹 Tạm thời mở tất cả API cho phép truy cập công khai
+                                .requestMatchers(HttpMethod.POST, "/cities")                                           .hasAnyAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.PATCH, "/cities/{cityId}")                                           .hasAnyAuthority("ADMIN")
+
+                                // 🔹 Tạm thời mở tất cả API cho phép truy cập công khai
                         .requestMatchers("/**",  "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html").permitAll()
