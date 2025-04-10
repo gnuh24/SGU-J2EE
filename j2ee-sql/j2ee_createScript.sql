@@ -152,8 +152,82 @@ INSERT INTO `Route` (`id`, `price`, `createdAt`, `updatedAt`, `duration`, `dista
 
 
 
+CREATE TABLE `Schedule` (
+    `id` VARCHAR(10) NOT NULL,
+    `arrivalTime` DATETIME NOT NULL,
+    `departureTime` DATETIME NOT NULL,
+    `status` ENUM('ACTIVE', 'INACTIVE', 'CANCELLED') NOT NULL,
+    `createdAt` DATETIME NOT NULL,
+    `updatedAt` DATETIME NOT NULL,
+    `routeId` VARCHAR(10) NOT NULL,
+    `coachId` VARCHAR(10) NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`routeId`) REFERENCES `Route`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`coachId`) REFERENCES `Coach`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+-- 5 Schedule trong quá khứ
+INSERT INTO `Schedule` (`id`, `arrivalTime`, `departureTime`, `status`, `createdAt`, `updatedAt`, `routeId`, `coachId`) VALUES
+    ('S001', '2024-08-01 10:30:00', '2024-08-01 07:30:00', 'ACTIVE', NOW(), NOW(), 'R001', 'C001'),
+    ('S002', '2024-08-02 15:00:00', '2024-08-02 11:00:00', 'ACTIVE', NOW(), NOW(), 'R002', 'C002'),
+    ('S003', '2024-08-03 18:45:00', '2024-08-03 15:45:00', 'CANCELLED', NOW(), NOW(), 'R003', 'C003'),
+    ('S004', '2024-08-04 09:15:00', '2024-08-04 06:15:00', 'INACTIVE', NOW(), NOW(), 'R004', 'C004'),
+    ('S005', '2024-08-05 13:00:00', '2024-08-05 09:00:00', 'ACTIVE', NOW(), NOW(), 'R005', 'C005');
+
+-- 5 Schedule trong tương lai
+INSERT INTO `Schedule` (`id`, `arrivalTime`, `departureTime`, `status`, `createdAt`, `updatedAt`, `routeId`, `coachId`) VALUES
+    ('S006', '2024-08-10 17:30:00', '2024-08-10 14:30:00', 'ACTIVE', NOW(), NOW(), 'R001', 'C006'),
+    ('S007', '2024-08-11 22:15:00', '2024-08-11 18:15:00', 'ACTIVE', NOW(), NOW(), 'R002', 'C007'),
+    ('S008', '2024-08-12 06:00:00', '2024-08-12 03:00:00', 'INACTIVE', NOW(), NOW(), 'R003', 'C008'),
+    ('S009', '2024-08-13 14:20:00', '2024-08-13 11:20:00', 'ACTIVE', NOW(), NOW(), 'R004', 'C001'),
+    ('S010', '2024-08-14 08:45:00', '2024-08-14 05:45:00', 'ACTIVE', NOW(), NOW(), 'R005', 'C002');
+
+
+CREATE TABLE `Invoice` (
+    `id` VARCHAR(10) PRIMARY KEY,
+    `totalAmount` DECIMAL(10,2) NOT NULL,
+    `createdAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `paymentMethod` ENUM('CASH', 'CREDIT_CARD', 'BANK_TRANSFER') NOT NULL,
+    `paymentStatus` ENUM('PENDING', 'PAID', 'CANCELLED') NOT NULL,
+    `profileId` VARCHAR(10) NOT NULL,
+    FOREIGN KEY (`profileId`) REFERENCES `Profile` (`id`)
+);
+
+INSERT INTO `Invoice` (`id`, `totalAmount`, `createdAt`, `paymentMethod`, `paymentStatus`, `profileId`) VALUES
+    ('I001', 500000, NOW(), 'CREDIT_CARD', 'PAID', 'P001'),
+    ('I002', 750000, NOW(), 'CASH', 'PENDING', 'P002'),
+    ('I003', 600000, NOW(), 'BANK_TRANSFER', 'PAID', 'P003'),
+    ('I004', 450000, NOW(), 'CREDIT_CARD', 'CANCELLED', 'P004'),
+    ('I005', 900000, NOW(), 'CASH', 'PAID', 'P005');
+
+
+CREATE TABLE `Ticket` (
+    `id` VARCHAR(10) PRIMARY KEY,
+    `status` ENUM('BOOKED', 'CANCELLED', 'USED') NOT NULL,
+    `price` DECIMAL(10,2) NOT NULL,
+    `createdAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updatedAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `invoiceId` VARCHAR(10) NOT NULL,
+    `scheduleId` VARCHAR(10) NOT NULL,
+    `seatId` VARCHAR(10) NOT NULL,
+    FOREIGN KEY (`invoiceId`) REFERENCES `Invoice` (`id`),
+    FOREIGN KEY (`scheduleId`) REFERENCES `Schedule` (`id`),
+    FOREIGN KEY (`seatId`) REFERENCES `Seat` (`id`)
+);
 
 
 
+INSERT INTO `Ticket` (`id`, `status`, `price`, `createdAt`, `updatedAt`, `invoiceId`, `scheduleId`, `seatId`) VALUES
+    ('T001', 'BOOKED', 150000, NOW(), NOW(), 'I001', 'S001', 'S001'),
+    ('T002', 'CANCELLED', 200000, NOW(), NOW(), 'I002', 'S002', 'S002'),
+    ('T003', 'USED', 180000, NOW(), NOW(), 'I003', 'S003', 'S003'),
+    ('T004', 'BOOKED', 220000, NOW(), NOW(), 'I004', 'S004', 'S004'),
+    ('T005', 'BOOKED', 175000, NOW(), NOW(), 'I005', 'S005', 'S005'),
+    ('T006', 'CANCELLED', 190000, NOW(), NOW(), 'I005', 'S006', 'S006'),
+    ('T007', 'USED', 160000, NOW(), NOW(), 'I005', 'S007', 'S007'),
+    ('T008', 'BOOKED', 140000, NOW(), NOW(), 'I005', 'S008', 'S008'),
+    ('T009', 'BOOKED', 210000, NOW(), NOW(), 'I005', 'S009', 'S009'),
+    ('T010', 'USED', 130000, NOW(), NOW(), 'I005', 'S010', 'S010');
 
     
