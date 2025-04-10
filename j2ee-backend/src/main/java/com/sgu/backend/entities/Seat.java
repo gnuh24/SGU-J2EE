@@ -1,6 +1,6 @@
 package com.sgu.backend.entities;
 
-import com.sgu.backend.repositories.Coach;
+
 import com.sgu.backend.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Getter;
