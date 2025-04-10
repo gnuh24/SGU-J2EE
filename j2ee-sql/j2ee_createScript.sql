@@ -78,6 +78,59 @@ INSERT INTO `CoachStation` (`id`, `name`, `address`, `cityId`, `createdAt`, `upd
 ('BX005', 'Da Nang Central Bus Station', 'Lien Chieu, Da Nang', 'DANANG', NOW(), NOW(), 108.1790, 16.0751, 'INACTIVE');
 
 
+CREATE TABLE `Coach` (
+    `id` VARCHAR(10) PRIMARY KEY,
+    `capacity` INT NOT NULL,
+    `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    `updatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+    `type` VARCHAR(255) NOT NULL,
+    `licensePlate` VARCHAR(50) UNIQUE NOT NULL,
+    `status` ENUM('ACTIVE', 'INACTIVE', 'MAINTENANCE') NOT NULL
+);
+
+INSERT INTO `Coach` (`id`, `capacity`, `type`, `licensePlate`, `status`) VALUES
+    ('C001', 45, 'Sleeper Bus', '51B-12345', 'ACTIVE'),
+    ('C002', 30, 'Seated Bus', '51C-67890', 'INACTIVE'),
+    ('C003', 50, 'Premium Sleeper', '50A-54321', 'MAINTENANCE'),
+    ('C004', 40, 'Limousine VIP', '60D-11223', 'ACTIVE'),
+    ('C005', 35, 'Seated Bus', '62E-44556', 'ACTIVE'),
+    ('C006', 42, 'Sleeper Bus', '53G-99887', 'ACTIVE'),
+    ('C007', 16, 'Limousine VIP', '59F-33445', 'MAINTENANCE'),
+    ('C008', 28, 'Seated Bus', '49H-66778', 'INACTIVE');
+
+                        
+CREATE TABLE `Seat` (
+    `id` VARCHAR(10) PRIMARY KEY,
+    `number` INT NOT NULL,
+    `type` ENUM('NORMAL', 'VIP') NOT NULL,
+    `isNextToWindow` BOOLEAN NOT NULL,
+    `floor` INT NOT NULL,
+    `coachId` VARCHAR(10) NOT NULL,
+    FOREIGN KEY (`coachId`) REFERENCES `Coach`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO `Seat` (`id`, `number`, `type`, `isNextToWindow`, `floor`, `coachId`) VALUES
+    ('S001', 1, 'NORMAL', TRUE, 1, 'C001'),
+    ('S002', 2, 'NORMAL', FALSE, 1, 'C001'),
+    ('S003', 3, 'VIP', TRUE, 1, 'C001'),
+    ('S004', 4, 'NORMAL', FALSE, 2, 'C002'),
+    ('S005', 5, 'NORMAL', TRUE, 2, 'C002'),
+    ('S006', 6, 'VIP', TRUE, 1, 'C003'),
+    ('S007', 7, 'NORMAL', FALSE, 1, 'C003'),
+    ('S008', 8, 'NORMAL', TRUE, 2, 'C004'),
+    ('S009', 9, 'VIP', TRUE, 1, 'C005'),
+    ('S010', 10, 'NORMAL', FALSE, 1, 'C005'),
+    ('S011', 11, 'NORMAL', TRUE, 1, 'C006'),
+    ('S012', 12, 'VIP', TRUE, 2, 'C006'),
+    ('S013', 13, 'NORMAL', FALSE, 1, 'C007'),
+    ('S014', 14, 'NORMAL', TRUE, 1, 'C007'),
+    ('S015', 15, 'VIP', TRUE, 2, 'C008'),
+    ('S016', 16, 'NORMAL', FALSE, 2, 'C008');
+
+
+
+
+
 
 
 
