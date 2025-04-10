@@ -72,7 +72,7 @@ CREATE TABLE `CoachStation` (
 
 INSERT INTO `CoachStation` (`id`, `name`, `address`, `cityId`, `createdAt`, `updatedAt`, `longitude`, `latitude`, `status`) VALUES
 ('BX001', 'My Dinh Bus Station', 'Nam Tu Liem, Hanoi', 'HANOI', NOW(), NOW(), 105.7765, 21.0285, 'ACTIVE'),
-('BX002T', 'Giap Bat Bus Station', 'Hoang Mai, Hanoi', 'HANOI', NOW(), NOW(), 105.8461, 20.9801, 'ACTIVE'),
+('BX002', 'Giap Bat Bus Station', 'Hoang Mai, Hanoi', 'HANOI', NOW(), NOW(), 105.8461, 20.9801, 'ACTIVE'),
 ('BX003', 'Mien Dong Bus Station', 'Binh Thanh, Ho Chi Minh City', 'HCM', NOW(), NOW(), 106.7153, 10.8231, 'ACTIVE'),
 ('BX004', 'Mien Tay Bus Station', 'Binh Tan, Ho Chi Minh City', 'HCM', NOW(), NOW(), 106.6206, 10.7387, 'SUSPENDED'),
 ('BX005', 'Da Nang Central Bus Station', 'Lien Chieu, Da Nang', 'DANANG', NOW(), NOW(), 108.1790, 16.0751, 'INACTIVE');
@@ -127,6 +127,28 @@ INSERT INTO `Seat` (`id`, `number`, `type`, `isNextToWindow`, `floor`, `coachId`
     ('S015', 15, 'VIP', TRUE, 2, 'C008'),
     ('S016', 16, 'NORMAL', FALSE, 2, 'C008');
 
+
+CREATE TABLE `Route` (
+    `id` VARCHAR(10) PRIMARY KEY,
+    `price` DECIMAL(10,2) NOT NULL,
+    `createdAt` TIMESTAMP NOT NULL,
+    `updatedAt` TIMESTAMP NOT NULL,
+    `duration` INT NOT NULL,
+    `distance` DECIMAL(10,2) NOT NULL,
+    `status` ENUM('ACTIVE', 'INACTIVE', 'MAINTENANCE') NOT NULL,
+    `departureStationId` VARCHAR(10) NOT NULL,
+    `arrivalStationId` VARCHAR(10) NOT NULL,
+    FOREIGN KEY (`departureStationId`) REFERENCES `CoachStation`(`id`),
+    FOREIGN KEY (`arrivalStationId`) REFERENCES `CoachStation`(`id`)
+);
+
+
+INSERT INTO `Route` (`id`, `price`, `createdAt`, `updatedAt`, `duration`, `distance`, `status`, `departureStationId`, `arrivalStationId`) VALUES
+    ('R001', 150000, NOW(), NOW(), 180, 150.5, 'ACTIVE', 'BX001', 'BX002'),
+    ('R002', 200000, NOW(), NOW(), 240, 200.0, 'ACTIVE', 'BX002', 'BX003'),
+    ('R003', 180000, NOW(), NOW(), 210, 180.2, 'MAINTENANCE', 'BX003', 'BX004'),
+    ('R004', 220000, NOW(), NOW(), 300, 250.7, 'INACTIVE', 'BX004', 'BX005'),
+    ('R005', 175000, NOW(), NOW(), 190, 160.3, 'ACTIVE', 'BX005', 'BX001');
 
 
 
