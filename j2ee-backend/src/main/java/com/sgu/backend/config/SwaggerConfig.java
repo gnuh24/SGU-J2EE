@@ -12,9 +12,9 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
 	return new OpenAPI()
 		.info(new Info()
-			.title("SGU Enterprise Information System API Documentation")
+			.title("SGU J2EE API Documentation")
 			.version("1.0")
-			.description("API Documentation for SGU-EIS Project")
+			.description("API Documentation for SGU-J2EE Project")
 		);
     }
 }

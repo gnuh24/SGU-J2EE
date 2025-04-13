@@ -217,7 +217,6 @@ CREATE TABLE `Ticket` (
 );
 
 
-
 INSERT INTO `Ticket` (`id`, `status`, `price`, `createdAt`, `updatedAt`, `invoiceId`, `scheduleId`, `seatId`) VALUES
     ('T001', 'BOOKED', 150000, NOW(), NOW(), 'I001', 'S001', 'S001'),
     ('T002', 'CANCELLED', 200000, NOW(), NOW(), 'I002', 'S002', 'S002'),
