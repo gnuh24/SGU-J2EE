@@ -6,7 +6,6 @@ import {
   RouterLinkActive, // Import RouterLinkActive
   RouterModule, // Import RouterModule
 } from '@angular/router';
-import { UserService } from '../../../services/user/user.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -22,94 +21,96 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent implements OnInit {
-  CurrentUser: string | null = null;
-  mobileNavbarContent: string = '';
-  socialLinks: { icon: string; url: string }[] = [
-    { icon: 'fa-brands fa-facebook', url: '#' },
-    { icon: 'fa-brands fa-x', url: '#' },
-    { icon: 'fa-brands fa-youtube', url: '#' },
-    { icon: 'fa-brands fa-tiktok', url: '#' },
-    { icon: 'fa-brands fa-instagram', url: '#' },
-  ];
+export class NavbarComponent  {
 
-  navbarContent: {
-    label: string;
-    routerLink?: string;
-    action?: (event?: MouseEvent) => void;
-    isUser?: boolean;
-  }[] = [];
-  dataLoaded: boolean = false;
+// export class NavbarComponent implements OnInit {
+  // CurrentUser: string | null = null;
+  // mobileNavbarContent: string = '';
+  // socialLinks: { icon: string; url: string }[] = [
+  //   { icon: 'fa-brands fa-facebook', url: '#' },
+  //   { icon: 'fa-brands fa-x', url: '#' },
+  //   { icon: 'fa-brands fa-youtube', url: '#' },
+  //   { icon: 'fa-brands fa-tiktok', url: '#' },
+  //   { icon: 'fa-brands fa-instagram', url: '#' },
+  // ];
 
-  searchQuery: string = '';
+  // navbarContent: {
+  //   label: string;
+  //   routerLink?: string;
+  //   action?: (event?: MouseEvent) => void;
+  //   isUser?: boolean;
+  // }[] = [];
+  // dataLoaded: boolean = false;
 
-  constructor(
-    private userService: UserService,
-    private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  // searchQuery: string = '';
 
-  ngOnInit(): void {
-    this.loadCurrentUser();
-  }
+  // constructor(
+  //   private userService: UserService,
+  //   private router: Router,
+  //   @Inject(PLATFORM_ID) private platformId: Object
+  // ) {}
 
-  loadCurrentUser(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const user = localStorage.getItem('currentUser');
-      if (user) {
-        this.CurrentUser = JSON.parse(user).name;
-      } else {
-        this.CurrentUser = null;
-      }
-    }
+  // ngOnInit(): void {
+  //   this.loadCurrentUser();
+  // }
 
-    this.updateNavbarContent();
-    this.dataLoaded = true;
-  }
+  // loadCurrentUser(): void {
+  //   if (isPlatformBrowser(this.platformId)) {
+  //     const user = localStorage.getItem('currentUser');
+  //     if (user) {
+  //       this.CurrentUser = JSON.parse(user).name;
+  //     } else {
+  //       this.CurrentUser = null;
+  //     }
+  //   }
 
-  logout(event?: MouseEvent) {
-    if (event) {
-      event.preventDefault();
-    }
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('idUser');
-    localStorage.removeItem('idBooking');
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('token');
-    this.CurrentUser = null;
-    this.updateNavbarContent();
+  //   this.updateNavbarContent();
+  //   this.dataLoaded = true;
+  // }
 
-    // Navigate to login page
-    this.router.navigate(['/auth/login']);
-  }
-  updateNavbarContent(): void {
-    if (this.CurrentUser) {
-      this.navbarContent = [
-        {
-          label: 'Logout',
-          action: (event?: MouseEvent) => this.logout(event),
-          isUser: false,
-        },
-        { label: `${this.CurrentUser}`, isUser: true },
-        { label: 'View History', routerLink: '/order-history', isUser: false },
-      ];
-    } else {
-      this.navbarContent = [
-        { label: 'Sign Up', routerLink: '/auth/login', isUser: false },
-        { label: 'My Account', isUser: true },
-      ];
-    }
-  }
+  // logout(event?: MouseEvent) {
+  //   if (event) {
+  //     event.preventDefault();
+  //   }
+  //   localStorage.removeItem('currentUser');
+  //   localStorage.removeItem('idUser');
+  //   localStorage.removeItem('idBooking');
+  //   localStorage.removeItem('authToken');
+  //   localStorage.removeItem('token');
+  //   this.CurrentUser = null;
+  //   this.updateNavbarContent();
 
-  onSearch() {
-    if (this.searchQuery) {
-      this.router.navigate(['/search'], {
-        queryParams: { query: this.searchQuery },
-      });
-    }
-  }
+  //   // Navigate to login page
+  //   this.router.navigate(['/auth/login']);
+  // }
+  // updateNavbarContent(): void {
+  //   if (this.CurrentUser) {
+  //     this.navbarContent = [
+  //       {
+  //         label: 'Logout',
+  //         action: (event?: MouseEvent) => this.logout(event),
+  //         isUser: false,
+  //       },
+  //       { label: `${this.CurrentUser}`, isUser: true },
+  //       { label: 'View History', routerLink: '/order-history', isUser: false },
+  //     ];
+  //   } else {
+  //     this.navbarContent = [
+  //       { label: 'Sign Up', routerLink: '/auth/login', isUser: false },
+  //       { label: 'My Account', isUser: true },
+  //     ];
+  //   }
+  // }
 
-  navigateToHome(): void {
-    this.router.navigate(['/home']); // Xóa .then(() => { window.location.reload(); });
-  }
+  // onSearch() {
+  //   if (this.searchQuery) {
+  //     this.router.navigate(['/search'], {
+  //       queryParams: { query: this.searchQuery },
+  //     });
+  //   }
+  // }
+
+  // navigateToHome(): void {
+  //   this.router.navigate(['/home']); // Xóa .then(() => { window.location.reload(); });
+  // }
 }

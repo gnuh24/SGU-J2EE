@@ -71,7 +71,7 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 255px;
+    width: 20rem;
     height: 100vh;
     overflow-y: auto;
     background: var(--light);
@@ -177,14 +177,51 @@
     transform: rotate(-180deg);
 }
 
+
+/* -------------------------------------  Dropdown menu -------------------------------------  */
+
+/* Mục item trong dropdown */
 .sidebar .navbar .dropdown-item {
-    padding-left: 25px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 3rem;
+    padding-left: 4rem;
     border-radius: 0 30px 30px 0;
+    color: #333; /* Màu chữ mặc định */
+    transition: background 0.3s ease, color 0.3s ease; /* Thêm hiệu ứng chuyển màu */
 }
 
+/* Khi hover vào item */
+.sidebar .navbar .dropdown-item:hover {
+    background-color: var(--primary); /* Màu nền khi hover */
+    color: white; /* Màu chữ khi hover */
+}
+
+/* Khi item được chọn (active) hoặc khi đang kích hoạt */
 .dropdown-item.active, .dropdown-item:active {
     background: var(--primary);
+    color: white; /* Đảm bảo màu chữ sáng khi active */
 }
+
+/* Thêm hiệu ứng cho border khi hover */
+.sidebar .navbar .dropdown-item:hover {
+    border-left: 4px solid var(--primary); /* Thêm đường viền bên trái khi hover */
+}
+
+/* Kiểu cho dropdown item disabled (không thể chọn) */
+.sidebar .navbar .dropdown-item.disabled, 
+.sidebar .navbar .dropdown-item:disabled {
+    background-color: #f8f9fa; /* Màu nền nhạt cho item bị vô hiệu hóa */
+    color: #6c757d; /* Màu chữ nhạt khi vô hiệu hóa */
+    pointer-events: none; /* Không cho phép người dùng tương tác */
+}
+
+/* Tùy chỉnh khoảng cách giữa các item */
+.sidebar .navbar .dropdown-item + .dropdown-item {
+    margin-top: 5px; /* Khoảng cách giữa các mục */
+}
+
 
 .content .navbar .navbar-nav .nav-link {
     margin-left: 25px;

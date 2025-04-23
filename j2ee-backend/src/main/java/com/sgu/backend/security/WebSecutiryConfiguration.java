@@ -49,51 +49,55 @@ public class WebSecutiryConfiguration {
                 // Configure các luồng truy cập
                 .authorizeHttpRequests((auth) -> auth
 
-//                        // TODO: CÁC API LIÊN QUAN ĐẾN PRODUCT
-//                        .requestMatchers(HttpMethod.GET, "/api/redis/get/name")                                         .permitAll()
+////                        // TODO: CÁC API LIÊN QUAN ĐẾN PRODUCT
+////                        .requestMatchers(HttpMethod.GET, "/api/redis/get/name")                                         .permitAll()
+////
+////                        .requestMatchers(HttpMethod.GET, "/accounts/{Id}")                                                .permitAll()
+////                        .requestMatchers(HttpMethod.GET, "/accounts/email")                                             .permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/accounts")                                                      .hasAnyAuthority("ADMIN")
+////                        .requestMatchers(HttpMethod.GET, "/accounts/check-email")                                  .permitAll()
+////
+////                        .requestMatchers(HttpMethod.POST, "/accounts/activate-account")                         .permitAll()
+////                        .requestMatchers(HttpMethod.POST, "/accounts/{accountId}/account-activity-logs").hasAnyAuthority("USER")
+////
+////
+////                        .requestMatchers(HttpMethod.PATCH, "/accounts/{id}")                                            .hasAnyAuthority("USER")
+////                        .requestMatchers(HttpMethod.PATCH, "/accounts/{id}/update-password")                .hasAnyAuthority("USER")
+////                        .requestMatchers(HttpMethod.PATCH, "/accounts/{id}/update-email")                       .hasAnyAuthority("USER")
+////
+////
+////                        .requestMatchers( HttpMethod.GET, "/media")                                                           .permitAll()
+////                        .requestMatchers( HttpMethod.POST, "/media/upload")                                             .permitAll()
+////
+//                        .requestMatchers(HttpMethod.POST, "/auth/login")                                                    .permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/auth/staff-login")                                            .permitAll()
+//                                .requestMatchers(HttpMethod.POST, "/auth/register")                                            .permitAll()
 //
-//                        .requestMatchers(HttpMethod.GET, "/accounts/{Id}")                                                .permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/accounts/email")                                             .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/accounts")                                                      .hasAnyAuthority("ADMIN")
-//                        .requestMatchers(HttpMethod.GET, "/accounts/check-email")                                  .permitAll()
+////                        .requestMatchers(HttpMethod.POST, "/auth/send-otp-update-email")                        .hasAnyAuthority("USER")
+////                        .requestMatchers(HttpMethod.POST, "/auth/send-otp-reset-password")                    .permitAll()
 //
-//                        .requestMatchers(HttpMethod.POST, "/accounts/activate-account")                         .permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/accounts/{accountId}/account-activity-logs").hasAnyAuthority("USER")
+//                        .requestMatchers(HttpMethod.POST, "/auth/refresh-token")                                       .permitAll()
+////                        .requestMatchers(HttpMethod.PATCH, "/auth/{id}/update-role")                                 .hasAnyAuthority("ADMIN")
+////                        .requestMatchers(HttpMethod.PATCH, "/auth/{id}/update-status")                              .hasAnyAuthority("ADMIN")
 //
+//                                .requestMatchers(HttpMethod.GET, "/cities")                                            .permitAll()
+//                                .requestMatchers(HttpMethod.GET, "/cities/no-paging")                                            .permitAll()
+//                                .requestMatchers(HttpMethod.GET, "/cities/{cityId}")                                            .permitAll()
 //
-//                        .requestMatchers(HttpMethod.PATCH, "/accounts/{id}")                                            .hasAnyAuthority("USER")
-//                        .requestMatchers(HttpMethod.PATCH, "/accounts/{id}/update-password")                .hasAnyAuthority("USER")
-//                        .requestMatchers(HttpMethod.PATCH, "/accounts/{id}/update-email")                       .hasAnyAuthority("USER")
-//
-//
-//                        .requestMatchers( HttpMethod.GET, "/media")                                                           .permitAll()
-//                        .requestMatchers( HttpMethod.POST, "/media/upload")                                             .permitAll()
-//
-                        .requestMatchers(HttpMethod.POST, "/auth/login")                                                    .permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/staff-login")                                            .permitAll()
-                                .requestMatchers(HttpMethod.POST, "/auth/register")                                            .permitAll()
+//                                .requestMatchers(HttpMethod.POST, "/cities")                                           .hasAnyAuthority("ADMIN")
+//                                .requestMatchers(HttpMethod.PATCH, "/cities/{cityId}")                                           .hasAnyAuthority("ADMIN")
 
-//                        .requestMatchers(HttpMethod.POST, "/auth/send-otp-update-email")                        .hasAnyAuthority("USER")
-//                        .requestMatchers(HttpMethod.POST, "/auth/send-otp-reset-password")                    .permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/auth/refresh-token")                                       .permitAll()
-//                        .requestMatchers(HttpMethod.PATCH, "/auth/{id}/update-role")                                 .hasAnyAuthority("ADMIN")
-//                        .requestMatchers(HttpMethod.PATCH, "/auth/{id}/update-status")                              .hasAnyAuthority("ADMIN")
 
-                                .requestMatchers(HttpMethod.GET, "/cities")                                            .permitAll()
-                                .requestMatchers(HttpMethod.GET, "/cities/no-paging")                                            .permitAll()
-                                .requestMatchers(HttpMethod.GET, "/cities/{cityId}")                                            .permitAll()
-
-                                .requestMatchers(HttpMethod.POST, "/cities")                                           .hasAnyAuthority("ADMIN")
-                                .requestMatchers(HttpMethod.PATCH, "/cities/{cityId}")                                           .hasAnyAuthority("ADMIN")
-
+//                                .anyRequest().permitAll()
                                 // 🔹 Tạm thời mở tất cả API cho phép truy cập công khai
                         .requestMatchers("/**",  "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html").permitAll()
 
                         // Xác thực tất cả các request (đã bị ghi đè bởi dòng trên)'
-                        .anyRequest().authenticated()
+//                        .anyRequest().authenticated()
+                                .anyRequest().permitAll()
 
                 ).httpBasic(Customizer.withDefaults())
 

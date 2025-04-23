@@ -1,0 +1,64 @@
+<div class="city-management">
+    <h2>Quản lý thành phố</h2>
+
+    <!-- Phần nhập thông tin thành phố mới -->
+    <div class="form">
+        <div class="search">
+            <input
+              type="text"
+              [(ngModel)]="search"
+              (keydown.enter)="loadCities()"
+              placeholder="Tìm kiếm theo tên thành phố"
+            />
+            <button (click)="loadCities()">Tìm kiếm</button>
+        </div>
+          
+    
+        <select [(ngModel)]="status" (ngModelChange)="loadCities()">
+            <option value="" selected>Tất cả trạng thái</option>
+            <option value="ACTIVE">Đang hoạt động</option>
+            <option value="INACTIVE">Tạm dừng</option>
+        </select>
+        <button (click)="addCity()">Thêm</button>
+    </div>
+
+    <!-- Bảng hiển thị các thành phố -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên thành phố</th>
+                <th>Trạng thái</th>
+                <th>Ngày tạo</th>
+                <th>Ngày cập nhật</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let city of cities">
+                <td>{{ city.id }}</td>
+                <td>{{ city.name }}</td>
+                <td>
+                    <span [class.active]="city.status === 'ACTIVE'" [class.inactive]="city.status === 'INACTIVE'">
+                        {{ city.status === 'ACTIVE' ? 'Đang hoạt động' : 'Tạm dừng' }}
+                    </span>
+                </td>
+                <td>{{ city.createdAt | date: 'HH:mm:ss dd/MM/yyyy' }}</td>
+                <td>{{ city.updatedAt | date: 'HH:mm:ss dd/MM/yyyy' }}</td>
+                <td>
+                    <!-- Nút cập nhật thông tin thay cho nút chuyển trạng thái -->
+                    <button (click)="updateCityInfo(city)">Cập nhật thông tin</button>
+                    <!-- Nút xóa được ẩn tạm thời -->
+                    <!-- <button (click)="deleteCity(city.id)">Xoá</button> -->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Phân trang -->
+    <div class="pagination">
+        <button (click)="goToPage(pageNumber - 1)" [disabled]="pageNumber === 0">Trước</button>
+        <span>Trang {{ pageNumber }} / {{ totalPages }}</span>
+        <button (click)="goToPage(pageNumber + 1)" [disabled]="pageNumber === totalPages">Sau</button>
+    </div>
+</div>

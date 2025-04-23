@@ -10,6 +10,7 @@ import { NavabarComponent } from './components/admin/navabar/navabar.component';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
 import { footerComponent } from './components/user/footer/footer.component';
+
 @Component({
   selector: 'app-root',
   standalone: true,

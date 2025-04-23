@@ -1,15 +1,15 @@
 import { AfterViewInit, Component, OnInit, Type, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { LocationDetailComponent } from '../location-detail/location-detail.component';
+// import { LocationDetailComponent } from '../location-detail/location-detail.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { CommonModule } from '@angular/common';
-import { LocationListComponent } from '../location-list/location-list.component';
+// import { LocationListComponent } from '../location-list/location-list.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { AuthInterceptor } from '../../../services/auth.interceptor';
-import { UserService } from '../../../services/user/user.service';
-import { Title } from '@angular/platform-browser';
-import { HomeService } from '../../../services/home/home.service';
-import { GetPageResponse } from '../../../models/response/home/get-page-response';
+// import { AuthInterceptor } from '../../../services/auth.interceptor';
+// import { UserService } from '../../../services/user/user.service';
+// import { Title } from '@angular/platform-browser';
+// import { HomeService } from '../../../services/home/home.service';
+// import { GetPageResponse } from '../../../models/response/home/get-page-response';
 import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 
@@ -17,14 +17,19 @@ import { PLATFORM_ID } from '@angular/core';
   selector: 'app-home',
   standalone: true,
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    UserService,
+    { provide: HTTP_INTERCEPTORS, 
+      // useClass: AuthInterceptor, 
+      useClass: null, 
+      multi: true },
+    // UserService,
+    null,
+
   ],
   imports: [
     CarouselModule,
     CommonModule,
-    LocationListComponent,
-    LocationDetailComponent,
+    // LocationListComponent,
+    // LocationDetailComponent,
     HttpClientModule,
   ],
   templateUrl: './home.component.html',
@@ -37,20 +42,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
   locations: string[] = ['Đà Nẵng', 'Hội An', 'Bà Nà', 'Sân Bay', 'Nam Hội An'];
   selectedLocation: string | null = null;
   isDropdownVisible: { [key: string]: boolean } = {};
-  homeData: GetPageResponse = new GetPageResponse();
-  detailData: GetPageResponse[] = [];
-  footerData: GetPageResponse = new GetPageResponse();
+  // homeData: GetPageResponse = new GetPageResponse();
+  // detailData: GetPageResponse[] = [];
+  // footerData: GetPageResponse = new GetPageResponse();
   images: any = [];
   tourismlink = '';
 
   constructor(
     private router: Router,
-    private title: Title,
-    private homeService: HomeService,
+    // private title: Title,
+    // private homeService: HomeService,
     @Inject(PLATFORM_ID) private platformId: Object,
     @Inject(DOCUMENT) private document: Document
   ) {
-    this.title.setTitle('Trang chủ');
+    // this.title.setTitle('Trang chủ');
   }
 
   ngAfterViewInit(): void {
@@ -61,21 +66,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.tabs = [
-      {
-        label: 'Thuê Xe',
-        icon: 'fa-solid fa-car',
-        component: LocationListComponent,
-      },
-      {
-        label: 'Thuê Khách Sạn',
-        icon: 'fa-solid fa-hotel',
-        component: LocationListComponent,
-      },
-      {
-        label: 'Đặt Vé',
-        icon: 'fa-solid fa-ticket',
-        component: LocationDetailComponent,
-      },
+      // {
+      //   label: 'Thuê Xe',
+      //   icon: 'fa-solid fa-car',
+      //   component: LocationListComponent,
+      // },
+      // {
+      //   label: 'Thuê Khách Sạn',
+      //   icon: 'fa-solid fa-hotel',
+      //   component: LocationListComponent,
+      // },
+      // {
+      //   label: 'Đặt Vé',
+      //   icon: 'fa-solid fa-ticket',
+      //   component: LocationDetailComponent,
+      // },
     ];
     this.selectedTab =
       this.tabs.find((tab) => tab.label === 'Đặt Vé') || this.tabs[0];
