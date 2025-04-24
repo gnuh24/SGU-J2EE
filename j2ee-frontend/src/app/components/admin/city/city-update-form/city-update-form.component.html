@@ -1,0 +1,21 @@
+<div class="update-form">
+    <h2>Cập nhật thông tin thành phố</h2>
+  
+    <form (ngSubmit)="onUpdate()">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Tên thành phố</mat-label>
+        <input matInput [(ngModel)]="city.name" name="name" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Trạng thái</mat-label>
+        <input matInput [(ngModel)]="city.status" name="status" required />
+      </mat-form-field>
+  
+      <div class="buttons">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!city.name || !city.status">Cập nhật</button>
+        <button mat-raised-button type="button" (click)="onCancel()" color="warn">Hủy</button>
+      </div>
+    </form>
+  </div>
+  
