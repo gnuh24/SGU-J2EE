@@ -35,12 +35,12 @@ export class CityService {
         return this.http.get<ApiResponse<any>>(this.apiUrl);
     }
 
-    addCity(city: CityCreateForm): Observable<ApiResponse<any>> {
+    createCity(city: CityCreateForm): Observable<ApiResponse<any>> {
         return this.http.post<ApiResponse<any>>(this.apiUrl, city);
     }
 
-    updateCity(city: CityUpdateForm): Observable<ApiResponse<any>> {
-        return this.http.put<ApiResponse<any>>(`${this.apiUrl}/${city.id}`, city);
+    updateCity(id: string, city: CityUpdateForm): Observable<ApiResponse<any>> {
+        return this.http.patch<ApiResponse<any>>(`${this.apiUrl}/${id}`, city);
     }
 
     deleteCity(id: string): Observable<ApiResponse<any>> {

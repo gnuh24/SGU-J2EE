@@ -2,11 +2,14 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { CityService } from '../../../services/city.service';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { CityUpdateFormComponent } from './city-update-form/city-update-form.component';
+import { CityCreateFormComponent } from './city-create-form/city-create-form.component';
 
 @Component({
     selector: 'app-city-management',
     templateUrl: './city-management.component.html',
-    styleUrls: ['./city-management.component.css']
+    styleUrls: ['./city-management.component.scss']
 })
 export class CityManagementComponent implements OnInit, AfterViewInit {
     cities: any[] = [];
@@ -23,8 +26,34 @@ export class CityManagementComponent implements OnInit, AfterViewInit {
 
     displayedColumns: string[] = ['id', 'name', 'status', 'createdAt', 'updatedAt', 'actions'];
 
-    constructor(private cityService: CityService) {}
+    constructor(private cityService: CityService, private dialog: MatDialog) {}
 
+    openCreateCityDialog() {
+        const dialogRef = this.dialog.open(CityCreateFormComponent, {
+          width: '400px',
+          data: this.newCity
+        });
+      
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.loadCities(); // Nếu tạo thành công thì load lại danh sách
+          }
+        });
+      }
+
+    updateCityInfo(city: any) {
+        const dialogRef = this.dialog.open(CityUpdateFormComponent, {
+          width: '400px',
+          data: city
+        });
+      
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.loadCities(); // Nếu cập nhật thành công thì load lại danh sách
+          }
+        });
+      }
+      
     ngOnInit(): void {
         this.loadCities();
     }
@@ -53,42 +82,12 @@ export class CityManagementComponent implements OnInit, AfterViewInit {
     }
 
     onPageChange(event: PageEvent) {
-        this.pageNumber = event.pageIndex;
+        this.pageNumber = event.pageIndex + 1;
         this.pageSize = event.pageSize;
         this.loadCities();
     }
 
 
-
-    selectedCity: any = null; // Thành phố được chọn
-    showUpdateForm: boolean = false; // Điều khiển việc hiển thị form
-
-
-    updateCityInfo(city: any) {
-        this.selectedCity = { ...city }; // Sao chép dữ liệu
-        this.showUpdateForm = true; // Hiển thị form
-      }
-    
-    onCityUpdated(city: any) {
-        this.cityService.updateCity(city).subscribe(() => {
-            this.loadCities(); // Load lại danh sách thành phố
-            this.showUpdateForm = false; // Ẩn form sau khi cập nhật
-        });
-    }
-
-    onCancelUpdate() {
-        this.showUpdateForm = false; // Ẩn form khi hủy
-    }
-    addCity() {
-        this.cityService.addCity(this.newCity).subscribe(
-            (response) => {
-                this.cities.push(response);
-                this.newCity = {};
-                this.loadCities();
-            },
-            (error) => console.error('Có lỗi khi thêm thành phố: ', error)
-        );
-    }
 
     deleteCity(id: string) {
         this.cityService.deleteCity(id).subscribe(

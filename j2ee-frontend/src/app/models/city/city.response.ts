@@ -11,7 +11,6 @@ export interface CityCreateForm {
 }
 
 export interface CityUpdateForm {
-    id: string;
     name: string;
     status: 'ACTIVE' | 'INACTIVE' | string;
 }

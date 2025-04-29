@@ -23,15 +23,8 @@
         </mat-form-field>
 
         <button mat-raised-button color="primary" (click)="loadCities()">Tìm kiếm</button>
-        <button mat-raised-button color="accent" (click)="addCity()">Thêm</button>
+        <button mat-raised-button color="accent" (click)="openCreateCityDialog()">Thêm</button>
     </div>
-
-    <!-- Nếu cần form thì hiển thị -->
-    <app-city-update-form *ngIf="showUpdateForm" 
-    [city]="selectedCity" 
-    (updateCity)="onCityUpdated($event)" 
-    (cancelUpdate)="onCancelUpdate()">
-    </app-city-update-form>
 
     <!-- Bảng -->
     <table mat-table matSort [dataSource]="cities" class="mat-elevation-z2" style="width: 100%; margin-top: 20px;">

@@ -1,39 +1,43 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';  // Thêm FormsModule thay vì ReactiveFormsModule
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';  // <-- ReactiveFormsModule thêm vào
 import { adminRoutes } from './admin.routes';
-import { CityManagementComponent } from '../city/city-management.component';  // Đảm bảo import đúng
+import { CityManagementComponent } from '../city/city-management.component';
+import { CityUpdateFormComponent } from '../city/city-update-form/city-update-form.component'; // <-- Import component
+import { CityCreateFormComponent } from '../city/city-create-form/city-create-form.component'; // <-- Import component
 
-// Các module của Angular Material bạn muốn sử dụng
-import { MatTableModule } from '@angular/material/table';  // Bảng dữ liệu
-import { MatPaginatorModule } from '@angular/material/paginator';  // Phân trang
-import { MatSortModule } from '@angular/material/sort';  // Sắp xếp
-import { MatButtonModule } from '@angular/material/button';  // Nút
-import { MatInputModule } from '@angular/material/input';  // Input
-import { MatFormFieldModule } from '@angular/material/form-field';  // Form Field
-import { MatSelectModule } from '@angular/material/select';  // Dùng cho mat-option
-import { MatOptionModule } from '@angular/material/core';  // Dùng cho mat-option
+// Angular Material modules
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
-    CityManagementComponent, // Thêm vào danh sách declarations
-    // Các component khác trong admin module nếu cần
+    CityManagementComponent,
+    CityUpdateFormComponent,  // <-- Thêm vào declarations
+    CityCreateFormComponent,  // <-- Thêm vào declarations
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(adminRoutes),
-    FormsModule,  // Thêm FormsModule vào imports
+    FormsModule,
+    ReactiveFormsModule,  // <-- Thêm vào imports
 
-    // Các module của Angular Material
+    // Material modules
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
     MatButtonModule,
     MatInputModule,
-    MatFormFieldModule,  // Form field
-    MatSelectModule,  // Dùng cho mat-option
-    MatOptionModule,  // Dùng cho mat-option
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
   ],
 })
 export class AdminModule {}

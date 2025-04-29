@@ -1,21 +1,21 @@
-<div class="update-form">
-    <h2>Cập nhật thông tin thành phố</h2>
-  
-    <form (ngSubmit)="onUpdate()">
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Tên thành phố</mat-label>
-        <input matInput [(ngModel)]="city.name" name="name" required />
-      </mat-form-field>
-  
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Trạng thái</mat-label>
-        <input matInput [(ngModel)]="city.status" name="status" required />
-      </mat-form-field>
-  
-      <div class="buttons">
-        <button mat-raised-button color="primary" type="submit" [disabled]="!city.name || !city.status">Cập nhật</button>
-        <button mat-raised-button type="button" (click)="onCancel()" color="warn">Hủy</button>
-      </div>
-    </form>
+<h2 mat-dialog-title>Cập nhật thành phố</h2>
+
+<form [formGroup]="cityForm" (ngSubmit)="onSubmit()" mat-dialog-content class="city-form">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Tên thành phố</mat-label>
+    <input matInput formControlName="name" placeholder="Nhập tên thành phố" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Trạng thái</mat-label>
+    <mat-select formControlName="status">
+      <mat-option value="ACTIVE">Đang hoạt động</mat-option>
+      <mat-option value="INACTIVE">Tạm dừng</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="dialog-actions">
+    <button mat-stroked-button color="warn" type="button" (click)="onCancel()">Hủy</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="!cityForm.valid">Cập nhật</button>
   </div>
-  
+</form>
