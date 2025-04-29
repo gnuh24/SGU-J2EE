@@ -13,6 +13,7 @@ import { StationManagementComponent } from '../station/station-management.compon
 import { StationUpdateFormComponent } from '../station/station-update-form/station-update-form.component'; // <-- Import component
 import { StationCreateFormComponent } from '../station/station-create-form/station-create-form.component'; // <-- Import component
 
+import { AccountManagementComponent } from '../account/account-management.component'; // <-- Import component
 // Angular Material modules
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -33,6 +34,8 @@ import { MatOptionModule } from '@angular/material/core';
     StationUpdateFormComponent,  // <-- Thêm vào declarations
     StationCreateFormComponent,  // <-- Thêm vào declarations
 
+    AccountManagementComponent,
+
   ],
   imports: [
     CommonModule,
@@ -51,4 +54,4 @@ import { MatOptionModule } from '@angular/material/core';
     MatOptionModule,
   ],
 })
-export class AdminModule {}
+export class AdminModule { }

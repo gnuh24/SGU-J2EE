@@ -78,7 +78,7 @@ public class AccountSpecification implements Specification<Account> {
                 }
             }
 
-            if (form.getStatus() != null) {
+            if (form.getStatus() != null && !form.getStatus().isEmpty()) {
                 // Convert the status to string (if needed) and ensure it's uppercase for comparison
                 String status = form.getStatus().toUpperCase();
                 AccountSpecification statusSpec = new AccountSpecification("status", status);

@@ -44,7 +44,7 @@ public class CoachController {
      * 📌 Cập nhật thông tin Coach
      */
     @Operation(summary = "Cập nhật xe khách")
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<CoachResponseDTO>> updateCoach(@PathVariable String id, @RequestBody @Valid CoachUpdateForm form) {
         CoachResponseDTO dto = coachService.update(id, form);
 
@@ -76,7 +76,7 @@ public class CoachController {
      * 📌 Lọc danh sách coach
      */
     @Operation(summary = "Lọc danh sách coach", description = "Hỗ trợ phân trang và lọc theo type, status, capacity...")
-    @PostMapping("/filter")
+    @GetMapping()
     public ResponseEntity<ApiResponse<Page<CoachResponseDTO>>> filterCoaches(Pageable pageable, @RequestBody CoachFilter filter) {
         Page<CoachResponseDTO> result = coachService.filter(pageable, filter);
 
