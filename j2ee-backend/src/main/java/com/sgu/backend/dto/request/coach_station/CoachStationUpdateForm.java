@@ -13,5 +13,6 @@ public class CoachStationUpdateForm {
     private BigDecimal longitude;
     private BigDecimal latitude;
     private CoachStation.Status status;
+    private String cityId;
 
 }

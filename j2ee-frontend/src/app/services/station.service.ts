@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { env } from './env.dev';
-import { CityCreateForm, CityUpdateForm } from '../models/city.response';
 import { ApiResponse } from '../models/apiresponse';
+import { StationCreateForm, StationUpdateForm } from '../models/station.response';
 
 @Injectable({
     providedIn: 'root'
 })
-export class CityService {
+export class StationService {
 
-    private apiUrl = `${env.API_ROOT}/cities`;
+    private apiUrl = `${env.API_ROOT}/coach-stations`;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {}
 
-    getCities(
+    getStations(
         pageSize: number,
         pageNumber: number,
         sort: string,
@@ -31,19 +31,19 @@ export class CityService {
         return this.http.get<ApiResponse<any>>(this.apiUrl, { params });
     }
 
-    getCitiesNoPaging(): Observable<ApiResponse<any>> {
-        return this.http.get<ApiResponse<any>>(`${this.apiUrl}/no-paging`);
+    getStationsNoPaging(): Observable<ApiResponse<any>> {
+        return this.http.get<ApiResponse<any>>(this.apiUrl);
     }
 
-    createCity(city: CityCreateForm): Observable<ApiResponse<any>> {
-        return this.http.post<ApiResponse<any>>(this.apiUrl, city);
+    createStation(station: StationCreateForm): Observable<ApiResponse<any>> {
+        return this.http.post<ApiResponse<any>>(this.apiUrl, station);
     }
 
-    updateCity(id: string, city: CityUpdateForm): Observable<ApiResponse<any>> {
-        return this.http.patch<ApiResponse<any>>(`${this.apiUrl}/${id}`, city);
+    updateStation(id: string, station: StationUpdateForm): Observable<ApiResponse<any>> {
+        return this.http.patch<ApiResponse<any>>(`${this.apiUrl}/${id}`, station);
     }
 
-    deleteCity(id: string): Observable<ApiResponse<any>> {
+    deleteStation(id: string): Observable<ApiResponse<any>> {
         return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`);
     }
 }

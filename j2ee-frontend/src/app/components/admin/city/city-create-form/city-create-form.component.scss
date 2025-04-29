@@ -1,0 +1,27 @@
+.city-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px 0;
+
+    .full-width {
+        width: 100%;
+    }
+
+    mat-form-field {
+        font-size: 16px;
+    }
+
+    .dialog-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+
+        button {
+            min-width: 100px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+    }
+}

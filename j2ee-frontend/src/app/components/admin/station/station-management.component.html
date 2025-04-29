@@ -1,0 +1,127 @@
+<div class="city-management mat-elevation-z2" style="padding: 16px;">
+    <h2>Quản lý trạm xe</h2>
+
+    <!-- Tìm kiếm & lọc -->
+    <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+        <mat-form-field appearance="outline">
+            <mat-label>Tìm kiếm theo tên</mat-label>
+            <input
+                matInput
+                [(ngModel)]="search"
+                (keydown.enter)="loadStations()"
+                placeholder="Nhập tên trạm xe..."
+            />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Trạng thái</mat-label>
+            <mat-select [(ngModel)]="status" (selectionChange)="loadStations()">
+                <mat-option value="">Tất cả</mat-option>
+                <mat-option value="ACTIVE">Đang hoạt động</mat-option>
+                <mat-option value="INACTIVE">Ngưng hoạt động</mat-option>
+                <mat-option value="SUSPENDED">Đang bảo trì</mat-option>
+            </mat-select>
+        </mat-form-field>
+          
+
+        <button mat-raised-button color="primary" (click)="loadStations()">Tìm kiếm</button>
+        <button mat-raised-button color="accent" (click)="openCreateStationDialog()">Thêm</button>
+    </div>
+
+<!-- Bảng -->
+<table mat-table matSort [dataSource]="stations" class="mat-elevation-z2" style="width: 100%; margin-top: 20px;">
+    <!-- ID -->
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let station"> {{ station.id }} </td>
+    </ng-container>
+
+    <!-- Tên -->
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tên trạm </th>
+        <td mat-cell *matCellDef="let station"> {{ station.name }} </td>
+    </ng-container>
+
+    <!-- Địa chỉ -->
+    <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Địa chỉ </th>
+        <td mat-cell *matCellDef="let station"> {{ station.address }} </td>
+    </ng-container>
+
+    <!-- Thành phố -->
+    <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Thành phố </th>
+        <td mat-cell *matCellDef="let station"> {{ station.city?.name }} </td>
+    </ng-container>
+
+    <!-- Tọa độ -->
+    <ng-container matColumnDef="coordinates">
+        <th mat-header-cell *matHeaderCellDef> Tọa độ </th>
+        <td mat-cell *matCellDef="let station">
+            {{ station.latitude }}, {{ station.longitude }}
+        </td>
+    </ng-container>
+
+    <!-- Trạng thái -->
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Trạng thái </th>
+        <td mat-cell *matCellDef="let station">
+            <span
+                [ngClass]="{
+                    'text-green': station.status === 'ACTIVE',
+                    'text-orange': station.status === 'SUSPENDED',
+                    'text-red': station.status === 'INACTIVE'
+                }"
+            >
+                {{
+                    station.status === 'ACTIVE'
+                        ? 'Đang hoạt động'
+                        : station.status === 'INACTIVE'
+                        ? 'Ngưng hoạt động'
+                        : station.status === 'SUSPENDED'
+                        ? 'Đang bảo trì'
+                        : station.status
+                }}
+            </span>
+        </td>
+    </ng-container>
+
+
+    <!-- Ngày tạo -->
+    <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày tạo </th>
+        <td mat-cell *matCellDef="let station"> {{ station.createdAt | date: 'HH:mm:ss dd/MM/yyyy' }} </td>
+    </ng-container>
+
+    <!-- Ngày cập nhật -->
+    <ng-container matColumnDef="updatedAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày cập nhật </th>
+        <td mat-cell *matCellDef="let station"> {{ station.updatedAt | date: 'HH:mm:ss dd/MM/yyyy' }} </td>
+    </ng-container>
+
+    <!-- Hành động -->
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Hành động </th>
+        <td mat-cell *matCellDef="let station">
+            <button mat-button (click)="updateStationInfo(station)">Cập nhật</button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+
+    <!-- Phân trang -->
+    <mat-paginator
+        [length]="totalElements"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10, 20]"
+        (page)="onPageChange($event)">
+    </mat-paginator>
+  
+
+</div>
+
+
+

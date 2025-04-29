@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { CityService } from '../../../../services/city.service';
-import { CityCreateForm } from '../../../../models/city/city.response';
+import { CityCreateForm } from '../../../../models/city.response';
 import { finalize } from 'rxjs/operators';
 
 @Component({
     selector: 'app-city-create-form',
     templateUrl: './city-create-form.component.html',
-    styleUrls: ['./city-create-form.component.scss']
+    styleUrls: ['./city-create-form.component.scss'],
+    encapsulation: ViewEncapsulation.None // Không sử dụng encapsulation
+
 })
 export class CityCreateFormComponent implements OnInit {
     cityForm: FormGroup;

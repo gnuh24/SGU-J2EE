@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>Tạo mới trạm</h2>
+
+<form [formGroup]="stationForm" (ngSubmit)="onSubmit()" mat-dialog-content class="station-form">
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tên trạm</mat-label>
+        <input matInput formControlName="name" placeholder="Nhập tên trạm" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Địa chỉ</mat-label>
+        <input matInput formControlName="address" placeholder="Nhập địa chỉ trạm" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Kinh độ</mat-label>
+        <input matInput formControlName="longitude" placeholder="Nhập kinh độ" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Vĩ độ</mat-label>
+        <input matInput formControlName="latitude" placeholder="Nhập vĩ độ" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Trạng thái</mat-label>
+        <mat-select formControlName="status">
+            <mat-option value="ACTIVE">Đang hoạt động</mat-option>
+            <mat-option value="INACTIVE">Ngừng hoạt động</mat-option>
+            <mat-option value="SUSPENDED">Đang bảo trì</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Thành phố</mat-label>
+        <mat-select formControlName="cityId">
+            <mat-option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div class="dialog-actions">
+        <button mat-stroked-button color="warn" type="button" (click)="onCancel()">Hủy</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="!stationForm.valid || isSubmitting">Tạo mới</button>
+    </div>
+</form>

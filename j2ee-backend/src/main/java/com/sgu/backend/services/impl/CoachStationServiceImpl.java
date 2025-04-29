@@ -61,6 +61,7 @@ public class CoachStationServiceImpl implements CoachStationService {
 	coachStation.setLatitude(form.getLatitude());
 	coachStation.setStatus(form.getStatus());
 
+
 	// Lưu vào cơ sở dữ liệu
 	return coachStationRepository.save(coachStation);
     }
@@ -85,6 +86,13 @@ public class CoachStationServiceImpl implements CoachStationService {
 	if (form.getStatus() != null) {
 	    coachStation.setStatus(form.getStatus());
 	}
+
+	// Tìm thành phố theo cityId
+	if (form.getCityId() != null){
+	    City city = cityService.getCityById(form.getCityId());
+	    coachStation.setCity(city);
+	}
+
 
 	return coachStationRepository.save(coachStation);
     }

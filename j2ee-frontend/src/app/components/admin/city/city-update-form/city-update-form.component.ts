@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CityService } from '../../../../services/city.service';
-import { CityUpdateForm } from '../../../../models/city/city.response';
+import { CityUpdateForm } from '../../../../models/city.response';
 import { finalize } from 'rxjs/operators';
 
 @Component({

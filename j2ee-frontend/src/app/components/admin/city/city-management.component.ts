@@ -13,7 +13,6 @@ import { CityCreateFormComponent } from './city-create-form/city-create-form.com
 })
 export class CityManagementComponent implements OnInit, AfterViewInit {
     cities: any[] = [];
-    newCity: any = {};
     pageSize: number = 5;
     pageNumber: number = 1;
     totalElements: number = 0;
@@ -29,30 +28,26 @@ export class CityManagementComponent implements OnInit, AfterViewInit {
     constructor(private cityService: CityService, private dialog: MatDialog) {}
 
     openCreateCityDialog() {
-        const dialogRef = this.dialog.open(CityCreateFormComponent, {
-          width: '400px',
-          data: this.newCity
-        });
+        const dialogRef = this.dialog.open(CityCreateFormComponent);
       
         dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-            this.loadCities(); // Nếu tạo thành công thì load lại danh sách
-          }
+            if (result) {
+                this.loadCities(); // Nếu tạo thành công thì load lại danh sách
+            }
         });
-      }
+    }
 
     updateCityInfo(city: any) {
         const dialogRef = this.dialog.open(CityUpdateFormComponent, {
-          width: '400px',
-          data: city
+            data: city
         });
       
         dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-            this.loadCities(); // Nếu cập nhật thành công thì load lại danh sách
-          }
+            if (result) {
+                this.loadCities(); // Nếu cập nhật thành công thì load lại danh sách
+            }
         });
-      }
+    }
       
     ngOnInit(): void {
         this.loadCities();
