@@ -4,6 +4,7 @@ import { CityManagementComponent } from '../city/city-management.component';  //
 import { StationManagementComponent } from '../station/station-management.component';  // Import CityManagementComponent
 // import { CoachManagementComponent } from '../coach/coach-management.component';  // Import CityManagementComponent
 import { AccountManagementComponent } from '../account/account-management.component';  // Import CityManagementComponent
+import { ProfileManagementComponent } from '../profile/profile-management.component';  // Import CityManagementComponent
 
 export const adminRoutes: Routes = [
     {
@@ -13,9 +14,9 @@ export const adminRoutes: Routes = [
             {
                 path: 'system',
                 children: [
-                { path: 'city', component: CityManagementComponent },  // Thêm route cho CityManagementComponent
-                { path: 'station', component: StationManagementComponent },  // Thêm route cho CityManagementComponent
-                // { path: 'coach', component: CoachManagementComponent }  // Thêm route cho CityManagementComponent
+                    { path: 'city', component: CityManagementComponent },  // Thêm route cho CityManagementComponent
+                    { path: 'station', component: StationManagementComponent },  // Thêm route cho CityManagementComponent
+                    // { path: 'coach', component: CoachManagementComponent }  // Thêm route cho CityManagementComponent
 
                 ]
             },
@@ -25,7 +26,8 @@ export const adminRoutes: Routes = [
             {
                 path: 'user',
                 children: [
-                { path: 'account', component: AccountManagementComponent }, 
+                    { path: 'account', component: AccountManagementComponent },
+                    { path: 'profile', component: ProfileManagementComponent },
 
                 ]
             },

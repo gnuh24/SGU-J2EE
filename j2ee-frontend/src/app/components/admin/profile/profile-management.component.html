@@ -1,0 +1,60 @@
+<div class="management-layout mat-elevation-z2">
+    <h2>Quản lý hồ sơ</h2>
+
+    <!-- Tìm kiếm và lọc -->
+    <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+        <mat-form-field appearance="outline">
+            <mat-label>Tìm kiếm theo email</mat-label>
+            <input matInput [(ngModel)]="search" (keydown.enter)="loadProfiles()" placeholder="Nhập email..." />
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="loadProfiles()">Tìm kiếm</button>
+    </div>
+
+    <!-- Bảng -->
+    <table mat-table matSort [dataSource]="profiles" class="mat-elevation-z2" style="width: 100%; margin-top: 20px;">
+        <!-- ID -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+            <td mat-cell *matCellDef="let profile"> {{ profile.id }} </td>
+        </ng-container>
+
+        <!-- Fullname -->
+        <ng-container matColumnDef="fullname">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Họ và tên </th>
+            <td mat-cell *matCellDef="let profile"> {{ profile.fullname }} </td>
+        </ng-container>
+
+        <!-- Email -->
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+            <td mat-cell *matCellDef="let profile" [ngClass]="{'highlight': !profile.email}">
+                {{ profile.email ? profile.email : 'Chưa có tài khoản' }}
+            </td>
+        </ng-container>
+
+
+        <!-- Phone -->
+        <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Số điện thoại </th>
+            <td mat-cell *matCellDef="let profile"> {{ profile.phone }} </td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Thao tác </th>
+            <td mat-cell *matCellDef="let profile">
+                <!-- Thêm hành động như xem chi tiết hoặc chỉnh sửa profile ở đây nếu cần -->
+                <!-- <button mat-button (click)="viewProfile(profile.id)">Xem</button> -->
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Phân trang -->
+    <mat-paginator [length]="totalElements" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+        (page)="onPageChange($event)">
+    </mat-paginator>
+</div>
