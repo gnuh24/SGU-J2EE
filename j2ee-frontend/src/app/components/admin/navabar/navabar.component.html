@@ -1,25 +1,29 @@
 <div class="container-fluid position-relative bg-white d-flex p-0">
-    <div class="sidebar pe-4 pb-3" [ngClass]="{'open': isSidebarOpen}">
+    <div class="sidebar pe-4 pb-3">
         <nav class="navbar bg-light navbar-light">
             <a href="#" class="navbar-brand mx-4 mb-3">
                 <img class="" src="../../../../assets/img/LOGO/LOGO_1.png" alt="" style="width: 100%; height: 40px;">
             </a>
+
             <div class="d-flex align-items-center ms-4 mb-4">
                 <div class="position-relative">
-                    <img class="rounded-circle" src="assets/img/DEFAULT/default-user.png" alt="" style="width: 40px; height: 40px;">
-                    <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                    <img class="rounded-circle" src="assets/img/DEFAULT/default-user.png" alt=""
+                        style="width: 40px; height: 40px;">
+                    <div
+                        class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
+                    </div>
                 </div>
                 <div class="ms-3">
                     <h6 class="mb-0">ABC JOIN (Nhớ sửa Username)</h6>
                     <span>Quản trị viên</span>
                 </div>
             </div>
-            
+
             <div class="navbar-nav w-100">
                 <a routerLink="dashboard" routerLinkActive="active" class="nav-item nav-link">
                     <i class="fa fa-chart-line me-2"></i>Bảng điều khiển
                 </a>
-            
+
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="fa fa-cogs me-2"></i>Quản lý hệ thống
@@ -36,7 +40,7 @@
                         </a>
                     </div>
                 </div>
-            
+
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="fa fa-route me-2"></i>Quản lý chuyến đi
@@ -50,7 +54,7 @@
                         </a>
                     </div>
                 </div>
-            
+
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="fa fa-ticket-alt me-2"></i>Quản lý đặt vé
@@ -64,7 +68,7 @@
                         </a>
                     </div>
                 </div>
-            
+
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="fa fa-users me-2"></i>Quản lý người dùng
@@ -79,172 +83,19 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Nút đăng xuất -->
+            <div class="navbar-nav w-100 mt-auto">
+                <a routerLink="logout" routerLinkActive="active" class="nav-item nav-link">
+                    <i class="fa fa-sign-out-alt me-2"></i>Đăng xuất
+                </a>
+            </div>
         </nav>
     </div>
 
     <div class="content">
-        <!-- Navbar Start -->
-        <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-            <a class="navbar-brand d-flex d-lg-none me-4">
-                <img class="" src="../../../../assets/img/LOGO/LOGO_1.png" alt="" style="width: 100%; height: 40px;">
-            </a>
-            <a class="sidebar-toggler flex-shrink-0" (click)="toggleSidebar()">
-                <i class="fa fa-bars"></i>
-            </a>
-            <div class="navbar-nav align-items-center ms-auto">
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <img class="rounded-circle me-lg-2" src="assets/img/DEFAULT/default-user.png" alt="" style="width: 40px; height: 40px;">
-                        <span class="d-none d-lg-inline-flex">Nhớ sửa Username</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a class="dropdown-item" (click)="logout()">Đăng xuất</a>
-                    </div>
-                </div>
-            </div>
-        </nav>
         <!-- Navbar End -->
-
         <router-outlet></router-outlet>
-        
     </div>
+
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="path/to/your/util.js"></script>
-
-<script>
-    (function ($) {
-        "use strict";
-    
-        // Spinner
-        var spinner = function () {
-            setTimeout(function () {
-                if ($('#spinner').length > 0) {
-                    $('#spinner').removeClass('show');
-                }
-            }, 1);
-        };
-        spinner();
-        
-        
-        // Back to top button
-        $(window).scroll(function () {
-            if ($(this).scrollTop() > 300) {
-                $('.back-to-top').fadeIn('slow');
-            } else {
-                $('.back-to-top').fadeOut('slow');
-            }
-        });
-        $('.back-to-top').click(function () {
-            $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
-            return false;
-        });
-    
-    
-        // Sidebar Toggler
-        $('.sidebar-toggler').click(function () {
-            $('.sidebar, .content').toggleClass("open");
-            return false;
-        });
-    
-    
-        // Progress Bar
-        $('.pg-bar').waypoint(function () {
-            $('.progress .progress-bar').each(function () {
-                $(this).css("width", $(this).attr("aria-valuenow") + '%');
-            });
-        }, {offset: '80%'});
-    
-    
-        // Calender
-        $('#calender').datetimepicker({
-            inline: true,
-            format: 'L'
-        });
-    
-    
-        // Testimonials carousel
-        $(".testimonial-carousel").owlCarousel({
-            autoplay: true,
-            smartSpeed: 1000,
-            items: 1,
-            dots: true,
-            loop: true,
-            nav : false
-        });
-    
-    
-        // Worldwide Sales Chart
-        var ctx1 = $("#worldwide-sales").get(0).getContext("2d");
-        var myChart1 = new Chart(ctx1, {
-            type: "bar",
-            data: {
-                labels: ["2016", "2017", "2018", "2019", "2020", "2021", "2022"],
-                datasets: [{
-                        label: "USA",
-                        data: [15, 30, 55, 65, 60, 80, 95],
-                        backgroundColor: "rgba(0, 156, 255, .7)"
-                    },
-                    {
-                        label: "UK",
-                        data: [8, 35, 40, 60, 70, 55, 75],
-                        backgroundColor: "rgba(0, 156, 255, .5)"
-                    },
-                    {
-                        label: "AU",
-                        data: [12, 25, 45, 55, 65, 70, 60],
-                        backgroundColor: "rgba(0, 156, 255, .3)"
-                    }
-                ]
-            },
-            options: {
-                responsive: true
-            }
-        });
-    
-    
-        // Salse & Revenue Chart
-        var ctx2 = $("#salse-revenue").get(0).getContext("2d");
-        var myChart2 = new Chart(ctx2, {
-            type: "line",
-            data: {
-                labels: ["2016", "2017", "2018", "2019", "2020", "2021", "2022"],
-                datasets: [{
-                    label: "Sales",
-                    data: [10, 30, 45, 65, 75, 80, 95],
-                    borderColor: "rgba(0, 156, 255, 1)",
-                    fill: false
-                },
-                {
-                    label: "Revenue",
-                    data: [8, 25, 40, 50, 65, 70, 85],
-                    borderColor: "rgba(0, 156, 255, .5)",
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
-    
-    
-        // Monthly Recap Chart
-        var ctx3 = $("#monthly-recap").get(0).getContext("2d");
-        var myChart3 = new Chart(ctx3, {
-            type: "pie",
-            data: {
-                labels: ["Sales", "Revenue", "Profit"],
-                datasets: [{
-                    data: [30, 40, 30],
-                    backgroundColor: ["rgba(0, 156, 255, 1)", "rgba(0, 156, 255, .5)", "rgba(0, 156, 255, .3)"]
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
-    
-    })(jQuery);
-</script>

@@ -8,27 +8,27 @@ import { SocialAuthServiceConfig, GoogleLoginProvider, SocialAuthService } from 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }), 
-    provideRouter(routes), 
-    provideClientHydration(),
-    provideHttpClient(withFetch()),
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              '632729005032-l9atul83ab2ge9pbvfvh82idg90j7jed.apps.googleusercontent.com' 
-            )
-          }
-        ],
-        onError: (err: any) => {
-          console.error(err);
-        }
-      } as SocialAuthServiceConfig,
-    }, provideAnimationsAsync(),
-  ],
+    providers: [
+        provideZoneChangeDetection({ eventCoalescing: true }),
+        provideRouter(routes),
+        provideClientHydration(),
+        provideHttpClient(withFetch()),
+        {
+            provide: 'SocialAuthServiceConfig',
+            useValue: {
+                autoLogin: false,
+                providers: [
+                    {
+                        id: GoogleLoginProvider.PROVIDER_ID,
+                        provider: new GoogleLoginProvider(
+                            '632729005032-l9atul83ab2ge9pbvfvh82idg90j7jed.apps.googleusercontent.com'
+                        )
+                    }
+                ],
+                onError: (err: any) => {
+                    console.error(err);
+                }
+            } as SocialAuthServiceConfig,
+        }, provideAnimationsAsync(),
+    ],
 };

@@ -9,7 +9,8 @@ import { StationCreateFormComponent } from './station-create-form/station-create
 @Component({
     selector: 'app-station-management',
     templateUrl: './station-management.component.html',
-    styleUrls: ['./station-management.component.scss']
+    styleUrls: ['../admin-dashboard.scss'
+        , './station-management.component.scss']
 })
 export class StationManagementComponent implements OnInit, AfterViewInit {
     stations: any[] = [];
@@ -25,7 +26,7 @@ export class StationManagementComponent implements OnInit, AfterViewInit {
 
     displayedColumns: string[] = ['id', 'name', 'address', 'coordinates', 'city', 'status', 'createdAt', 'updatedAt', 'actions'];
 
-    constructor(private stationService: StationService, private dialog: MatDialog) {}
+    constructor(private stationService: StationService, private dialog: MatDialog) { }
 
     openCreateStationDialog() {
         const dialogRef = this.dialog.open(StationCreateFormComponent);

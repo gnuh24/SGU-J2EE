@@ -1,16 +1,11 @@
-<div class="city-management mat-elevation-z2" style="padding: 16px;">
+<div class="management-layout mat-elevation-z2">
     <h2>Quản lý thành phố</h2>
 
     <!-- Tìm kiếm & lọc -->
     <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
         <mat-form-field appearance="outline">
             <mat-label>Tìm kiếm theo tên</mat-label>
-            <input
-                matInput
-                [(ngModel)]="search"
-                (keydown.enter)="loadCities()"
-                placeholder="Nhập tên thành phố..."
-            />
+            <input matInput [(ngModel)]="search" (keydown.enter)="loadCities()" placeholder="Nhập tên thành phố..." />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
@@ -76,15 +71,9 @@
     </table>
 
     <!-- Phân trang -->
-    <mat-paginator
-        [length]="totalElements"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="[5, 10, 20]"
+    <mat-paginator [length]="totalElements" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
         (page)="onPageChange($event)">
     </mat-paginator>
-  
+
 
 </div>
-
-
-

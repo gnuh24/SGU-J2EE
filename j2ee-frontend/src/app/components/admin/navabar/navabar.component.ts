@@ -6,19 +6,13 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 @Component({
   selector: 'app-navabar',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, CommonModule,RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, CommonModule, RouterLinkActive],
   templateUrl: './navabar.component.html',
   styleUrl: './navabar.component.css'
 })
 export class NavabarComponent {
-  isSidebarOpen = false;
-  // CurrentUser: GetCurrentUserResponse = new GetCurrentUserResponse();
 
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-  }
-
-  constructor( @Inject(PLATFORM_ID) private platformId: Object, private router: Router){}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private router: Router) { }
 
   // localstore(){
   //   if (isPlatformBrowser(this.platformId)) {

@@ -67,7 +67,7 @@
 
 /*** Layout ***/
 .sidebar {
-    position: fixed;
+    /* position: fixed; */
     top: 0;
     left: 0;
     bottom: 0;
@@ -80,51 +80,15 @@
 }
 
 .content {
-    margin-left: 250px;
+    /* margin-left: 250px; */
     min-height: 100vh;
+    width: 100%;
     background: #FFFFFF;
     transition: 0.5s;
 }
 
 .flex-shrink-0{
     display: none !important;
-}
-
-@media (min-width: 992px) {
-    .sidebar {
-        margin-left: 0;
-    }
-
-    .sidebar.open {
-        margin-left: -250px;
-    }
-
-    .content {
-        width: calc(100% - 250px);
-    }
-
-    .content.open {
-        width: 100%;
-        margin-left: 0;
-    }
-}
-
-@media (max-width: 991.98px) {
-    .flex-shrink-0{
-        display: flex !important;
-    }
-    .sidebar {
-        margin-left: -250px;
-    }
-
-    .sidebar.open {
-        margin-left: 0;
-    }
-
-    .content {
-        width: 100%;
-        margin-left: 0;
-    }
 }
 
 
@@ -266,15 +230,6 @@
     transform: rotate(-180deg);
 }
 
-@media (max-width: 575.98px) {
-    .flex-shrink-0{
-        display: flex !important;
-    }
-    .content .navbar .navbar-nav .nav-link {
-        margin-left: 15px;
-    }
-}
-
 
 /*** Date Picker ***/
 .bootstrap-datetimepicker-widget.bottom {
@@ -334,4 +289,7 @@
     background: var(--dark);
     border-color: var(--primary);
 }
+
+
+
 

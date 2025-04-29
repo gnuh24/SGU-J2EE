@@ -7,7 +7,8 @@ import Swal from 'sweetalert2';
 @Component({
     selector: 'app-account-management',
     templateUrl: './account-management.component.html',
-    styleUrls: ['./account-management.component.scss']
+    styleUrls: ['../admin-dashboard.scss'
+        , './account-management.component.scss']
 })
 export class AccountManagementComponent implements OnInit, AfterViewInit {
     accounts: any[] = [];

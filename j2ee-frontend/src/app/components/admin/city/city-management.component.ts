@@ -9,7 +9,8 @@ import { CityCreateFormComponent } from './city-create-form/city-create-form.com
 @Component({
     selector: 'app-city-management',
     templateUrl: './city-management.component.html',
-    styleUrls: ['./city-management.component.scss']
+    styleUrls: ['../admin-dashboard.scss',
+        './city-management.component.scss']
 })
 export class CityManagementComponent implements OnInit, AfterViewInit {
     cities: any[] = [];
@@ -25,11 +26,11 @@ export class CityManagementComponent implements OnInit, AfterViewInit {
 
     displayedColumns: string[] = ['id', 'name', 'status', 'createdAt', 'updatedAt', 'actions'];
 
-    constructor(private cityService: CityService, private dialog: MatDialog) {}
+    constructor(private cityService: CityService, private dialog: MatDialog) { }
 
     openCreateCityDialog() {
         const dialogRef = this.dialog.open(CityCreateFormComponent);
-      
+
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.loadCities(); // Nếu tạo thành công thì load lại danh sách
@@ -41,14 +42,14 @@ export class CityManagementComponent implements OnInit, AfterViewInit {
         const dialogRef = this.dialog.open(CityUpdateFormComponent, {
             data: city
         });
-      
+
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.loadCities(); // Nếu cập nhật thành công thì load lại danh sách
             }
         });
     }
-      
+
     ngOnInit(): void {
         this.loadCities();
     }
