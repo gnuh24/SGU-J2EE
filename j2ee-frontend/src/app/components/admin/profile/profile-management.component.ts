@@ -1,25 +1,21 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { ProfileService } from '../../../services/profile.service'; // Sử dụng ProfileService thay cho AccountService
+import { Component, OnInit } from '@angular/core';
+import { ProfileService } from '../../../services/profile.service';
 import { PageEvent } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
-import Swal from 'sweetalert2';
+import { Sort } from '@angular/material/sort';
 
 @Component({
     selector: 'app-profile-management',
     templateUrl: './profile-management.component.html',
     styleUrls: ['../admin-dashboard.scss', './profile-management.component.scss']
 })
-export class ProfileManagementComponent implements OnInit, AfterViewInit {
+export class ProfileManagementComponent implements OnInit {
     profiles: any[] = [];
     pageSize: number = 5;
     pageNumber: number = 1;
     totalElements: number = 0;
     totalPages: number = 0;
     search: string = '';
-    status: string = ''; // Trạng thái có thể thay đổi trong trường hợp profile có trạng thái
     sort: string = 'id,asc';
-
-    @ViewChild(MatSort) sortHeader!: MatSort;
 
     displayedColumns: string[] = ['id', 'fullname', 'email', 'phone', 'actions'];
 
@@ -27,14 +23,6 @@ export class ProfileManagementComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         this.loadProfiles();
-    }
-
-    ngAfterViewInit(): void {
-        this.sortHeader.sortChange.subscribe((sort: Sort) => {
-            this.sort = `${sort.active},${sort.direction}`;
-            this.pageNumber = 1;
-            this.loadProfiles();
-        });
     }
 
     loadProfiles(): void {
@@ -53,6 +41,13 @@ export class ProfileManagementComponent implements OnInit, AfterViewInit {
     onPageChange(event: PageEvent): void {
         this.pageNumber = event.pageIndex + 1;
         this.pageSize = event.pageSize;
+        this.loadProfiles();
+    }
+
+    onSortChange(sort: Sort): void {
+        console.log('Sort changed:', sort);
+        this.sort = `${sort.active},${sort.direction}`;
+        this.pageNumber = 1;
         this.loadProfiles();
     }
 }

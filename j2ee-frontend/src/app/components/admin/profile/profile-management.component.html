@@ -12,7 +12,8 @@
     </div>
 
     <!-- Bảng -->
-    <table mat-table matSort [dataSource]="profiles" class="mat-elevation-z2" style="width: 100%; margin-top: 20px;">
+    <table mat-table matSort (matSortChange)="onSortChange($event)" [dataSource]="profiles" class="mat-elevation-z2"
+        style="width: 100%; margin-top: 20px;">
         <!-- ID -->
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
@@ -28,11 +29,10 @@
         <!-- Email -->
         <ng-container matColumnDef="email">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-            <td mat-cell *matCellDef="let profile" [ngClass]="{'highlight': !profile.email}">
+            <td mat-cell *matCellDef="let profile" [ngClass]="{ 'highlight': !profile.email }">
                 {{ profile.email ? profile.email : 'Chưa có tài khoản' }}
             </td>
         </ng-container>
-
 
         <!-- Phone -->
         <ng-container matColumnDef="phone">
@@ -43,10 +43,7 @@
         <!-- Actions -->
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Thao tác </th>
-            <td mat-cell *matCellDef="let profile">
-                <!-- Thêm hành động như xem chi tiết hoặc chỉnh sửa profile ở đây nếu cần -->
-                <!-- <button mat-button (click)="viewProfile(profile.id)">Xem</button> -->
-            </td>
+            <td mat-cell *matCellDef="let profile"></td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -55,6 +52,5 @@
 
     <!-- Phân trang -->
     <mat-paginator [length]="totalElements" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
-        (page)="onPageChange($event)">
-    </mat-paginator>
+        (page)="onPageChange($event)"></mat-paginator>
 </div>

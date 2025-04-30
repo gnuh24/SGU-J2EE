@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CityService } from '../../../services/city.service';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -12,7 +12,7 @@ import { CityCreateFormComponent } from './city-create-form/city-create-form.com
     styleUrls: ['../admin-dashboard.scss',
         './city-management.component.scss']
 })
-export class CityManagementComponent implements OnInit, AfterViewInit {
+export class CityManagementComponent implements OnInit {
     cities: any[] = [];
     pageSize: number = 5;
     pageNumber: number = 1;
@@ -22,7 +22,6 @@ export class CityManagementComponent implements OnInit, AfterViewInit {
     status: string = '';
     sort: string = "id,asc";
 
-    @ViewChild(MatSort) sortHeader!: MatSort;
 
     displayedColumns: string[] = ['id', 'name', 'status', 'createdAt', 'updatedAt', 'actions'];
 
@@ -54,14 +53,10 @@ export class CityManagementComponent implements OnInit, AfterViewInit {
         this.loadCities();
     }
 
-    ngAfterViewInit(): void {
-        this.sortHeader.sortChange.subscribe((sort: Sort) => {
-            console.log("Sort Header: ", this.sortHeader);
-            console.log(sort);
-            this.sort = `${sort.active},${sort.direction}`;
-            this.pageNumber = 1;
-            this.loadCities();
-        });
+    onSortChange(sort: Sort): void {
+        this.sort = `${sort.active},${sort.direction}`;
+        this.pageNumber = 1;
+        this.loadCities();
     }
 
     loadCities() {

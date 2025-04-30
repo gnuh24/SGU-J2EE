@@ -24,7 +24,8 @@
     </div>
 
     <!-- Bảng -->
-    <table mat-table matSort [dataSource]="stations" class="mat-elevation-z2" style="width: 100%; margin-top: 20px;">
+    <table mat-table matSort (matSortChange)="onSortChange($event)" [dataSource]="stations" class="mat-elevation-z2"
+        style="width: 100%; margin-top: 20px;">
         <!-- ID -->
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>

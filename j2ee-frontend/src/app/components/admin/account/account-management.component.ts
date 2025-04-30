@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../../services/account.service';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
     styleUrls: ['../admin-dashboard.scss'
         , './account-management.component.scss']
 })
-export class AccountManagementComponent implements OnInit, AfterViewInit {
+export class AccountManagementComponent implements OnInit {
     accounts: any[] = [];
     pageSize: number = 5;
     pageNumber: number = 1;
@@ -20,8 +20,6 @@ export class AccountManagementComponent implements OnInit, AfterViewInit {
     status: string = '';
     sort: string = 'id,asc';
 
-    @ViewChild(MatSort) sortHeader!: MatSort;
-
     displayedColumns: string[] = ['id', 'email', 'role', 'createdAt', 'actions'];
 
     constructor(private accountService: AccountService) { }
@@ -30,18 +28,16 @@ export class AccountManagementComponent implements OnInit, AfterViewInit {
         this.loadAccounts();
     }
 
-    ngAfterViewInit(): void {
-        this.sortHeader.sortChange.subscribe((sort: Sort) => {
-            this.sort = `${sort.active},${sort.direction}`;
-            this.pageNumber = 1;
-            this.loadAccounts();
-        });
+    onSortChange(sort: Sort): void {
+        this.sort = `${sort.active},${sort.direction}`;
+        this.pageNumber = 1;
+        this.loadAccounts();
     }
+
 
     loadAccounts(): void {
         this.accountService.getAccounts(this.pageSize, this.pageNumber, this.sort, this.search, this.status).subscribe(
             (response) => {
-                console.log('Tải danh sách account thành công:', response);
                 this.accounts = response.data.content;
                 this.totalElements = response.data.totalElements;
                 this.totalPages = response.data.totalPages;
@@ -57,6 +53,7 @@ export class AccountManagementComponent implements OnInit, AfterViewInit {
         this.pageSize = event.pageSize;
         this.loadAccounts();
     }
+
     onStatusChange(account: any, newStatus: 'ACTIVE' | 'INACTIVE' | 'BANNED'): void {
         const statusMap: { [key: string]: string } = {
             ACTIVE: 'Đang hoạt động',

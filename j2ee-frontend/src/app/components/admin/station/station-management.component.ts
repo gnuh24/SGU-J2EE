@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { StationService } from '../../../services/station.service';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -12,7 +12,7 @@ import { StationCreateFormComponent } from './station-create-form/station-create
     styleUrls: ['../admin-dashboard.scss'
         , './station-management.component.scss']
 })
-export class StationManagementComponent implements OnInit, AfterViewInit {
+export class StationManagementComponent implements OnInit {
     stations: any[] = [];
     pageSize: number = 5;
     pageNumber: number = 1;
@@ -22,7 +22,6 @@ export class StationManagementComponent implements OnInit, AfterViewInit {
     status: string = '';
     sort: string = "id,asc";
 
-    @ViewChild(MatSort) sortHeader!: MatSort;
 
     displayedColumns: string[] = ['id', 'name', 'address', 'coordinates', 'city', 'status', 'createdAt', 'updatedAt', 'actions'];
 
@@ -54,13 +53,7 @@ export class StationManagementComponent implements OnInit, AfterViewInit {
         this.loadStations();
     }
 
-    ngAfterViewInit(): void {
-        this.sortHeader.sortChange.subscribe((sort: Sort) => {
-            this.sort = `${sort.active},${sort.direction}`;
-            this.pageNumber = 1;
-            this.loadStations();
-        });
-    }
+
 
     loadStations() {
         this.stationService.getStations(this.pageSize, this.pageNumber, this.sort, this.search, this.status).subscribe(
@@ -73,6 +66,12 @@ export class StationManagementComponent implements OnInit, AfterViewInit {
                 console.error('Có lỗi khi gọi API Station: ', error);
             }
         );
+    }
+
+    onSortChange(sort: Sort): void {
+        this.sort = `${sort.active},${sort.direction}`;
+        this.pageNumber = 1;
+        this.loadStations();
     }
 
     onPageChange(event: PageEvent) {
