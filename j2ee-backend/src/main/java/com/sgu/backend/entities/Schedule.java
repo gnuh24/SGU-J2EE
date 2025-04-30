@@ -21,7 +21,7 @@ public class Schedule {
     private String id = IdGenerator.generateId(); // Ví dụ: SC001
 
     @ManyToOne
-    @JoinColumn(name = "route_id", nullable = false)
+    @JoinColumn(name = "routeId", nullable = false)
     private Route route;
 
     @Column(nullable = false)

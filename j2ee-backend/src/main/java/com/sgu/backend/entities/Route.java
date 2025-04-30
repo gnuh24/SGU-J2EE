@@ -1,9 +1,7 @@
 package com.sgu.backend.entities;
 
 import com.sgu.backend.utils.IdGenerator;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,7 +31,22 @@ public class Route {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private RouteStatus status;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "departureStationId", nullable = false)
+    private CoachStation departureStation;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "arrivalStationId", nullable = false)
+    private CoachStation arrivalStation;
+    public enum RouteStatus {
+        ACTIVE,
+        INACTIVE,
+        MAINTENANCE
+    }
 }

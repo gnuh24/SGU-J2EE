@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class InvoiceCreateForm {
     @NotNull
-    private String accountId;
+    private String profileId;
 
     @NotNull
     private Double totalAmount;

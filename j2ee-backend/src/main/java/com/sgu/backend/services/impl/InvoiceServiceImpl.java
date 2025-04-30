@@ -7,8 +7,10 @@ import com.sgu.backend.dto.response.invoice.InvoiceResponseDTO;
 import com.sgu.backend.dto.response.ticket.TicketResponseDTO;
 import com.sgu.backend.entities.Account;
 import com.sgu.backend.entities.Invoice;
+import com.sgu.backend.entities.Profile;
 import com.sgu.backend.repositories.AccountRepository;
 import com.sgu.backend.repositories.InvoiceRepository;
+import com.sgu.backend.repositories.ProfileRepository;
 import com.sgu.backend.services.InvoiceService;
 import com.sgu.backend.specifications.InvoiceSpecification;
 import com.sgu.backend.utils.IdGenerator;
@@ -26,7 +28,7 @@ import java.util.stream.Collectors;
 public class InvoiceServiceImpl implements InvoiceService {
 
     private final InvoiceRepository invoiceRepository;
-    private final AccountRepository accountRepository;
+    private final ProfileRepository profileRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -36,9 +38,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setIssuedAt(LocalDateTime.now());
         invoice.setTotalAmount(form.getTotalAmount());
 
-        Account account = accountRepository.findById(form.getAccountId())
+        Profile profile = profileRepository.findById(form.getProfileId())
                 .orElseThrow(() -> new RuntimeException("Account not found"));
-        invoice.setAccount(account);
+        invoice.setProfile(profile);
 
         invoiceRepository.save(invoice);
         return convertToDto(invoice);
@@ -68,13 +70,18 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public Page<InvoiceResponseDTO> getAll(Pageable pageable, InvoiceFilter filter) {
         Page<Invoice> invoices = invoiceRepository.findAll(InvoiceSpecification.filter(filter), pageable);
-        return invoices.map(this::convertToDto);
+        return invoices.map(invoice -> {
+            InvoiceResponseDTO dto = modelMapper.map(invoice, InvoiceResponseDTO.class);
+            dto.setProfileId(invoice.getProfile().getId());
+            dto.setProfileUsername(invoice.getProfile().getFullname());
+            return dto;
+        });
     }
 
     private InvoiceResponseDTO convertToDto(Invoice invoice) {
         InvoiceResponseDTO dto = modelMapper.map(invoice, InvoiceResponseDTO.class);
-        dto.setAccountId(invoice.getAccount().getId());
-        dto.setAccountUsername(invoice.getAccount().getUsername());
+        dto.setProfileId(invoice.getProfile().getId());
+        dto.setProfileUsername(invoice.getProfile().getFullname());
 
         if (invoice.getTickets() != null) {
             dto.setTickets(invoice.getTickets().stream()

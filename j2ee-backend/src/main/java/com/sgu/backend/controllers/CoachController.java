@@ -84,7 +84,7 @@ public class CoachController {
      */
     @Operation(summary = "Lọc danh sách coach", description = "Hỗ trợ phân trang và lọc theo type, status, capacity...")
     @GetMapping()
-    public ResponseEntity<ApiResponse<Page<CoachResponseDTO>>> filterCoaches(Pageable pageable, @RequestBody CoachFilter filter) {
+    public ResponseEntity<ApiResponse<Page<CoachResponseDTO>>> filterCoaches(Pageable pageable,  CoachFilter filter) {
         Page<CoachResponseDTO> result = coachService.filter(pageable, filter);
 
         return ResponseEntity.ok(new ApiResponse<>(200, "Lọc danh sách coach thành công", result));

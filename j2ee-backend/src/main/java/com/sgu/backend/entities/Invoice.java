@@ -18,8 +18,8 @@ public class Invoice {
     private String id = IdGenerator.generateId();
 
     @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    @JoinColumn(name = "profileId", nullable = false)
+    private Profile profile;
 
     @Column(nullable = false)
     private LocalDateTime issuedAt;

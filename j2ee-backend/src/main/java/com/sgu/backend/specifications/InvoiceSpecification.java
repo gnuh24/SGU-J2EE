@@ -7,15 +7,22 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class InvoiceSpecification {
 
     public static Specification<Invoice> filter(InvoiceFilter filter) {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if (filter.getAccountId() != null) {
-                predicates.add(cb.equal(root.get("account").get("id"), filter.getAccountId()));
+            if (filter.getProfileId() != null) {
+                predicates.add(cb.equal(root.get("profile").get("id"), filter.getProfileId()));
+            }
+
+            if (filter.getProfileName() != null) {
+                predicates.add(cb.like(cb.lower(root.get("profile").get("fullname")), "%" + filter.getProfileName().toLowerCase() + "%"));
+            }
+
+            if (filter.getProfilePhone() != null) {
+                predicates.add(cb.like(cb.lower(root.get("profile").get("phone")), "%" + filter.getProfilePhone().toLowerCase() + "%"));
             }
 
             if (filter.getFromDate() != null) {

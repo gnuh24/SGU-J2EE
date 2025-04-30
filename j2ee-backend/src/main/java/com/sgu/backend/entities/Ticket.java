@@ -15,15 +15,15 @@ public class Ticket {
     private String id = IdGenerator.generateId();
 
     @ManyToOne
-    @JoinColumn(name = "schedule_id", nullable = false)
+    @JoinColumn(name = "scheduleId", nullable = false)
     private Schedule schedule;
 
     @ManyToOne
-    @JoinColumn(name = "seat_id", nullable = false)
+    @JoinColumn(name = "seatId", nullable = false)
     private Seat seat;
 
     @ManyToOne
-    @JoinColumn(name = "invoice_id")
+    @JoinColumn(name = "invoiceId")
     private Invoice invoice;
 
     @Column(nullable = false)

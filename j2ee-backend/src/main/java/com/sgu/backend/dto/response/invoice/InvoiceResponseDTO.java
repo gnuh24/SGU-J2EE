@@ -10,8 +10,8 @@ import java.util.List;
 
 public class InvoiceResponseDTO {
     private String id;
-    private String accountId;
-    private String accountUsername; // hoặc email tuỳ bạn muốn hiển thị gì
+    private String profileId;
+    private String profileUsername; // hoặc email tuỳ bạn muốn hiển thị gì
 
     private String issuedAt;
     private Double totalAmount;

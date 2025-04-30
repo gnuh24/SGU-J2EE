@@ -56,7 +56,7 @@ public class ProfileServiceImpl implements ProfileService {
     public Profile createProfile(ProfileCreateForm form, Account account) {
 
 	Profile profile = modelMapper.map(form, Profile.class);
-	profile.setAccount(account);
+
 	profile = profileRepository.save(profile);
 	return profile;
     }
