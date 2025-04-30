@@ -12,9 +12,13 @@ public class CoachSpecification {
         return (root, query, cb) -> {
             Predicate predicate = cb.conjunction();
 
-            if (filter.getType() != null) {
-                predicate = cb.and(predicate, cb.like(cb.lower(root.get("type")), "%" + filter.getType().toLowerCase() + "%"));
+            if (filter.getSearch() != null) {
+                predicate = cb.and(predicate, cb.like(cb.lower(root.get("type")), "%" + filter.getSearch().toLowerCase() + "%"));
+                predicate = cb.or(predicate, cb.like(cb.lower(root.get("licensePlate")), "%" + filter.getSearch().toLowerCase() + "%"));
+
             }
+
+
 
 
 

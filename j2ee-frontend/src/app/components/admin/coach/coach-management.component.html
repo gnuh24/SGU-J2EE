@@ -1,1 +1,93 @@
-<p>coach-dashboard works!</p>
+<div class="management-layout mat-elevation-z2">
+    <h2>Quản lý xe khách</h2>
+
+    <!-- Bộ lọc -->
+    <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+        <mat-form-field appearance="outline">
+            <mat-label>Tìm kiếm theo biển số</mat-label>
+            <input matInput [(ngModel)]="search" (keydown.enter)="loadCoaches()" placeholder="Nhập biển số xe..." />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Trạng thái</mat-label>
+            <mat-select [(ngModel)]="status" (selectionChange)="loadCoaches()">
+                <mat-option value="">Tất cả</mat-option>
+                <mat-option value="ACTIVE">Đang hoạt động</mat-option>
+                <mat-option value="INACTIVE">Tạm dừng</mat-option>
+                <mat-option value="MAINTENANCE">Đang bảo trì</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <button mat-raised-button color="primary" (click)="loadCoaches()">Tìm kiếm</button>
+        <button mat-raised-button color="accent" (click)="openCreateCoachDialog()">Thêm</button>
+    </div>
+
+    <!-- Bảng dữ liệu -->
+    <table mat-table matSort (matSortChange)="onSortChange($event)" [dataSource]="coaches" class="mat-elevation-z2"
+        style="width: 100%; margin-top: 20px;">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+            <td mat-cell *matCellDef="let coach"> {{ coach.id }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="licensePlate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Biển số </th>
+            <td mat-cell *matCellDef="let coach"> {{ coach.licensePlate }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Loại xe </th>
+            <td mat-cell *matCellDef="let coach"> {{ coach.type }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="capacity">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Sức chứa </th>
+            <td mat-cell *matCellDef="let coach"> {{ coach.capacity }} chỗ </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Trạng thái </th>
+            <td mat-cell *matCellDef="let coach">
+                <span [ngClass]="{
+                    'text-green': coach.status === 'ACTIVE',
+                    'text-red': coach.status === 'INACTIVE',
+                    'text-orange': coach.status === 'MAINTENANCE'
+                  }">
+                    {{
+                    coach.status === 'ACTIVE' ? 'Đang hoạt động' :
+                    coach.status === 'INACTIVE' ? 'Tạm dừng' :
+                    coach.status === 'MAINTENANCE' ? 'Đang bảo trì' : ''
+                    }}
+                </span>
+            </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày tạo </th>
+            <td mat-cell *matCellDef="let coach"> {{ coach.createdAt | date: 'HH:mm:ss dd/MM/yyyy' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="updatedAt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày cập nhật </th>
+            <td mat-cell *matCellDef="let coach"> {{ coach.updatedAt | date: 'HH:mm:ss dd/MM/yyyy' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Hành động </th>
+            <td mat-cell *matCellDef="let coach">
+                <button mat-button (click)="updateCoachInfo(coach)">Cập nhật</button>
+                <!-- <button mat-button color="warn" (click)="deleteCoach(coach.id)">Xoá</button> -->
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Phân trang -->
+    <mat-paginator [length]="totalElements" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+        (page)="onPageChange($event)">
+    </mat-paginator>
+</div>
