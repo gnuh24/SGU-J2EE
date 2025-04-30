@@ -48,7 +48,7 @@ public class ScheduleController {
     }
 
     @Operation(summary = "Cập nhật lịch trình")
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<ScheduleResponseDTO>> update(@PathVariable String id, @RequestBody @Valid ScheduleUpdateForm form) {
         ScheduleResponseDTO updated = scheduleService.update(id, form);
         return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật lịch trình thành công", updated));
