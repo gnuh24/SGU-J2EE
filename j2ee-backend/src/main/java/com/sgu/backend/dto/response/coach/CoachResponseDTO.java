@@ -1,9 +1,11 @@
 package com.sgu.backend.dto.response.coach;
 
+import com.sgu.backend.dto.response.seat.SeatResponseDTO;
 import com.sgu.backend.entities.Coach;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class CoachResponseDTO {
@@ -14,4 +16,5 @@ public class CoachResponseDTO {
     private Coach.CoachStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private List<SeatResponseDTO> seatResponseDTO;
 }

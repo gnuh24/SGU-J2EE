@@ -20,4 +20,5 @@ public interface SeatService {
     List<SeatResponseDTO> getById(String id);
     List<Seat> createMany(List<SeatCreateForm> seatForms, Coach coach);
 
+
 }

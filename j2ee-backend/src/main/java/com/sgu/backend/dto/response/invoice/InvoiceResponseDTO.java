@@ -13,7 +13,7 @@ public class InvoiceResponseDTO {
     private String accountId;
     private String accountUsername; // hoặc email tuỳ bạn muốn hiển thị gì
 
-    private LocalDateTime issuedAt;
+    private String issuedAt;
     private Double totalAmount;
 
     private List<TicketResponseDTO> tickets;

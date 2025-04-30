@@ -7,8 +7,10 @@ import com.sgu.backend.dto.request.coach.CoachCreateForm;
 import com.sgu.backend.dto.request.coach.CoachFilter;
 import com.sgu.backend.dto.request.coach.CoachUpdateForm;
 import com.sgu.backend.dto.response.coach.CoachResponseDTO;
+import com.sgu.backend.dto.response.seat.SeatResponseDTO;
 import com.sgu.backend.entities.Coach;
 import com.sgu.backend.services.CoachService;
+import com.sgu.backend.services.SeatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -19,6 +21,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/coaches")
 @RequiredArgsConstructor
@@ -28,6 +32,7 @@ public class CoachController {
 
     private final CoachService coachService;
     private final ModelMapper modelMapper;
+    private final SeatService seatService;
 
     /**
      * 📌 Tạo mới Coach
@@ -68,6 +73,8 @@ public class CoachController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<CoachResponseDTO>> getCoachById(@PathVariable String id) {
         CoachResponseDTO dto  = coachService.getById(id);
+        List<SeatResponseDTO> seatResponseDTOS=seatService.getById(id);
+        dto.setSeatResponseDTO(seatResponseDTOS);
 
         return ResponseEntity.ok(new ApiResponse<>(200, "Lấy coach thành công", dto));
     }

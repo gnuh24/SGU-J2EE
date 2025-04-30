@@ -10,9 +10,9 @@ import java.time.LocalTime;
 public class ScheduleResponseDTO {
     private String id;
     private String routeId;
-    private LocalTime departureTime;
-    private LocalTime arrivalTime;
+    private String departureTime;
+    private String arrivalTime;
     private Schedule.Status status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String createdAt;
+    private String updatedAt;
 }
