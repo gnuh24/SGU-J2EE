@@ -31,9 +31,9 @@ public class Ticket {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TicketStatus status;
+    private TicketStatus status = TicketStatus.BOOKED;
 
     public enum TicketStatus {
-        BOOKED, CANCELED, USED
+        BOOKED, CANCELLED, USED
     }
 }

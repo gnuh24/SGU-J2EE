@@ -8,15 +8,7 @@
             <input matInput [(ngModel)]="search" (keydown.enter)="loadAccounts()" placeholder="Nhập email..." />
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Trạng thái</mat-label>
-            <mat-select [(ngModel)]="status" (selectionChange)="loadAccounts()">
-                <mat-option value="">Tất cả</mat-option>
-                <mat-option value="ACTIVE">Đang hoạt động</mat-option>
-                <mat-option value="INACTIVE">Ngưng hoạt động</mat-option>
-                <mat-option value="BANNED">Bị khóa</mat-option>
-            </mat-select>
-        </mat-form-field>
+
 
         <button mat-raised-button color="primary" (click)="loadAccounts()">Tìm kiếm</button>
     </div>
@@ -48,23 +40,41 @@
             <td mat-cell *matCellDef="let acc"> {{ acc.createdAt | date: 'HH:mm:ss dd/MM/yyyy' }} </td>
         </ng-container>
 
+
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Trạng thái </th>
             <td mat-cell *matCellDef="let acc">
                 <!-- Nếu tài khoản là admin, hiển thị thông báo rằng không thể thay đổi trạng thái -->
-                <span *ngIf="acc.role === 'ADMIN'">
-                    Admin
-                </span>
+                <span *ngIf="acc.role === 'ADMIN'">Admin</span>
 
-                <!-- Nếu không phải admin, hiển thị combobox để thay đổi trạng thái -->
+                <!-- Nếu không phải admin, hiển thị select với màu theo trạng thái -->
                 <mat-select *ngIf="acc.role !== 'ADMIN'" [value]="acc.status"
-                    (selectionChange)="onStatusChange(acc, $event.value)">
+                    (selectionChange)="onStatusChange(acc, $event.value)" class="custom-select">
+                    <mat-select-trigger>
+                        <span [ngClass]="{
+                      'text-green': acc.status === 'ACTIVE',
+                      'text-orange': acc.status === 'INACTIVE',
+                      'text-red': acc.status === 'BANNED'
+                    }">
+                            {{
+                            acc.status === 'ACTIVE'
+                            ? 'Đang hoạt động'
+                            : acc.status === 'INACTIVE'
+                            ? 'Ngừng hoạt động'
+                            : acc.status === 'BANNED'
+                            ? 'Bị khóa'
+                            : ''
+                            }}
+                        </span>
+                    </mat-select-trigger>
+
                     <mat-option value="ACTIVE">Đang hoạt động</mat-option>
                     <mat-option value="INACTIVE">Ngừng hoạt động</mat-option>
                     <mat-option value="BANNED">Bị khóa</mat-option>
                 </mat-select>
             </td>
         </ng-container>
+
 
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

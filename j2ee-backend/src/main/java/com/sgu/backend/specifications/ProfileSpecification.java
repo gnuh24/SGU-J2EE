@@ -33,6 +33,10 @@ public class ProfileSpecification implements Specification<Profile> {
 	if (field.equalsIgnoreCase("fullname")) {
 	    return criteriaBuilder.like(root.get("fullname"), "%" + value + "%");
 	}
+		
+		if (field.equalsIgnoreCase("phone")) {
+			return criteriaBuilder.like(root.get("phone"), "%" + value + "%");
+		}
 
 	return null;
     }
@@ -46,8 +50,9 @@ public class ProfileSpecification implements Specification<Profile> {
 
 	    ProfileSpecification email = new ProfileSpecification("email", search);
 	    ProfileSpecification fullname = new ProfileSpecification("fullname", search);
+		ProfileSpecification phone = new ProfileSpecification("phone", search);
 
-	    where = Specification.where(email).or(fullname);
+	    where = Specification.where(email).or(fullname).or(phone);
 	}
 
 	if (form != null) {
