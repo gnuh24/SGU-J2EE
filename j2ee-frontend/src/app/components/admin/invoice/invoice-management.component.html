@@ -1,1 +1,64 @@
-<p>invoice-management works!</p>
+<div class="management-layout mat-elevation-z2">
+    <h2>Quản lý hóa đơn</h2>
+
+    <!-- Tìm kiếm -->
+    <div style="display: flex; gap: 16px; align-items: center;">
+        <mat-form-field appearance="outline">
+            <mat-label>Tìm kiếm theo tên khách hàng</mat-label>
+            <input matInput [(ngModel)]="search" (keydown.enter)="loadInvoices()"
+                placeholder="Nhập tên khách hàng..." />
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="loadInvoices()">Tìm kiếm</button>
+    </div>
+
+    <!-- Bảng dữ liệu -->
+    <table mat-table matSort (matSortChange)="onSortChange($event)" [dataSource]="invoices" class="mat-elevation-z2"
+        style="width: 100%; margin-top: 20px;">
+        <!-- ID -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Mã hoá đơn </th>
+            <td mat-cell *matCellDef="let invoice"> {{ invoice.id }} </td>
+        </ng-container>
+
+        <!-- Tên khách hàng -->
+        <ng-container matColumnDef="profileName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tên khách hàng </th>
+            <td mat-cell *matCellDef="let invoice"> {{ invoice.profileName }} </td>
+        </ng-container>
+
+        <!-- Số điện thoại -->
+        <ng-container matColumnDef="profilePhone">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> SĐT </th>
+            <td mat-cell *matCellDef="let invoice"> {{ invoice.profilePhone }} </td>
+        </ng-container>
+
+        <!-- Tổng tiền -->
+        <ng-container matColumnDef="totalAmount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tổng tiền </th>
+            <td mat-cell *matCellDef="let invoice"> {{ invoice.totalAmount | number:'1.0-0' }} đ </td>
+        </ng-container>
+
+        <!-- Ngày tạo -->
+        <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày tạo </th>
+            <td mat-cell *matCellDef="let invoice"> {{ invoice.createdAt | date: 'HH:mm:ss dd/MM/yyyy' }} </td>
+        </ng-container>
+
+        <!-- Hành động -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Hành động </th>
+            <td mat-cell *matCellDef="let invoice">
+                <button mat-button (click)="viewDetails(invoice.id)">Xem chi tiết</button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Phân trang -->
+    <mat-paginator [length]="totalElements" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+        (page)="onPageChange($event)">
+    </mat-paginator>
+</div>

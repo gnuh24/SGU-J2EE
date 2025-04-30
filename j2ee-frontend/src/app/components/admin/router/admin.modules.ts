@@ -13,6 +13,11 @@ import { StationManagementComponent } from '../station/station-management.compon
 import { StationUpdateFormComponent } from '../station/station-update-form/station-update-form.component'; // <-- Import component
 import { StationCreateFormComponent } from '../station/station-create-form/station-create-form.component'; // <-- Import component
 
+import { CoachManagementComponent } from '../coach/coach-management.component';
+// import { CoachUpdateFormComponent } from '../coach/coach-update-form/coach-update-form.component'; // <-- Import component
+// import { CoachCreateFormComponent } from '../coach/coach-create-form/coach-create-form.component'; // <-- Import component
+
+
 import { AccountManagementComponent } from '../account/account-management.component'; // <-- Import component
 // Angular Material modules
 import { MatTableModule } from '@angular/material/table';
@@ -25,6 +30,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { ProfileManagementComponent } from '../profile/profile-management.component'; // <-- Import component
 
+import { InvoiceManagementComponent } from '../invoice/invoice-management.component'; // <-- Import component
+import { InvoiceDetailFormComponent } from '../invoice/invoice-detail-form/invoice-detail-form.component'; // <-- Import component
+
+import { TicketManagementComponent } from '../ticket-management/ticket-management.component';
+import { TicketDetailFormComponent } from '../ticket-management/ticket-detail-form/ticket-detail-form.component'; // <-- Import component
+import { RouteManagementComponent } from '../route-management/route-management.component';
+// import { RouteUpdateFormComponent } from '../route-management/route-update-form/route-update-form.component'; // <-- Import component
+// import { RouteCreateFormComponent } from '../route-management/route-create-form/route-create-form.component'; // <-- Import component
+
+import { ScheduleManagementComponent } from '../schedule-management/schedule-management.component';
 @NgModule({
   declarations: [
     CityManagementComponent,
@@ -35,8 +50,30 @@ import { ProfileManagementComponent } from '../profile/profile-management.compon
     StationUpdateFormComponent,  // <-- Thêm vào declarations
     StationCreateFormComponent,  // <-- Thêm vào declarations
 
+    CoachManagementComponent,
+    // CoachUpdateFormComponent,  // <-- Thêm vào declarations
+    // CoachCreateFormComponent,  // <-- Thêm vào declarations
+
+    RouteManagementComponent,
+    // RouteUpdateFormComponent,  // <-- Thêm vào declarations
+    // RouteCreateFormComponent,  // <-- Thêm vào declarations
+    // RouteDetailFormComponent,  // <-- Thêm vào declarations
+
+    ScheduleManagementComponent,
+    // ScheduleUpdateFormComponent,  // <-- Thêm vào declarations
+    // ScheduleCreateFormComponent,  // <-- Thêm vào declarations
+    // ScheduleDetailFormComponent,  // <-- Thêm vào declarations
+
+
+
+    InvoiceManagementComponent,
+    // InvoiceDetailFormComponent,  // <-- Thêm vào declarations
+
+    TicketManagementComponent,
+    TicketDetailFormComponent,
+
     AccountManagementComponent,
-    ProfileManagementComponent
+    ProfileManagementComponent,
 
   ],
   imports: [

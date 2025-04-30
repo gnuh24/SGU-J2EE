@@ -38,7 +38,9 @@ public class CityController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<CityResponseDTO>>> getAllCity(Pageable pageable, CityFilterForm form) {
+    public ResponseEntity<ApiResponse<Page<CityResponseDTO>>> getAllCity(
+		Pageable pageable,
+		CityFilterForm form) {
 	Page<City> entities = cityService.getAllCityByAdmin(pageable, form);
 	List<CityResponseDTO> dtos = modelMapper.map(entities.getContent(), new TypeToken<List<CityResponseDTO>>() {}.getType());
 	Page<CityResponseDTO> page = new PageImpl<>(dtos, pageable, entities.getTotalElements());
