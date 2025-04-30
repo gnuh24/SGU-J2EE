@@ -5,10 +5,8 @@ import com.sgu.backend.dto.request.invoice.InvoiceFilter;
 import com.sgu.backend.dto.request.invoice.InvoiceUpdateForm;
 import com.sgu.backend.dto.response.invoice.InvoiceResponseDTO;
 import com.sgu.backend.dto.response.ticket.TicketResponseDTO;
-import com.sgu.backend.entities.Account;
 import com.sgu.backend.entities.Invoice;
 import com.sgu.backend.entities.Profile;
-import com.sgu.backend.repositories.AccountRepository;
 import com.sgu.backend.repositories.InvoiceRepository;
 import com.sgu.backend.repositories.ProfileRepository;
 import com.sgu.backend.services.InvoiceService;
@@ -35,7 +33,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     public InvoiceResponseDTO create(InvoiceCreateForm form) {
         Invoice invoice = new Invoice();
         invoice.setId(IdGenerator.generateId());
-        invoice.setIssuedAt(LocalDateTime.now());
+        invoice.setCreatedAt(LocalDateTime.now());
         invoice.setTotalAmount(form.getTotalAmount());
 
         Profile profile = profileRepository.findById(form.getProfileId())

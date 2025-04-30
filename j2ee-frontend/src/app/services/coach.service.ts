@@ -15,13 +15,13 @@ export class CoachService {
     getCoaches(
         pageSize: number,
         pageNumber: number,
-        search: string,
         sort: string,
+        search: string,
         status: string
     ): Observable<ApiResponse<any>> {
         const params = new HttpParams()
-            .set('pageSize', pageSize.toString())
-            .set('pageNumber', pageNumber.toString())
+            .set('pageSize', pageSize)
+            .set('pageNumber', pageNumber)
             .set('search', search)
             .set('sort', sort)
             .set('status', status); // Thêm tham số status vào HttpParams nếu cần

@@ -22,7 +22,7 @@ public class Invoice {
     private Profile profile;
 
     @Column(nullable = false)
-    private LocalDateTime issuedAt;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
     private Double totalAmount;

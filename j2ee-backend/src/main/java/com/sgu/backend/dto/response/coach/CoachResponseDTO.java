@@ -14,7 +14,7 @@ public class CoachResponseDTO {
     private String type;
     private Integer capacity;
     private Coach.CoachStatus status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String createdAt;
+    private String updatedAt;
     private List<SeatResponseDTO> seatResponseDTO;
 }

@@ -14,8 +14,10 @@
                 <mat-option value="">Tất cả</mat-option>
                 <mat-option value="ACTIVE">Đang hoạt động</mat-option>
                 <mat-option value="INACTIVE">Tạm dừng</mat-option>
+                <mat-option value="MAINTENANCE">Đang bảo trì</mat-option>
             </mat-select>
         </mat-form-field>
+
 
         <button mat-raised-button color="primary" (click)="loadCoaches()">Tìm kiếm</button>
         <button mat-raised-button color="accent" (click)="openCreateCoachDialog()">Thêm</button>
@@ -47,10 +49,19 @@
         <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Trạng thái </th>
             <td mat-cell *matCellDef="let coach">
-                <span [ngClass]="coach.status === 'ACTIVE' ? 'text-green' : 'text-red'">
-                    {{ coach.status === 'ACTIVE' ? 'Đang hoạt động' : 'Tạm dừng' }}
+                <span [ngClass]="{
+                    'text-green': coach.status === 'ACTIVE',
+                    'text-red': coach.status === 'INACTIVE',
+                    'text-orange': coach.status === 'MAINTENANCE'
+                  }">
+                    {{
+                    coach.status === 'ACTIVE' ? 'Đang hoạt động' :
+                    coach.status === 'INACTIVE' ? 'Tạm dừng' :
+                    coach.status === 'MAINTENANCE' ? 'Đang bảo trì' : ''
+                    }}
                 </span>
             </td>
+
         </ng-container>
 
         <ng-container matColumnDef="createdAt">
