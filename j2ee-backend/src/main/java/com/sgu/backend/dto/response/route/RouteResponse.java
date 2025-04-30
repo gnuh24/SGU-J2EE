@@ -1,5 +1,6 @@
 package com.sgu.backend.dto.response.route;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sgu.backend.dto.response.coach_station.CoachStationResponseDTO;
 import com.sgu.backend.entities.CoachStation;
 import com.sgu.backend.entities.Route;
@@ -15,9 +16,13 @@ public class RouteResponse {
     private Double distance;
     private Double duration;
     private BigDecimal price;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private CoachStationResponseDTO departureStationId;
-    private CoachStationResponseDTO arrivalStationId;
+    private String createdAt;
+    private String updatedAt;
+
+    @JsonProperty("departure")
+    private String departureStationName;
+
+    @JsonProperty("destination")
+    private String arrivalStationName;
     private Route.RouteStatus status;
 }

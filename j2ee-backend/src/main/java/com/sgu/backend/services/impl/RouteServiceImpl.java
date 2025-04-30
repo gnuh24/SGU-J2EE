@@ -87,8 +87,8 @@ public class RouteServiceImpl implements RouteService {
         CoachStationResponseDTO departureStationDTO = modelMapper.map(route.getDepartureStation(), CoachStationResponseDTO.class);
         CoachStationResponseDTO arrivalStationDTO = modelMapper.map(route.getArrivalStation(), CoachStationResponseDTO.class);
 
-        dto.setDepartureStationId(departureStationDTO);
-        dto.setArrivalStationId(arrivalStationDTO);
+//        dto.setDepartureStationName(departureStationDTO);
+//        dto.setArrivalStationId(arrivalStationDTO);
 
         return dto;
     }
