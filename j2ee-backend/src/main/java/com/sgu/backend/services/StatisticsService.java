@@ -1,6 +1,7 @@
 package com.sgu.backend.services;
 
 import com.sgu.backend.dto.response.statistics.DailyRevenueDTO;
+import com.sgu.backend.dto.response.statistics.MonthlySummaryDTO;
 import com.sgu.backend.dto.response.statistics.ScheduleStatisticDTO;
 
 import java.time.LocalDate;
@@ -13,4 +14,5 @@ public interface StatisticsService {
     double calculateRevenue(int year, int month);
     List<ScheduleStatisticDTO> getTopSchedules(LocalDate start, LocalDate end);
     List<DailyRevenueDTO> getDailyRevenue(LocalDate startDate, LocalDate endDate);
+    MonthlySummaryDTO getMonthlySummary(int year, int month);
 }

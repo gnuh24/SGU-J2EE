@@ -1,9 +1,6 @@
 package com.sgu.backend.services.impl;
 
-import com.sgu.backend.dto.response.statistics.DailyRevenueDTO;
-import com.sgu.backend.dto.response.statistics.DailyRevenueProjection;
-import com.sgu.backend.dto.response.statistics.ScheduleStatisticDTO;
-import com.sgu.backend.dto.response.statistics.ScheduleStatisticsProjection;
+import com.sgu.backend.dto.response.statistics.*;
 import com.sgu.backend.repositories.AccountRepository;
 import com.sgu.backend.repositories.InvoiceRepository;
 import com.sgu.backend.repositories.ProfileRepository;
@@ -15,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -91,6 +89,19 @@ public class StatisticsServiceImpl implements StatisticsService {
                 ))
                 .toList();
     }
+    @Override
+    public MonthlySummaryDTO getMonthlySummary(int year, int month) {
+        LocalDateTime start = getStartDate(year, month);
+        LocalDateTime end = getEndDate(start);
+
+        long newUsers = accountRepository.countByCreatedAtBetween(start, end);
+        long invoices = invoiceRepository.countByCreatedAtBetween(start, end);
+        long tickets = Optional.ofNullable(invoiceRepository.countTicketsSoldByMonth(start, end)).orElse(0L);
+        double revenue = Optional.ofNullable(invoiceRepository.sumTotalAmountByCreatedAtBetween(start, end)).orElse(0.0);
+
+        return new MonthlySummaryDTO(newUsers, invoices, tickets, revenue);
+    }
+
 
 
 }

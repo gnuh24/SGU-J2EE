@@ -1,5 +1,6 @@
 package com.sgu.backend.security;
 
+import com.sgu.backend.entities.Account;
 import com.sgu.backend.exceptions.AuthException.AuthExceptionHandler;
 import com.sgu.backend.exceptions.JwtException.InvalidJWTSignatureException;
 import com.sgu.backend.exceptions.JwtException.TokenExpiredException;
@@ -70,7 +71,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 userEmail = jwtTokenProvider.getUsername(jwtToken);
 
                 if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UserDetails userDetails = accountService.loadUserByUsername(userEmail);
+                    Account userDetails = (Account) accountService.loadUserByUsername(userEmail);
 
                     // Tạo SecurityContext và Authen Token
                     SecurityContext securityContext = SecurityContextHolder.createEmptyContext();

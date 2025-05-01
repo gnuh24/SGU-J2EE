@@ -4,6 +4,7 @@ package com.sgu.backend.controllers;
 
 import com.sgu.backend.apiresponse.ApiResponse;
 import com.sgu.backend.dto.response.statistics.DailyRevenueDTO;
+import com.sgu.backend.dto.response.statistics.MonthlySummaryDTO;
 import com.sgu.backend.dto.response.statistics.ScheduleStatisticDTO;
 import com.sgu.backend.services.StatisticsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -72,6 +73,15 @@ public class StatisticsController {
 
         return ResponseEntity.ok(new ApiResponse<>(200, "Thống kê doanh thu theo từng ngày", result));
     }
+    @Operation(summary = "Tổng hợp thống kê trong tháng (người dùng, hóa đơn, vé, doanh thu)")
+    @GetMapping("/general")
+    public ResponseEntity<ApiResponse<MonthlySummaryDTO>> getMonthlySummary(
+            @RequestParam int year,
+            @RequestParam int month) {
+        MonthlySummaryDTO summary = statisticsService.getMonthlySummary(year, month);
+        return ResponseEntity.ok(new ApiResponse<>(200, "Tổng hợp thống kê trong tháng", summary));
+    }
+
 
 
 }
