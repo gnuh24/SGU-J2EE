@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
+import static java.time.LocalTime.now;
+
 @Entity
 @Getter
 @Setter
@@ -13,6 +17,16 @@ import lombok.Setter;
 public class Ticket {
     @Id
     private String id = IdGenerator.generateId();
+		
+		@Column(nullable = false)
+		private Double price;
+		
+		@Column(nullable = false)
+		private LocalDateTime createdAt = LocalDateTime.now();
+		
+		@Enumerated(EnumType.STRING)
+		@Column(nullable = false)
+		private TicketStatus status = TicketStatus.BOOKED;
 
     @ManyToOne
     @JoinColumn(name = "scheduleId", nullable = false)
@@ -26,14 +40,10 @@ public class Ticket {
     @JoinColumn(name = "invoiceId")
     private Invoice invoice;
 
-    @Column(nullable = false)
-    private Double price;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TicketStatus status = TicketStatus.BOOKED;
-
     public enum TicketStatus {
         BOOKED, CANCELLED, USED
     }
+	
+
+		
 }

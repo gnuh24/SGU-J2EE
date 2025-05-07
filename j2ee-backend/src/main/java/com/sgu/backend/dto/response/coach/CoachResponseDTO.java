@@ -16,5 +16,4 @@ public class CoachResponseDTO {
     private Coach.CoachStatus status;
     private String createdAt;
     private String updatedAt;
-    private List<SeatResponseDTO> seatResponseDTO;
 }

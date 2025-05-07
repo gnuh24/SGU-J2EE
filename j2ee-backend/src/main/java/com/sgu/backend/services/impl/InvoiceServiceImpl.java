@@ -94,7 +94,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         return invoices.map(invoice -> {
             InvoiceResponseDTO dto = modelMapper.map(invoice, InvoiceResponseDTO.class);
             dto.setProfileId(invoice.getProfile().getId());
-            dto.setProfileUsername(invoice.getProfile().getFullname());
+            dto.setProfileFullname(invoice.getProfile().getFullname());
             return dto;
         });
     }
@@ -102,7 +102,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     private InvoiceResponseDTO convertToDto(Invoice invoice) {
         InvoiceResponseDTO dto = modelMapper.map(invoice, InvoiceResponseDTO.class);
         dto.setProfileId(invoice.getProfile().getId());
-        dto.setProfileUsername(invoice.getProfile().getFullname());
+        dto.setProfileFullname(invoice.getProfile().getFullname());
 
         if (invoice.getTickets() != null) {
             dto.setTickets(invoice.getTickets().stream()

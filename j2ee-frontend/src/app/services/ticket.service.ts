@@ -21,13 +21,11 @@ export class TicketService {
         status: string = ''
     ): Observable<ApiResponse<any>> {
         let params = new HttpParams()
-            .set('size', size)
-            .set('page', page)
+            .set('pageSize', size)
+            .set('pageNumber', page)
             .set('sort', sort)
             .set('search', search)
             .set('status', status);
-
-
         return this.http.get<ApiResponse<any>>(this.apiUrl, { params });
     }
 
@@ -40,10 +38,8 @@ export class TicketService {
     }
 
     updateTicket(id: string, ticketData: FormData | any): Observable<ApiResponse<any>> {
-        return this.http.put<ApiResponse<any>>(`${this.apiUrl}/${id}`, ticketData);
+        return this.http.put<ApiResponse<any>>(`${this.apiUrl}/${id}/status`, ticketData);
     }
 
-    deleteTicket(id: string): Observable<ApiResponse<any>> {
-        return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`);
-    }
+
 }

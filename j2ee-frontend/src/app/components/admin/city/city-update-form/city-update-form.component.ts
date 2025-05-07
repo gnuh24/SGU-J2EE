@@ -8,18 +8,19 @@ import { finalize } from 'rxjs/operators';
 @Component({
     selector: 'app-city-update-form',
     templateUrl: './city-update-form.component.html',
-    styleUrls: ['./city-update-form.component.scss']
+    styleUrls: ['../../admin-dialog.scss',
+        './city-update-form.component.scss']
 })
 export class CityUpdateFormComponent implements OnInit {
     cityForm: FormGroup;
     isSubmitting = false;
-    
+
     constructor(
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<CityUpdateFormComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private cityService: CityService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.cityForm = this.fb.group({

@@ -4,10 +4,19 @@
     <!-- Tìm kiếm -->
     <div style="display: flex; gap: 16px; align-items: center;">
         <mat-form-field appearance="outline">
-            <mat-label>Tìm kiếm theo biển số xe</mat-label>
+            <mat-label>Tìm kiếm theo mã vé, số điện thoại, tên khách hàng</mat-label>
             <input matInput [(ngModel)]="search" (keydown.enter)="loadTickets()" placeholder="Nhập biển số xe..." />
         </mat-form-field>
 
+        <mat-form-field appearance="outline">
+            <mat-label>Trạng thái</mat-label>
+            <mat-select [(ngModel)]="status" (selectionChange)="loadTickets()">
+                <mat-option value="">Tất cả</mat-option>
+                <mat-option value="BOOKED">Đã đặt</mat-option>
+                <mat-option value="CANCELLED">Đã hủy</mat-option>
+                <mat-option value="USED">Đã sử dụng</mat-option>
+            </mat-select>
+        </mat-form-field>
         <button mat-raised-button color="primary" (click)="loadTickets()">Tìm kiếm</button>
     </div>
 
@@ -15,35 +24,58 @@
     <table mat-table matSort (matSortChange)="onSortChange($event)" [dataSource]="tickets" class="mat-elevation-z2"
         style="width: 100%; margin-top: 20px;">
 
-        <!-- ID -->
+        <!-- Mã vé -->
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Mã vé </th>
             <td mat-cell *matCellDef="let ticket"> {{ ticket.id }} </td>
         </ng-container>
 
-        <!-- Biển số xe -->
-        <ng-container matColumnDef="coachLicensePlate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Biển số xe </th>
-            <td mat-cell *matCellDef="let ticket"> {{ ticket.coach?.licensePlate }} </td>
+        <!-- Ga đi -->
+        <ng-container matColumnDef="departure">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Ga đi </th>
+            <td mat-cell *matCellDef="let ticket"> {{ ticket.departure }} </td>
         </ng-container>
 
-        <!-- Giờ khởi hành -->
-        <ng-container matColumnDef="departureTime">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Giờ khởi hành </th>
-            <td mat-cell *matCellDef="let ticket"> {{ ticket.departureTime | date: 'HH:mm dd/MM/yyyy' }} </td>
+        <!-- Ga đến -->
+        <ng-container matColumnDef="arrival">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Ga đến </th>
+            <td mat-cell *matCellDef="let ticket"> {{ ticket.arrival }} </td>
         </ng-container>
 
-        <!-- Ghế -->
-        <ng-container matColumnDef="seatNumber">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Số ghế </th>
-            <td mat-cell *matCellDef="let ticket"> {{ ticket.seatNumber }} </td>
+        <!-- Họ tên -->
+        <ng-container matColumnDef="fullname">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Họ tên </th>
+            <td mat-cell *matCellDef="let ticket"> {{ ticket.fullname }} </td>
         </ng-container>
 
-        <!-- Giá -->
+        <!-- Số điện thoại -->
+        <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Số điện thoại </th>
+            <td mat-cell *matCellDef="let ticket"> {{ ticket.phone }} </td>
+        </ng-container>
+
+        <!-- Giá vé -->
         <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Giá vé </th>
             <td mat-cell *matCellDef="let ticket"> {{ ticket.price | number:'1.0-0' }} đ </td>
         </ng-container>
+
+        <!-- Trạng thái -->
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Trạng thái </th>
+            <td mat-cell *matCellDef="let ticket">
+                <span [ngClass]="{
+                    'text-orange': ticket.status === 'BOOKED',
+                    'text-red': ticket.status === 'CANCELLED',
+                    'text-green': ticket.status === 'USED'
+                }">
+                    {{ ticket.status === 'BOOKED' ? 'Đã đặt' :
+                    ticket.status === 'CANCELLED' ? 'Đã hủy' :
+                    ticket.status === 'USED' ? 'Đã sử dụng' : ticket.status }}
+                </span>
+            </td>
+        </ng-container>
+
 
         <!-- Ngày tạo -->
         <ng-container matColumnDef="createdAt">
@@ -62,6 +94,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
 
     <!-- Phân trang -->
     <mat-paginator [length]="totalElements" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"

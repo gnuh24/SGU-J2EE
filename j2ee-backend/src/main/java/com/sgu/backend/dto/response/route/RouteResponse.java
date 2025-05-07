@@ -4,7 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sgu.backend.dto.response.coach_station.CoachStationResponseDTO;
 import com.sgu.backend.entities.CoachStation;
 import com.sgu.backend.entities.Route;
+import com.sgu.backend.utils.IdGenerator;
+import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

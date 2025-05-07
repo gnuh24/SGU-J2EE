@@ -5,7 +5,8 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './coach-update-form.component.html',
-  styleUrl: './coach-update-form.component.scss'
+  styleUrls: ['../../admin-dialog.scss',
+    './coach-update-form.component.scss']
 })
 export class CoachUpdateFormComponent {
 

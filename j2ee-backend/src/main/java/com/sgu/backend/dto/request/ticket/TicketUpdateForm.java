@@ -1,13 +1,11 @@
 package com.sgu.backend.dto.request.ticket;
 
-import com.sgu.backend.entities.Ticket;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
 public class TicketUpdateForm {
-    private String scheduleId;
-    private String seatId;
-    private String invoiceId;
-    private Double price;
-    private Ticket.TicketStatus status;
+		
+		@Pattern(regexp = "BOOKED|CANCELLED|USED", message = "Trạng thái phải là BOOKED, CANCELLED hoặc USED")
+		private String status;
 }

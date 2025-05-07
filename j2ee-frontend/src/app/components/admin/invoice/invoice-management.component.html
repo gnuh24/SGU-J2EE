@@ -9,6 +9,7 @@
                 placeholder="Nhập tên khách hàng..." />
         </mat-form-field>
 
+
         <button mat-raised-button color="primary" (click)="loadInvoices()">Tìm kiếm</button>
     </div>
 
@@ -24,7 +25,7 @@
         <!-- Tên khách hàng -->
         <ng-container matColumnDef="profileName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Tên khách hàng </th>
-            <td mat-cell *matCellDef="let invoice"> {{ invoice.profileName }} </td>
+            <td mat-cell *matCellDef="let invoice"> {{ invoice.profileFullname }} </td>
         </ng-container>
 
         <!-- Số điện thoại -->

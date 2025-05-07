@@ -17,8 +17,19 @@ export class TicketManagementComponent implements OnInit {
 	totalElements: number = 0;
 	sort: string = 'id,asc';
 	search: string = '';
+	status: string = '';
 
-	displayedColumns: string[] = ['id', 'coachLicensePlate', 'departureTime', 'seatNumber', 'price', 'createdAt', 'actions'];
+	displayedColumns: string[] = [
+		'id',
+		'departure',
+		'arrival',
+		'fullname',
+		'phone',
+		'price',
+		'status',
+		'createdAt',
+		'actions'
+	];
 
 	constructor(private ticketService: TicketService, private dialog: MatDialog) { }
 
@@ -39,7 +50,7 @@ export class TicketManagementComponent implements OnInit {
 	}
 
 	loadTickets(): void {
-		this.ticketService.getTickets(this.pageSize, this.pageNumber, this.sort, this.search).subscribe(
+		this.ticketService.getTickets(this.pageSize, this.pageNumber, this.sort, this.search, this.status).subscribe(
 			response => {
 				this.tickets = response.data.content;
 				this.totalElements = response.data.totalElements;
@@ -50,7 +61,12 @@ export class TicketManagementComponent implements OnInit {
 
 	viewDetails(ticket: any): void {
 		this.dialog.open(TicketDetailFormComponent, {
-			data: ticket
+			data: ticket,
+			width: '80vw',
+			maxWidth: 'none', // <- thêm dòng này để width hoạt động đúng
+			height: '80vh',
+			panelClass: 'ticket-detail-dialog-container'
 		});
 	}
+
 }

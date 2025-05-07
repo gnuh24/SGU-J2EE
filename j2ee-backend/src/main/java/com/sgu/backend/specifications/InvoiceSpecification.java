@@ -24,14 +24,14 @@ public class InvoiceSpecification {
             if (filter.getProfilePhone() != null) {
                 predicates.add(cb.like(cb.lower(root.get("profile").get("phone")), "%" + filter.getProfilePhone().toLowerCase() + "%"));
             }
-
-            if (filter.getFromDate() != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("issuedAt"), filter.getFromDate()));
-            }
-
-            if (filter.getToDate() != null) {
-                predicates.add(cb.lessThanOrEqualTo(root.get("issuedAt"), filter.getToDate()));
-            }
+//
+//            if (filter.getFromDate() != null) {
+//                predicates.add(cb.greaterThanOrEqualTo(root.get("issuedAt"), filter.getFromDate()));
+//            }
+//
+//            if (filter.getToDate() != null) {
+//                predicates.add(cb.lessThanOrEqualTo(root.get("issuedAt"), filter.getToDate()));
+//            }
 
             if (filter.getMinTotal() != null) {
                 predicates.add(cb.greaterThanOrEqualTo(root.get("totalAmount"), filter.getMinTotal()));

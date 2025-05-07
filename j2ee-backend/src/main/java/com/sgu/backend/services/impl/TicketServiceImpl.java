@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,34 +44,36 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public TicketResponseDTO update(String id, TicketUpdateForm form) {
         Ticket ticket = ticketRepository.findById(id).orElseThrow();
-        if (form.getScheduleId() != null)
-            ticket.setSchedule(scheduleRepository.findById(form.getScheduleId()).orElseThrow());
-        if (form.getSeatId() != null)
-            ticket.setSeat(seatRepository.findById(form.getSeatId()).orElseThrow());
-        if (form.getInvoiceId() != null)
-            ticket.setInvoice(invoiceRepository.findById(form.getInvoiceId()).orElse(null));
-        if (form.getPrice() != null)
-            ticket.setPrice(form.getPrice());
+//        if (form.getScheduleId() != null)
+//            ticket.setSchedule(scheduleRepository.findById(form.getScheduleId()).orElseThrow());
+//        if (form.getSeatId() != null)
+//            ticket.setSeat(seatRepository.findById(form.getSeatId()).orElseThrow());
+//        if (form.getInvoiceId() != null)
+//            ticket.setInvoice(invoiceRepository.findById(form.getInvoiceId()).orElse(null));
+//        if (form.getPrice() != null)
+//            ticket.setPrice(form.getPrice());
         if (form.getStatus() != null)
-            ticket.setStatus(form.getStatus());
+            ticket.setStatus(Ticket.TicketStatus.valueOf(form.getStatus()));
         return modelMapper.map(ticketRepository.save(ticket), TicketResponseDTO.class);
     }
 
     @Override
-    public TicketResponseDTO getById(String id) {
+    public TicketResponseDTO getDTOById(String id) {
         return modelMapper.map(ticketRepository.findById(id).orElseThrow(), TicketResponseDTO.class);
     }
+		
 
-    @Override
-    public void delete(String id) {
-
-    }
-
-
+		@Override
+		public Ticket getById(String id) {
+				return ticketRepository.findById(id)
+						.orElseThrow(() -> new UsernameNotFoundException("Ticket with id " + id + " not found"));
+		}
+		
+		
 
     @Override
     public Page<TicketResponseDTO> getAll(Pageable pageable, TicketFilter filter) {
         Page<Ticket> tickets = ticketRepository.findAll(TicketSpecification.filter(filter), pageable);
-        return tickets.map(ticket -> modelMapper.map(ticket, TicketResponseDTO.class));
+	return tickets.map(ticket -> modelMapper.map(ticket, TicketResponseDTO.class));
     }
 }

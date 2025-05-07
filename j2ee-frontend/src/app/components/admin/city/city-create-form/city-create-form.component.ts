@@ -8,7 +8,8 @@ import { finalize } from 'rxjs/operators';
 @Component({
     selector: 'app-city-create-form',
     templateUrl: './city-create-form.component.html',
-    styleUrls: ['./city-create-form.component.scss'],
+    styleUrls: ['../../admin-dialog.scss',
+        './city-create-form.component.scss'],
     encapsulation: ViewEncapsulation.None // Không sử dụng encapsulation
 
 })
@@ -20,7 +21,7 @@ export class CityCreateFormComponent implements OnInit {
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<CityCreateFormComponent>,
         private cityService: CityService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.cityForm = this.fb.group({

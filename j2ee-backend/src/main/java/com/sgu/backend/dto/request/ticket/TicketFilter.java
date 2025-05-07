@@ -5,9 +5,7 @@ import lombok.Data;
 
 @Data
 public class TicketFilter {
-    private String scheduleId;
-    private String seatId;
-    private String invoiceId;
+		private String search;
     private Ticket.TicketStatus status;
 }
 

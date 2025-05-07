@@ -17,6 +17,7 @@ export class InvoiceManagementComponent implements OnInit {
     totalElements: number = 0;
     sort: string = 'id,asc';
     search: string = '';
+    status: string = '';
 
     displayedColumns: string[] = ['id', 'profileName', 'profilePhone', 'totalAmount', 'createdAt', 'actions'];
 
@@ -39,7 +40,7 @@ export class InvoiceManagementComponent implements OnInit {
     }
 
     loadInvoices(): void {
-        this.invoiceService.getInvoices(this.pageSize, this.pageNumber, this.sort, this.search).subscribe(
+        this.invoiceService.getInvoices(this.pageSize, this.pageNumber, this.sort, this.search, this.status).subscribe(
             response => {
                 this.invoices = response.data.content;
                 this.totalElements = response.data.totalElements;

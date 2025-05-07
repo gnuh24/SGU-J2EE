@@ -74,7 +74,6 @@ public class CoachController {
     public ResponseEntity<ApiResponse<CoachResponseDTO>> getCoachById(@PathVariable String id) {
         CoachResponseDTO dto  = coachService.getById(id);
         List<SeatResponseDTO> seatResponseDTOS=seatService.getById(id);
-        dto.setSeatResponseDTO(seatResponseDTOS);
 
         return ResponseEntity.ok(new ApiResponse<>(200, "Lấy coach thành công", dto));
     }

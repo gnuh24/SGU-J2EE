@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,6 +24,13 @@ public class Schedule {
     @ManyToOne
     @JoinColumn(name = "routeId", nullable = false)
     private Route route;
+		
+		@ManyToOne
+		@JoinColumn(name = "coachId", nullable = false)
+		private Coach coach;
+		
+		@OneToMany(mappedBy = "schedule")
+		private List<Ticket> tickets;
 
     @Column(nullable = false)
     private LocalTime departureTime;
@@ -44,6 +52,7 @@ public class Schedule {
 
     public enum Status {
         ACTIVE,
-        INACTIVE
+        INACTIVE,
+			CANCELLED
     }
 }

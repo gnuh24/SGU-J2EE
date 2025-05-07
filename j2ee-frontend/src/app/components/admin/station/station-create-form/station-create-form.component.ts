@@ -9,7 +9,8 @@ import { finalize } from 'rxjs/operators';
 @Component({
     selector: 'app-station-create-form',
     templateUrl: './station-create-form.component.html',
-    styleUrls: ['./station-create-form.component.scss']
+    styleUrls: ['../../admin-dialog.scss',
+        './station-create-form.component.scss']
 })
 export class StationCreateFormComponent implements OnInit {
     stationForm: FormGroup;
@@ -21,7 +22,7 @@ export class StationCreateFormComponent implements OnInit {
         private dialogRef: MatDialogRef<StationCreateFormComponent>,
         private stationService: StationService,  // Dịch vụ StationService
         private cityService: CityService  // Dịch vụ CityService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         // Lấy danh sách thành phố từ API

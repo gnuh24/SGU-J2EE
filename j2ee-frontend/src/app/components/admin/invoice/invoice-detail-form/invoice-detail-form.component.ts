@@ -5,7 +5,8 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './invoice-detail-form.component.html',
-  styleUrl: './invoice-detail-form.component.scss'
+  styleUrls: ['../../admin-dialog.scss',
+    './invoice-detail-form.component.scss']
 })
 export class InvoiceDetailFormComponent {
 

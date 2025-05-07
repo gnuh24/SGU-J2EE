@@ -1,1 +1,108 @@
-<p>ticket-detail-form works!</p>
+<h2 mat-dialog-title>Chi tiết vé</h2>
+
+<form [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
+    <!-- Mã vé -->
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Mã vé</mat-label>
+        <input matInput formControlName="id" readonly>
+    </mat-form-field>
+
+    <!-- Giá vé -->
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Giá vé</mat-label>
+        <input matInput formControlName="price" readonly>
+    </mat-form-field>
+
+    <!-- Trạng thái -->
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Trạng thái</mat-label>
+        <mat-select formControlName="status">
+            <mat-option value="BOOKED">Đã đặt</mat-option>
+            <mat-option value="CANCELLED">Đã huỷ</mat-option>
+            <mat-option value="COMPLETED">Hoàn tất</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <!-- Thời gian tạo vé -->
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Ngày tạo vé</mat-label>
+        <input matInput formControlName="createdAt" readonly>
+    </mat-form-field>
+
+    <!-- Thông tin ghế -->
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Số ghế</mat-label>
+        <input matInput formControlName="seatNumber" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Loại ghế</mat-label>
+        <input matInput formControlName="seatType" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Cạnh cửa sổ</mat-label>
+        <input matInput formControlName="isNextToWindow" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Tầng</mat-label>
+        <input matInput formControlName="seatFloor" readonly>
+    </mat-form-field>
+
+    <!-- Xe -->
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Biển số xe</mat-label>
+        <input matInput formControlName="coachLicensePlate" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Loại xe</mat-label>
+        <input matInput formControlName="coachType" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Sức chứa</mat-label>
+        <input matInput formControlName="coachCapacity" readonly>
+    </mat-form-field>
+
+    <!-- Lịch trình -->
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Giờ đi</mat-label>
+        <input matInput formControlName="scheduleDepartureTime" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Giờ đến</mat-label>
+        <input matInput formControlName="scheduleArrivalTime" readonly>
+    </mat-form-field>
+
+    <!-- Tuyến -->
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Điểm đi</mat-label>
+        <input matInput formControlName="routeDeparture" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Điểm đến</mat-label>
+        <input matInput formControlName="routeDestination" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Khoảng cách (km)</mat-label>
+        <input matInput formControlName="routeDistance" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Thời lượng (phút)</mat-label>
+        <input matInput formControlName="routeDuration" readonly>
+    </mat-form-field>
+
+    <!-- Buttons -->
+    <div class="actions mt-4">
+        <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitting || isLoading">
+            Lưu
+        </button>
+        <button mat-button type="button" (click)="onCancel()">Hủy</button>
+    </div>
+</form>

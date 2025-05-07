@@ -9,7 +9,8 @@ import { finalize } from 'rxjs/operators';
 @Component({
     selector: 'app-station-update-form',
     templateUrl: './station-update-form.component.html',
-    styleUrls: ['./station-update-form.component.scss']
+    styleUrls: ['../../admin-dialog.scss',
+        './station-update-form.component.scss']
 })
 export class StationUpdateFormComponent implements OnInit {
     stationForm: FormGroup;
@@ -23,7 +24,7 @@ export class StationUpdateFormComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         private stationService: StationService,  // Sử dụng dịch vụ StationService
         private cityService: CityService  // Sử dụng dịch vụ CityService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         // Lấy danh sách thành phố từ API
@@ -43,9 +44,9 @@ export class StationUpdateFormComponent implements OnInit {
     getCities(): void {
         this.cityService.getCitiesNoPaging().subscribe(
             (response) => {
-                this.cities = response.data; 
+                this.cities = response.data;
                 this.currentCityId = this.data.city.id;  // Lưu cityId hiện tại của trạm
-        
+
                 this.stationForm.patchValue({
                     cityId: this.currentCityId
                 });

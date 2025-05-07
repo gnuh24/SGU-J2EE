@@ -8,6 +8,15 @@
             <input matInput [(ngModel)]="search" (keydown.enter)="loadAccounts()" placeholder="Nhập email..." />
         </mat-form-field>
 
+        <mat-form-field appearance="outline">
+            <mat-label>Trạng thái</mat-label>
+            <mat-select [(ngModel)]="status" (selectionChange)="loadAccounts()">
+                <mat-option value="">Tất cả</mat-option>
+                <mat-option value="ACTIVE">Đang hoạt động</mat-option>
+                <mat-option value="INACTIVE">Chưa kích hoạt</mat-option>
+                <mat-option value="BANNED">Đã khả</mat-option>
+            </mat-select>
+        </mat-form-field>
 
 
         <button mat-raised-button color="primary" (click)="loadAccounts()">Tìm kiếm</button>

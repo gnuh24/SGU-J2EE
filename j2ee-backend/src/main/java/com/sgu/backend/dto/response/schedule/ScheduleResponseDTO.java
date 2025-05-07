@@ -12,7 +12,6 @@ public class ScheduleResponseDTO {
     private String routeId;
     private String departureTime;
     private String arrivalTime;
-    private Schedule.Status status;
     private String createdAt;
     private String updatedAt;
 }

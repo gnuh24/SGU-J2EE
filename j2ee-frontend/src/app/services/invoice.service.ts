@@ -15,14 +15,16 @@ export class InvoiceService {
     getInvoices(
         pageSize: number,
         pageNumber: number,
+        sort: string,
         search: string,
-        sort: string // Thêm tham số sort vào đây
+        status: string
     ): Observable<ApiResponse<any>> {
         const params = new HttpParams()
             .set('pageSize', pageSize.toString())
             .set('pageNumber', pageNumber.toString())
             .set('search', search)
-            .set('sort', sort); // Thêm tham số sort vào HttpParams
+            .set('sort', sort)
+            .set('status', status); // Thêm tham số sort vào HttpParams
 
         return this.http.get<ApiResponse<any>>(this.apiUrl, { params });
     }
