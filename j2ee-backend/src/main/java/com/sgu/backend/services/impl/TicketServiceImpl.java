@@ -12,6 +12,7 @@ import com.sgu.backend.repositories.TicketRepository;
 import com.sgu.backend.services.TicketService;
 import com.sgu.backend.specifications.TicketSpecification;
 import com.sgu.backend.utils.IdGenerator;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
-
+		
     private final TicketRepository ticketRepository;
     private final ScheduleRepository scheduleRepository;
     private final SeatRepository seatRepository;
@@ -66,7 +67,7 @@ public class TicketServiceImpl implements TicketService {
 		@Override
 		public Ticket getById(String id) {
 				return ticketRepository.findById(id)
-						.orElseThrow(() -> new UsernameNotFoundException("Ticket with id " + id + " not found"));
+						.orElseThrow(() -> new EntityNotFoundException("Ticket with id " + id + " not found"));
 		}
 		
 		

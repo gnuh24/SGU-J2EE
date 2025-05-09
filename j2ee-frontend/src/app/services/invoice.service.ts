@@ -29,6 +29,11 @@ export class InvoiceService {
         return this.http.get<ApiResponse<any>>(this.apiUrl, { params });
     }
 
+    getInvoiceById(id: string): Observable<ApiResponse<any>> {
+        return this.http.get<ApiResponse<any>>(`${this.apiUrl}/${id}`);
+    }
+
+
 
     // getById(id: number): Observable<ApiResponse> {
     //     return this.http.get<ApiResponse>(`${this.baseUrl}/${id}`);

@@ -11,11 +11,10 @@ import java.util.List;
 public class InvoiceResponseDTO {
     private String id;
     private String profileId;
-    private String profileFullname; // hoặc email tuỳ bạn muốn hiển thị gì
-		 private String profilePhone; // hoặc email tuỳ bạn muốn hiển thị gì
+    private String profileFullname;
+		 private String profilePhone;
 
     private String createdAt;
     private Double totalAmount;
 
-    private List<TicketResponseDTO> tickets;
 }

@@ -6,9 +6,13 @@ import com.sgu.backend.dto.response.profile.ProfileDetailResponseDTO;
 import com.sgu.backend.dto.response.route.RouteResponse;
 import com.sgu.backend.dto.response.schedule.ScheduleResponseDTO;
 import com.sgu.backend.dto.response.seat.SeatResponseDTO;
+import com.sgu.backend.entities.Invoice;
 import com.sgu.backend.entities.Route;
 import com.sgu.backend.entities.Seat;
 import com.sgu.backend.entities.Ticket;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 @Data
@@ -18,7 +22,7 @@ public class TicketDetailResponseDTO {
 		private Double price;
 		private Ticket.TicketStatus status;
 		private String createdAt;
-		
+
 
 		private SeatResponseDTO seat;
 		private ScheduleResponseDTO schedule;

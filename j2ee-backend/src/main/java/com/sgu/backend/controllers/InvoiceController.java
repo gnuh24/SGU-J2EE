@@ -5,11 +5,14 @@ import com.sgu.backend.dto.request.invoice.InvoiceCreateForm;
 import com.sgu.backend.dto.request.invoice.InvoiceCreateFormByAdmin;
 import com.sgu.backend.dto.request.invoice.InvoiceFilter;
 import com.sgu.backend.dto.request.invoice.InvoiceUpdateForm;
+import com.sgu.backend.dto.response.invoice.InvoiceDetailResponseDTO;
 import com.sgu.backend.dto.response.invoice.InvoiceResponseDTO;
+import com.sgu.backend.entities.Invoice;
 import com.sgu.backend.services.InvoiceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +28,9 @@ public class InvoiceController {
 
     @Autowired
     private InvoiceService invoiceService;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
     @Operation(summary = "Lấy danh sách hoá đơn")
     @GetMapping
@@ -34,8 +40,10 @@ public class InvoiceController {
 
     @Operation(summary = "Lấy hoá đơn theo ID")
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<InvoiceResponseDTO>> getById(@PathVariable String id) {
-        return ResponseEntity.ok(new ApiResponse<>(200, "Chi tiết hoá đơn", invoiceService.getById(id)));
+    public ResponseEntity<ApiResponse<InvoiceDetailResponseDTO>> getById(@PathVariable String id) {
+			Invoice invoice =  invoiceService.getById(id);
+			InvoiceDetailResponseDTO invoiceDetailResponseDTO = modelMapper.map(invoice, InvoiceDetailResponseDTO.class);
+        return ResponseEntity.ok(new ApiResponse<>(200, "Chi tiết hoá đơn", invoiceDetailResponseDTO) );
     }
 
     @Operation(summary = "Tạo hoá đơn bởi nguười dùng")
@@ -50,12 +58,7 @@ public class InvoiceController {
         return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật hoá đơn thành công", invoiceService.update(id, form)));
     }
 
-    @Operation(summary = "Xoá hoá đơn")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String id) {
-        invoiceService.delete(id);
-        return ResponseEntity.ok(new ApiResponse<>(200, "Xoá hoá đơn thành công", null));
-    }
+  
     @Operation(summary = "Tạo hóa đơn từ Admin, bao gồm cả tạo profile mới")
     @PostMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")

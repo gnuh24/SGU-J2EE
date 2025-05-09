@@ -68,7 +68,7 @@ import { ScheduleManagementComponent } from '../schedule-management/schedule-man
 
 
     InvoiceManagementComponent,
-    // InvoiceDetailFormComponent,  // <-- Thêm vào declarations
+    InvoiceDetailFormComponent,  // <-- Thêm vào declarations
 
     TicketManagementComponent,
     TicketDetailFormComponent,

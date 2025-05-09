@@ -49,9 +49,13 @@ export class InvoiceManagementComponent implements OnInit {
         );
     }
 
-    viewDetails(invoice: any): void {
+    viewDetails(invoiceId: any): void {
         this.dialog.open(InvoiceDetailFormComponent, {
-            data: invoice
+            data: invoiceId,
+            width: '80vw',
+            maxWidth: 'none', // <- thêm dòng này để width hoạt động đúng
+            height: '80vh',
+            panelClass: 'invoice-detail-dialog-container'
         });
     }
 }

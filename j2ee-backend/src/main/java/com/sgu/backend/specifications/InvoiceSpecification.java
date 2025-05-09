@@ -7,41 +7,31 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class InvoiceSpecification {
-
-    public static Specification<Invoice> filter(InvoiceFilter filter) {
-        return (root, query, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
-
-            if (filter.getProfileId() != null) {
-                predicates.add(cb.equal(root.get("profile").get("id"), filter.getProfileId()));
-            }
-
-            if (filter.getProfileName() != null) {
-                predicates.add(cb.like(cb.lower(root.get("profile").get("fullname")), "%" + filter.getProfileName().toLowerCase() + "%"));
-            }
-
-            if (filter.getProfilePhone() != null) {
-                predicates.add(cb.like(cb.lower(root.get("profile").get("phone")), "%" + filter.getProfilePhone().toLowerCase() + "%"));
-            }
-//
-//            if (filter.getFromDate() != null) {
-//                predicates.add(cb.greaterThanOrEqualTo(root.get("issuedAt"), filter.getFromDate()));
-//            }
-//
-//            if (filter.getToDate() != null) {
-//                predicates.add(cb.lessThanOrEqualTo(root.get("issuedAt"), filter.getToDate()));
-//            }
-
-            if (filter.getMinTotal() != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("totalAmount"), filter.getMinTotal()));
-            }
-
-            if (filter.getMaxTotal() != null) {
-                predicates.add(cb.lessThanOrEqualTo(root.get("totalAmount"), filter.getMaxTotal()));
-            }
-
-            return cb.and(predicates.toArray(new Predicate[0]));
-        };
-    }
+		
+		public static Specification<Invoice> filter(InvoiceFilter filter) {
+				return (root, query, cb) -> {
+						List<Predicate> predicates = new ArrayList<>();
+						
+						if (filter.getSearch() != null && !filter.getSearch().isBlank()) {
+								String keyword = "%" + filter.getSearch().toLowerCase() + "%";
+								predicates.add(cb.or(
+										cb.like(cb.lower(root.get("id")), keyword),
+										cb.like(cb.lower(root.get("profile").get("fullname")), keyword),
+										cb.like(cb.lower(root.get("profile").get("phone")), keyword)
+								));
+						}
+						
+						// if (filter.getFromDate() != null) {
+						//     predicates.add(cb.greaterThanOrEqualTo(root.get("issuedAt"), filter.getFromDate()));
+						// }
+						
+						// if (filter.getToDate() != null) {
+						//     predicates.add(cb.lessThanOrEqualTo(root.get("issuedAt"), filter.getToDate()));
+						// }
+						
+						return cb.and(predicates.toArray(new Predicate[0]));
+				};
+		}
 }

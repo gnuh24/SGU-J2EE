@@ -1,1 +1,78 @@
-<p>invoice-detail-form works!</p>
+<h2 mat-dialog-title>Chi tiết hoá đơn</h2>
+
+<form [formGroup]="invoiceForm">
+    <!-- Thông tin hoá đơn -->
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Mã hoá đơn</mat-label>
+        <input matInput formControlName="id" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Khách hàng</mat-label>
+        <input matInput formControlName="profileFullname" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Số điện thoại</mat-label>
+        <input matInput formControlName="profilePhone" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Phương thức thanh toán</mat-label>
+        <input matInput formControlName="paymentMethod" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Trạng thái thanh toán</mat-label>
+        <input matInput formControlName="paymentStatus" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Thời gian tạo</mat-label>
+        <input matInput formControlName="createdAt" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Tổng tiền (VNĐ)</mat-label>
+        <input matInput formControlName="totalAmount" readonly>
+    </mat-form-field>
+
+    <!-- Danh sách vé -->
+    <div *ngFor="let ticket of tickets; let i = index" class="ticket-section">
+        <h3 class="mt-4 mb-2">Vé {{ i + 1 }}</h3>
+
+        <mat-form-field class="w-full" appearance="outline">
+            <mat-label>Mã vé</mat-label>
+            <input matInput [value]="ticket.id" readonly>
+        </mat-form-field>
+
+        <mat-form-field class="w-full" appearance="outline">
+            <mat-label>Giá vé</mat-label>
+            <input matInput [value]="ticket.price" readonly>
+        </mat-form-field>
+
+        <mat-form-field class="w-full" appearance="outline">
+            <mat-label>Trạng thái</mat-label>
+            <input matInput [value]="ticket.status" readonly>
+        </mat-form-field>
+
+        <mat-form-field class="w-full" appearance="outline">
+            <mat-label>Ngày tạo vé</mat-label>
+            <input matInput [value]="formatDateTime(ticket.createdAt)" readonly>
+        </mat-form-field>
+
+        <mat-form-field class="w-full" appearance="outline">
+            <mat-label>Điểm đi</mat-label>
+            <input matInput [value]="ticket.departure" readonly>
+        </mat-form-field>
+
+        <mat-form-field class="w-full" appearance="outline">
+            <mat-label>Điểm đến</mat-label>
+            <input matInput [value]="ticket.arrival" readonly>
+        </mat-form-field>
+    </div>
+
+    <div class="actions mt-4">
+        <button mat-button type="button" (click)="onClose()">Đóng</button>
+    </div>
+</form>

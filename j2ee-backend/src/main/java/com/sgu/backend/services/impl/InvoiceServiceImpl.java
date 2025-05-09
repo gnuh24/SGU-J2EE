@@ -17,6 +17,7 @@ import com.sgu.backend.services.ProfileService;
 import com.sgu.backend.services.TicketService;
 import com.sgu.backend.specifications.InvoiceSpecification;
 import com.sgu.backend.utils.IdGenerator;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -62,7 +63,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         // Nếu InvoiceResponseDTO của bạn có danh sách tickets thì bạn cần set vào đây
         InvoiceResponseDTO invoiceResponse = convertToDto(invoice);
-        invoiceResponse.setTickets(ticketResponses); // giả sử có setTickets()
 
         return invoiceResponse;
     }
@@ -79,14 +79,17 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public InvoiceResponseDTO getById(String id) {
+    public InvoiceResponseDTO getDTOById(String id) {
         return convertToDto(invoiceRepository.findById(id).orElseThrow());
     }
+		
+	@Override
+		public Invoice getById(String id) {
+				return invoiceRepository.findById(id).orElseThrow(
+						() -> new EntityNotFoundException("Invoice with id " + id + " not found")
+				);
+		}
 
-    @Override
-    public void delete(String id) {
-        invoiceRepository.deleteById(id);
-    }
 
     @Override
     public Page<InvoiceResponseDTO> getAll(Pageable pageable, InvoiceFilter filter) {
@@ -103,12 +106,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         InvoiceResponseDTO dto = modelMapper.map(invoice, InvoiceResponseDTO.class);
         dto.setProfileId(invoice.getProfile().getId());
         dto.setProfileFullname(invoice.getProfile().getFullname());
-
-        if (invoice.getTickets() != null) {
-            dto.setTickets(invoice.getTickets().stream()
-                    .map(ticket -> modelMapper.map(ticket, TicketResponseDTO.class))
-                    .collect(Collectors.toList()));
-        }
+		
 
         return dto;
     }
@@ -140,7 +138,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         // 4. Trả về response
         InvoiceResponseDTO responseDTO = convertToDto(invoice);
-        responseDTO.setTickets(ticketResponses);
         return responseDTO;
     }
 

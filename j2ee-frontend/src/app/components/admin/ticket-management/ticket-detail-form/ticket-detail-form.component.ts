@@ -59,7 +59,6 @@ export class TicketDetailFormComponent implements OnInit {
             .subscribe({
                 next: (res) => {
                     const t = res.data;
-                    console.log('Chi tiết vé:', t);
 
                     this.ticketForm.patchValue({
                         id: t.id,
