@@ -7,6 +7,7 @@ import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +16,17 @@ public class ScheduleSpecification {
     public static Specification<Schedule> filter(ScheduleFilterForm filter) {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-
-            if (filter.getRouteId() != null) {
-                predicates.add(cb.equal(root.get("route").get("id"), filter.getRouteId()));
-            }
+				
+				if (StringUtils.hasText(filter.getSearch())) {
+						String keyword = "%" + filter.getSearch().toLowerCase() + "%";
+						predicates.add(cb.or(
+								cb.like(cb.lower(root.get("id")), keyword)
+//								,
+//								cb.like(cb.lower(root.get("invoice").get("profile").get("phone")), keyword),
+//								cb.like(cb.lower(root.get("invoice").get("profile").get("fullname")), keyword)
+						));
+				}
+			
             if (filter.getStatus() != null) {
                 predicates.add(cb.equal(root.get("status"), filter.getStatus()));
             }

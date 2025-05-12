@@ -10,6 +10,7 @@ import com.sgu.backend.dto.response.invoice.InvoiceResponseDTO;
 import com.sgu.backend.entities.Invoice;
 import com.sgu.backend.services.InvoiceService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -20,54 +21,87 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * InvoiceController is responsible for handling all invoice-related requests.
+ * This includes actions such as getting, creating, updating, and managing invoices.
+ */
 @RestController
 @RequestMapping("/invoices")
 @CrossOrigin(origins = "*")
 @Tag(name = "Invoice API", description = "Quản lý hoá đơn")
 public class InvoiceController {
-
-    @Autowired
-    private InvoiceService invoiceService;
-	
-	@Autowired
-	private ModelMapper modelMapper;
-
-    @Operation(summary = "Lấy danh sách hoá đơn")
-    @GetMapping
-    public ResponseEntity<ApiResponse<Page<InvoiceResponseDTO>>> getAll(Pageable pageable, InvoiceFilter filter) {
-        return ResponseEntity.ok(new ApiResponse<>(200, "Danh sách hoá đơn", invoiceService.getAll(pageable, filter)));
-    }
-
-    @Operation(summary = "Lấy hoá đơn theo ID")
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<InvoiceDetailResponseDTO>> getById(@PathVariable String id) {
-			Invoice invoice =  invoiceService.getById(id);
-			InvoiceDetailResponseDTO invoiceDetailResponseDTO = modelMapper.map(invoice, InvoiceDetailResponseDTO.class);
-        return ResponseEntity.ok(new ApiResponse<>(200, "Chi tiết hoá đơn", invoiceDetailResponseDTO) );
-    }
-
-    @Operation(summary = "Tạo hoá đơn bởi nguười dùng")
-    @PostMapping
-    public ResponseEntity<ApiResponse<InvoiceResponseDTO>> createByUser(@RequestBody @Valid InvoiceCreateForm form) {
-        return ResponseEntity.ok(new ApiResponse<>(201, "Tạo hoá đơn thành công", invoiceService.createByUser(form)));
-    }
-
-    @Operation(summary = "Cập nhật hoá đơn")
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<InvoiceResponseDTO>> update(@PathVariable String id, @RequestBody @Valid InvoiceUpdateForm form) {
-        return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật hoá đơn thành công", invoiceService.update(id, form)));
-    }
-
-  
-    @Operation(summary = "Tạo hóa đơn từ Admin, bao gồm cả tạo profile mới")
-    @PostMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<InvoiceResponseDTO>> createInvoiceByAdmin(
-            @RequestBody @Valid InvoiceCreateFormByAdmin form) {
-
-        InvoiceResponseDTO response = invoiceService.createInvoiceByAdmin(form);
-        return ResponseEntity.ok(new ApiResponse<>(200, "Tạo hóa đơn thành công (Admin)", response));
-    }
-
-
+		
+		@Autowired
+		private InvoiceService invoiceService;
+		
+		@Autowired
+		private ModelMapper modelMapper;
+		
+		/**
+		 * Get all invoices with pagination and optional filtering.
+		 *
+		 * @param pageable the pagination information
+		 * @param filter   the filters applied to the list of invoices
+		 * @return a paginated list of invoice response DTOs
+		 */
+		@Operation(summary = "Lấy danh sách hoá đơn", description = "Lấy danh sách hoá đơn có phân trang và bộ lọc.")
+		@GetMapping
+		public ResponseEntity<ApiResponse<Page<InvoiceResponseDTO>>> getAll(Pageable pageable, InvoiceFilter filter) {
+				return ResponseEntity.ok(new ApiResponse<>(200, "Danh sách hoá đơn", invoiceService.getAll(pageable, filter)));
+		}
+		
+		/**
+		 * Get the details of a specific invoice by its ID.
+		 *
+		 * @param id the ID of the invoice
+		 * @return the details of the invoice
+		 */
+		@Operation(summary = "Lấy hoá đơn theo ID", description = "Lấy thông tin chi tiết của một hoá đơn theo ID.")
+		@GetMapping("/{id}")
+		public ResponseEntity<ApiResponse<InvoiceDetailResponseDTO>> getById(@PathVariable String id) {
+				Invoice invoice = invoiceService.getById(id);
+				InvoiceDetailResponseDTO invoiceDetailResponseDTO = modelMapper.map(invoice, InvoiceDetailResponseDTO.class);
+				return ResponseEntity.ok(new ApiResponse<>(200, "Chi tiết hoá đơn", invoiceDetailResponseDTO));
+		}
+		
+		/**
+		 * Create a new invoice by a user.
+		 *
+		 * @param form the form data for creating the invoice
+		 * @return the created invoice
+		 */
+		@Operation(summary = "Tạo hoá đơn bởi người dùng", description = "Người dùng có thể tạo một hoá đơn mới.")
+		@PostMapping
+		public ResponseEntity<ApiResponse<InvoiceResponseDTO>> createByUser(@RequestBody @Valid InvoiceCreateForm form) {
+				return ResponseEntity.ok(new ApiResponse<>(201, "Tạo hoá đơn thành công", invoiceService.createByUser(form)));
+		}
+		
+		/**
+		 * Update an existing invoice by its ID.
+		 *
+		 * @param id   the ID of the invoice to update
+		 * @param form the form data for updating the invoice
+		 * @return the updated invoice
+		 */
+		@Operation(summary = "Cập nhật hoá đơn", description = "Cập nhật thông tin của một hoá đơn đã tồn tại.")
+		@PutMapping("/{id}")
+		public ResponseEntity<ApiResponse<InvoiceResponseDTO>> update(@PathVariable String id, @RequestBody @Valid InvoiceUpdateForm form) {
+				return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật hoá đơn thành công", invoiceService.update(id, form)));
+		}
+		
+		/**
+		 * Create a new invoice by an admin, which includes creating a new profile.
+		 * This endpoint is restricted to users with the ADMIN role.
+		 *
+		 * @param form the form data for creating the invoice as an admin
+		 * @return the created invoice response
+		 */
+		@Operation(summary = "Tạo hóa đơn từ Admin, bao gồm cả tạo profile mới", description = "Admin có thể tạo hoá đơn mới và bao gồm tạo profile cho người dùng.")
+		@PostMapping("/admin")
+		@PreAuthorize("hasRole('ADMIN')")
+		public ResponseEntity<ApiResponse<InvoiceResponseDTO>> createInvoiceByAdmin(
+				@RequestBody @Valid InvoiceCreateFormByAdmin form) {
+				InvoiceResponseDTO response = invoiceService.createInvoiceByAdmin(form);
+				return ResponseEntity.ok(new ApiResponse<>(200, "Tạo hóa đơn thành công (Admin)", response));
+		}
 }

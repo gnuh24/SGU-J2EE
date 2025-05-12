@@ -1,17 +1,25 @@
 package com.sgu.backend.dto.response.statistics;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class MonthlySummaryDTO {
-    private long newUsers;
-    private long invoices;
-    private long tickets;
-    private double revenue;
-
-    public MonthlySummaryDTO(long newUsers, long invoices, long tickets, double revenue) {
-        this.newUsers = newUsers;
-        this.invoices = invoices;
-        this.tickets = tickets;
-        this.revenue = revenue;
-    }
-
-    // Getters and Setters
+		
+		@Schema(description = "Số lượng người dùng mới trong tháng", example = "150")
+		private long newUsers;
+		
+		@Schema(description = "Số lượng hóa đơn trong tháng", example = "200")
+		private long invoices;
+		
+		@Schema(description = "Số lượng vé đã bán trong tháng", example = "350")
+		private long tickets;
+		
+		@Schema(description = "Doanh thu trong tháng", example = "5000000")
+		private double revenue;
+		
 }

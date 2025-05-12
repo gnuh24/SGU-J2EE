@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class ScheduleFilterForm {
-    private String routeId;
+    private String search;
     private Schedule.Status status;
 }

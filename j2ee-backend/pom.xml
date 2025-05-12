@@ -8,7 +8,7 @@
 		<!--  lookup parent from repository  -->
 	</parent>
 	<groupId>com.sgu.user</groupId>
-	<artifactId>user-service</artifactId>
+	<artifactId>j2ee-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>user-service</name>
 	<description>user-service</description>
