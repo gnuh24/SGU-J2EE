@@ -83,49 +83,68 @@ CREATE TABLE `Coach` (
     `capacity` INT NOT NULL,
     `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     `updatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-    `type` VARCHAR(255) NOT NULL,
     `licensePlate` VARCHAR(50) UNIQUE NOT NULL,
     `status` ENUM('ACTIVE', 'INACTIVE', 'MAINTENANCE') NOT NULL
 );
 
-INSERT INTO `Coach` (`id`, `capacity`, `type`, `licensePlate`, `status`) VALUES
-    ('C001', 45, 'Sleeper Bus', '51B-12345', 'ACTIVE'),
-    ('C002', 30, 'Seated Bus', '51C-67890', 'INACTIVE'),
-    ('C003', 50, 'Premium Sleeper', '50A-54321', 'MAINTENANCE'),
-    ('C004', 40, 'Limousine VIP', '60D-11223', 'ACTIVE'),
-    ('C005', 35, 'Seated Bus', '62E-44556', 'ACTIVE'),
-    ('C006', 42, 'Sleeper Bus', '53G-99887', 'ACTIVE'),
-    ('C007', 16, 'Limousine VIP', '59F-33445', 'MAINTENANCE'),
-    ('C008', 28, 'Seated Bus', '49H-66778', 'INACTIVE');
+INSERT INTO `Coach` (`id`, `capacity`, `licensePlate`, `status`) VALUES
+    ('C001', 45, '51B-12345', 'ACTIVE'),
+    ('C002', 30, '51C-67890', 'INACTIVE'),
+    ('C003', 50, '50A-54321', 'MAINTENANCE'),
+    ('C004', 40, '60D-11223', 'ACTIVE'),
+    ('C005', 35, '62E-44556', 'ACTIVE'),
+    ('C006', 42, '53G-99887', 'ACTIVE'),
+    ('C007', 16, '59F-33445', 'MAINTENANCE'),
+    ('C008', 28, '49H-66778', 'INACTIVE');
 
                         
 CREATE TABLE `Seat` (
-    `id` VARCHAR(10) PRIMARY KEY,
-    `number` INT NOT NULL,
-    `type` ENUM('NORMAL', 'VIP') NOT NULL,
-    `isNextToWindow` BOOLEAN NOT NULL,
-    `floor` INT NOT NULL,
-    `coachId` VARCHAR(10) NOT NULL,
+    `id` 		VARCHAR(10) PRIMARY KEY,
+    `number` 	VARCHAR(10) NOT NULL,
+    `coachId` 	VARCHAR(10) NOT NULL,
     FOREIGN KEY (`coachId`) REFERENCES `Coach`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-INSERT INTO `Seat` (`id`, `number`, `type`, `isNextToWindow`, `floor`, `coachId`) VALUES
-    ('S001', 1, 'NORMAL', TRUE, 1, 'C001'),
-    ('S002', 2, 'NORMAL', FALSE, 1, 'C001'),
-    ('S003', 3, 'VIP', TRUE, 1, 'C001'),
-    ('S004', 4, 'NORMAL', FALSE, 2, 'C002'),
-    ('S005', 5, 'NORMAL', TRUE, 2, 'C002'),
-    ('S006', 6, 'VIP', TRUE, 1, 'C003'),
-    ('S007', 7, 'NORMAL', FALSE, 1, 'C003'),
-    ('S008', 8, 'NORMAL', TRUE, 2, 'C004'),
-    ('S009', 9, 'VIP', TRUE, 1, 'C005'),
-    ('S010', 10, 'NORMAL', FALSE, 1, 'C005'),
-    ('S011', 11, 'NORMAL', TRUE, 1, 'C006'),
-    ('S012', 12, 'VIP', TRUE, 2, 'C006'),
-    ('S013', 13, 'NORMAL', FALSE, 1, 'C007'),
-    ('S014', 14, 'NORMAL', TRUE, 1, 'C007'),
-    ('S015', 15, 'VIP', TRUE, 2, 'C008'),
-    ('S016', 16, 'NORMAL', FALSE, 2, 'C008');
+-- Tầng 1: A001 → A017
+INSERT INTO `Seat` (`id`, `number`, `coachId`) VALUES
+('A001', 'A001', 'C001'),
+('A002', 'A002', 'C001'),
+('A003', 'A003', 'C001'),
+('A004', 'A004', 'C001'),
+('A005', 'A005', 'C001'),
+('A006', 'A006', 'C001'),
+('A007', 'A007', 'C001'),
+('A008', 'A008', 'C001'),
+('A009', 'A009', 'C001'),
+('A010', 'A010', 'C001'),
+('A011', 'A011', 'C001'),
+('A012', 'A012', 'C001'),
+('A013', 'A013', 'C001'),
+('A014', 'A014', 'C001'),
+('A015', 'A015', 'C001'),
+('A016', 'A016', 'C001'),
+('A017', 'A017', 'C001');
+
+-- Tầng 2: B001 → B017
+INSERT INTO `Seat` (`id`, `number`, `coachId`) VALUES
+('B001', 'B001', 'C001'),
+('B002', 'B002', 'C001'),
+('B003', 'B003', 'C001'),
+('B004', 'B004', 'C001'),
+('B005', 'B005', 'C001'),
+('B006', 'B006', 'C001'),
+('B007', 'B007', 'C001'),
+('B008', 'B008', 'C001'),
+('B009', 'B009', 'C001'),
+('B010', 'B010', 'C001'),
+('B011', 'B011', 'C001'),
+('B012', 'B012', 'C001'),
+('B013', 'B013', 'C001'),
+('B014', 'B014', 'C001'),
+('B015', 'B015', 'C001'),
+('B016', 'B016', 'C001'),
+('B017', 'B017', 'C001');
+
 
 
 CREATE TABLE `Route` (
@@ -218,15 +237,16 @@ CREATE TABLE `Ticket` (
 
 
 INSERT INTO `Ticket` (`id`, `status`, `price`, `createdAt`, `updatedAt`, `invoiceId`, `scheduleId`, `seatId`) VALUES
-    ('T001', 'BOOKED', 150000, NOW(), NOW(), 'I001', 'S001', 'S001'),
-    ('T002', 'CANCELLED', 200000, NOW(), NOW(), 'I002', 'S002', 'S002'),
-    ('T003', 'USED', 180000, NOW(), NOW(), 'I003', 'S003', 'S003'),
-    ('T004', 'BOOKED', 220000, NOW(), NOW(), 'I004', 'S004', 'S004'),
-    ('T005', 'BOOKED', 175000, NOW(), NOW(), 'I005', 'S005', 'S005'),
-    ('T006', 'CANCELLED', 190000, NOW(), NOW(), 'I005', 'S006', 'S006'),
-    ('T007', 'USED', 160000, NOW(), NOW(), 'I005', 'S007', 'S007'),
-    ('T008', 'BOOKED', 140000, NOW(), NOW(), 'I005', 'S008', 'S008'),
-    ('T009', 'BOOKED', 210000, NOW(), NOW(), 'I005', 'S009', 'S009'),
-    ('T010', 'USED', 130000, NOW(), NOW(), 'I005', 'S010', 'S010');
+('T001', 'BOOKED', 150000, NOW(), NOW(), 'I001', 'S001', 'A001'),
+('T002', 'CANCELLED', 200000, NOW(), NOW(), 'I002', 'S002', 'A002'),
+('T003', 'USED', 180000, NOW(), NOW(), 'I003', 'S003', 'A003'),
+('T004', 'BOOKED', 220000, NOW(), NOW(), 'I004', 'S004', 'A004'),
+('T005', 'BOOKED', 175000, NOW(), NOW(), 'I005', 'S005', 'A005'),
+('T006', 'CANCELLED', 190000, NOW(), NOW(), 'I005', 'S006', 'A006'),
+('T007', 'USED', 160000, NOW(), NOW(), 'I005', 'S007', 'A007'),
+('T008', 'BOOKED', 140000, NOW(), NOW(), 'I005', 'S008', 'A008'),
+('T009', 'BOOKED', 210000, NOW(), NOW(), 'I005', 'S009', 'A009'),
+('T010', 'USED', 130000, NOW(), NOW(), 'I005', 'S010', 'A010');
+
 
     

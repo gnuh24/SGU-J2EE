@@ -21,7 +21,7 @@ export class CoachManagementComponent implements OnInit {
     status: string = '';
     sort: string = 'id,asc';
 
-    displayedColumns: string[] = ['id', 'licensePlate', 'type', 'capacity', 'status', 'createdAt', 'updatedAt', 'actions'];
+    displayedColumns: string[] = ['id', 'licensePlate', 'capacity', 'status', 'createdAt', 'updatedAt', 'actions'];
 
     constructor(private coachService: CoachService, private dialog: MatDialog) { }
 

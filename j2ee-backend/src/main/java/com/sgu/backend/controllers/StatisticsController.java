@@ -29,66 +29,6 @@ public class StatisticsController {
 		private final StatisticsService statisticsService;
 		
 		/**
-		 * Get the count of new users for a specific month and year.
-		 *
-		 * @param year the year to fetch statistics for
-		 * @param month the month to fetch statistics for
-		 * @return the count of new users in the specified month and year
-		 */
-		@Operation(summary = "Thống kê số lượng người dùng mới trong tháng",
-				description = "Trả về số lượng người dùng mới đăng ký trong tháng cụ thể.")
-		@GetMapping("/new-users")
-		public ResponseEntity<ApiResponse<Long>> countNewUsers(@RequestParam int year, @RequestParam int month) {
-				long count = statisticsService.countNewUsers(year, month);
-				return ResponseEntity.ok(new ApiResponse<>(200, "Số lượng người dùng mới", count));
-		}
-		
-		/**
-		 * Get the count of invoices created for a specific month and year.
-		 *
-		 * @param year the year to fetch statistics for
-		 * @param month the month to fetch statistics for
-		 * @return the count of invoices in the specified month and year
-		 */
-		@Operation(summary = "Thống kê số lượng hóa đơn trong tháng",
-				description = "Trả về số lượng hóa đơn được tạo trong tháng cụ thể.")
-		@GetMapping("/invoices")
-		public ResponseEntity<ApiResponse<Long>> countInvoices(@RequestParam int year, @RequestParam int month) {
-				long count = statisticsService.countInvoices(year, month);
-				return ResponseEntity.ok(new ApiResponse<>(200, "Số lượng hóa đơn", count));
-		}
-		
-		/**
-		 * Get the count of tickets booked for a specific month and year.
-		 *
-		 * @param year the year to fetch statistics for
-		 * @param month the month to fetch statistics for
-		 * @return the count of tickets booked in the specified month and year
-		 */
-		@Operation(summary = "Thống kê số lượng vé đặt trong tháng",
-				description = "Trả về số lượng vé được đặt trong tháng cụ thể.")
-		@GetMapping("/tickets")
-		public ResponseEntity<ApiResponse<Long>> countTickets(@RequestParam int year, @RequestParam int month) {
-				long count = statisticsService.countTickets(year, month);
-				return ResponseEntity.ok(new ApiResponse<>(200, "Số lượng vé đặt", count));
-		}
-		
-		/**
-		 * Get the total revenue for a specific month and year.
-		 *
-		 * @param year the year to fetch statistics for
-		 * @param month the month to fetch statistics for
-		 * @return the total revenue in the specified month and year
-		 */
-		@Operation(summary = "Thống kê tổng doanh thu trong tháng",
-				description = "Trả về tổng doanh thu trong tháng cụ thể.")
-		@GetMapping("/revenue")
-		public ResponseEntity<ApiResponse<Double>> totalRevenue(@RequestParam int year, @RequestParam int month) {
-				double revenue = statisticsService.calculateRevenue(year, month);
-				return ResponseEntity.ok(new ApiResponse<>(200, "Tổng doanh thu", revenue));
-		}
-		
-		/**
 		 * Get the top schedules used during a specific month and year.
 		 *
 		 * @param year the year to fetch statistics for

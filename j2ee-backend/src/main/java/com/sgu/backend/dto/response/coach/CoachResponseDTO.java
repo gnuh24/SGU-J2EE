@@ -12,10 +12,7 @@ public class CoachResponseDTO {
 		
 		@Schema(description = "Biển số xe", example = "29A-12345")
 		private String licensePlate;
-		
-		@Schema(description = "Loại xe", example = "Giường nằm")
-		private String type;
-		
+	
 		@Schema(description = "Sức chứa của xe", example = "40")
 		private Integer capacity;
 		

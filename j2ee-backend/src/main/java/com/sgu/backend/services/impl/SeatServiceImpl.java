@@ -3,7 +3,6 @@ package com.sgu.backend.services.impl;
 
 
 import com.sgu.backend.dto.request.seat.SeatCreateForm;
-import com.sgu.backend.dto.request.seat.SeatFilter;
 import com.sgu.backend.dto.request.seat.SeatUpdateForm;
 import com.sgu.backend.dto.response.seat.SeatResponseDTO;
 import com.sgu.backend.entities.Coach;
@@ -15,8 +14,6 @@ import com.sgu.backend.utils.IdGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,9 +34,6 @@ public class SeatServiceImpl implements SeatService {
 
         Seat seat = new Seat();
         seat.setNumber(form.getNumber());
-        seat.setType(form.getType());
-        seat.setIsNextToWindow(form.getIsNextToWindow());
-        seat.setFloor(form.getFloor());
         seat.setCoach(coach);
 
         return seatRepository.save(seat);
@@ -51,9 +45,6 @@ public class SeatServiceImpl implements SeatService {
                 .orElseThrow(() -> new EntityNotFoundException("Seat not found with ID: " + id));
 
         seat.setNumber(form.getNumber());
-        seat.setType(form.getType());
-        seat.setIsNextToWindow(form.getIsNextToWindow());
-        seat.setFloor(form.getFloor());
 
         return seatRepository.save(seat);
     }

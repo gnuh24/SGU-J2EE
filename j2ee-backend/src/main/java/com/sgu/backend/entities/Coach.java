@@ -32,9 +32,6 @@ public class Coach {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(nullable = false, length = 255)
-    private String type; // Ví dụ: "Giường nằm", "Ghế ngồi"
-
     @Column(nullable = false, unique = true, length = 50)
     private String licensePlate;
 

@@ -62,17 +62,17 @@ public class CoachController {
 				return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật coach thành công", dto));
 		}
 		
-		/**
-		 * 📌 Xóa Coach
-		 * @param id ID của xe khách cần xóa
-		 * @return Trả về kết quả xóa thành công
-		 */
-		@Operation(summary = "Xóa xe khách", description = "Xóa xe khách dựa trên ID của xe khách.")
-		@DeleteMapping("/{id}")
-		public ResponseEntity<ApiResponse<Void>> deleteCoach(@PathVariable String id) {
-				coachService.delete(id);
-				return ResponseEntity.ok(new ApiResponse<>(200, "Xóa coach thành công", null));
-		}
+//		/**
+//		 * 📌 Xóa Coach
+//		 * @param id ID của xe khách cần xóa
+//		 * @return Trả về kết quả xóa thành công
+//		 */
+//		@Operation(summary = "Xóa xe khách", description = "Xóa xe khách dựa trên ID của xe khách.")
+//		@DeleteMapping("/{id}")
+//		public ResponseEntity<ApiResponse<Void>> deleteCoach(@PathVariable String id) {
+//				coachService.delete(id);
+//				return ResponseEntity.ok(new ApiResponse<>(200, "Xóa coach thành công", null));
+//		}
 		
 		/**
 		 * 📌 Lấy Coach theo ID

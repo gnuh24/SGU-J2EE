@@ -9,16 +9,7 @@ import lombok.Data;
 public class SeatCreateForm {
     @NotNull
     private Integer number;
-
-    @NotNull
-    private Seat.SeatType type;
-
-    @NotNull
-    private Boolean isNextToWindow;
-
-    @NotNull
-    private Integer floor;
-
+	
     @NotBlank
     private String coachId; // ID của Coach
 }

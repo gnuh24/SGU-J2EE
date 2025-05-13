@@ -3,13 +3,10 @@ package com.sgu.backend.services;
 
 
 import com.sgu.backend.dto.request.seat.SeatCreateForm;
-import com.sgu.backend.dto.request.seat.SeatFilter;
 import com.sgu.backend.dto.request.seat.SeatUpdateForm;
 import com.sgu.backend.dto.response.seat.SeatResponseDTO;
 import com.sgu.backend.entities.Coach;
 import com.sgu.backend.entities.Seat;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
