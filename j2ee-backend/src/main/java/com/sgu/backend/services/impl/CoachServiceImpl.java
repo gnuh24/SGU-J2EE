@@ -85,4 +85,24 @@ public class CoachServiceImpl implements CoachService {
         Page<Coach> coaches = coachRepository.findAll(CoachSpecification.filter(filter), pageable);
         return coaches.map(coach -> modelMapper.map(coach, CoachResponseDTO.class));
     }
+		
+		@Override
+		public List<CoachResponseDTO> getAllNoPaging() {
+				return coachRepository.findAll()
+						.stream()
+						.map(this::convertToDTO)
+						.collect(Collectors.toList());
+		}
+		
+		private CoachResponseDTO convertToDTO(Coach coach) {
+				CoachResponseDTO dto = new CoachResponseDTO();
+				dto.setId(coach.getId());
+				dto.setLicensePlate(coach.getLicensePlate());
+				dto.setStatus(coach.getStatus());
+				dto.setCapacity(coach.getCapacity());
+				// Thêm các trường khác nếu cần
+				return dto;
+		}
+		
+		
 }

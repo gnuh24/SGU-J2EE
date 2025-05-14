@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Cập nhật lịch trình</h2>
+
+<form [formGroup]="scheduleForm" (ngSubmit)="onSubmit()" mat-dialog-content class="schedule-form">
+    <!-- (Giữ nguyên các trường) -->
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tuyến xe</mat-label>
+        <mat-select formControlName="routeId" placeholder="Chọn tuyến xe">
+            <mat-option *ngFor="let route of routes" [value]="route.id">
+                {{ route.departureStation || 'Chưa có thông tin' }} - {{ route.arrivalStation || 'Chưa có thông tin' }}
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="scheduleForm.get('routeId')?.hasError('required')">Tuyến xe là bắt buộc</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Xe khách</mat-label>
+        <mat-select formControlName="coachId" placeholder="Chọn xe khách">
+            <mat-option *ngFor="let coach of coaches" [value]="coach.id">
+                {{ coach.licensePlate }}
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="scheduleForm.get('coachId')?.hasError('required')">Vui lòng chọn xe khách</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Giờ khởi hành</mat-label>
+        <input matInput formControlName="departureTime" type="datetime-local" />
+        <mat-error *ngIf="scheduleForm.get('departureTime')?.hasError('required')">Giờ khởi hành là bắt buộc</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Trạng thái</mat-label>
+        <mat-select formControlName="status">
+            <mat-option value="ACTIVE">Hoạt động</mat-option>
+            <mat-option value="INACTIVE">Tạm dừng</mat-option>
+            <mat-option value="CANCELLED">Đã hủy</mat-option>
+        </mat-select>
+        <mat-error *ngIf="scheduleForm.get('status')?.hasError('required')">Vui lòng chọn trạng thái</mat-error>
+    </mat-form-field>
+
+    <div class="dialog-actions">
+        <button mat-stroked-button color="warn" type="button" (click)="onCancel()">Hủy</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="scheduleForm.invalid || isSubmitting">
+            Cập nhật
+        </button>
+    </div>
+</form>

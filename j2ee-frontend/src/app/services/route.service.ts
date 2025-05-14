@@ -50,6 +50,11 @@ export class RouteService {
         return this.http.get<ApiResponse<any>>(url);
     }
 
+    getRouteNoPaging(): Observable<any> {
+        const url = `${this.apiUrl}/no-paging`;
+        return this.http.get<any>(url);
+    }
+
     createRoute(routeData: RouteCreateForm): Observable<any> {
         return this.http.post(this.apiUrl, routeData);
     }

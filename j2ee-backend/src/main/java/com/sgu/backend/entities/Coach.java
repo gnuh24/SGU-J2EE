@@ -1,5 +1,6 @@
 package com.sgu.backend.entities;
 
+import com.sgu.backend.dto.response.coach.CoachResponseDTO;
 import com.sgu.backend.entities.Seat;
 import com.sgu.backend.utils.IdGenerator;
 import jakarta.persistence.*;
@@ -47,4 +48,6 @@ public class Coach {
 	INACTIVE,
 	MAINTENANCE
     }
+		
+
 }

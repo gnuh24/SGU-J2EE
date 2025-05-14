@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { env } from './env.dev';
 import { ApiResponse } from '../models/apiresponse';
+import { ScheduleCreateForm, ScheduleUpdateForm } from '../models/schedule';
 
 @Injectable({
     providedIn: 'root'
@@ -50,12 +51,23 @@ export class ScheduleService {
     }
 
     /**
+ * Cập nhật thông tin lịch trình
+ * @param id ID lịch trình
+ * @param scheduleData Dữ liệu cần cập nhật
+ * @returns Observable<ApiResponse<any>>
+ */
+    createSchedule(scheduleData: ScheduleCreateForm): Observable<ApiResponse<any>> {
+        const url = `${this.apiUrl}`;
+        return this.http.post<ApiResponse<any>>(url, scheduleData);
+    }
+
+    /**
      * Cập nhật thông tin lịch trình
      * @param id ID lịch trình
      * @param scheduleData Dữ liệu cần cập nhật
      * @returns Observable<ApiResponse<any>>
      */
-    updateSchedule(id: string, scheduleData: any): Observable<ApiResponse<any>> {
+    updateSchedule(id: string, scheduleData: ScheduleUpdateForm): Observable<ApiResponse<any>> {
         const url = `${this.apiUrl}/${id}`;
         return this.http.patch<ApiResponse<any>>(url, scheduleData);
     }

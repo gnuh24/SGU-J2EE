@@ -14,8 +14,8 @@ import { StationUpdateFormComponent } from '../station/station-update-form/stati
 import { StationCreateFormComponent } from '../station/station-create-form/station-create-form.component';
 
 import { CoachManagementComponent } from '../coach/coach-management.component';
-// import { CoachUpdateFormComponent } from '../coach/coach-update-form/coach-update-form.component';
-// import { CoachCreateFormComponent } from '../coach/coach-create-form/coach-create-form.component';
+import { CoachUpdateFormComponent } from '../coach/coach-update-form/coach-update-form.component';
+import { CoachCreateFormComponent } from '../coach/coach-create-form/coach-create-form.component';
 
 
 import { AccountManagementComponent } from '../account/account-management.component';
@@ -40,12 +40,11 @@ import { TicketDetailFormComponent } from '../ticket-management/ticket-detail-fo
 import { RouteManagementComponent } from '../route-management/route-management.component';
 import { RouteUpdateFormComponent } from '../route-management/route-update-form/route-update-form.component';
 import { RouteCreateFormComponent } from '../route-management/route-create-form/route-create-form.component';
-import { CoachCreateFormComponent } from '../coach/coach-create-form/coach-create-form.component';
 import { DashboardSummaryComponent } from '../statistic-management/statistic-management.component';
-import { CoachUpdateFormComponent } from '../coach/coach-update-form/coach-update-form.component';
 import { ScheduleManagementComponent } from '../schedule-management/schedule-management.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
+import { ScheduleUpdateFormComponent } from '../schedule-management/schedule-update-form/schedule-update-form.component';
+import { ScheduleCreateFormComponent } from '../schedule-management/schedule-create-form/schedule-create-form.component';
 
 @NgModule({
     declarations: [
@@ -67,8 +66,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         // RouteDetailFormComponent,  
 
         ScheduleManagementComponent,
-        // ScheduleUpdateFormComponent,  
-        // ScheduleCreateFormComponent,  
+        ScheduleUpdateFormComponent,
+        ScheduleCreateFormComponent,
         // ScheduleDetailFormComponent,  
 
 

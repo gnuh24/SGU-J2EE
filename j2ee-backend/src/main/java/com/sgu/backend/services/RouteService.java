@@ -7,10 +7,13 @@ import com.sgu.backend.dto.response.route.RouteResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface RouteService {
     RouteResponse create(RouteCreateForm form);
     RouteResponse update(String id, RouteUpdateForm form);
     RouteResponse getById(String id);
     void delete(String id);
     Page<RouteResponse> getAll(Pageable pageable, RouteFilter filter);
+	List<RouteResponse> getAllNoPaging();
 }

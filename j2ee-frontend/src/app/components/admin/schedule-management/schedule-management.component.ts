@@ -3,7 +3,8 @@ import { ScheduleService } from '../../../services/schedule.service';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-
+import { ScheduleCreateFormComponent } from './schedule-create-form/schedule-create-form.component';
+import { ScheduleUpdateFormComponent } from './schedule-update-form/schedule-update-form.component';
 @Component({
     selector: 'app-schedule-management',
     templateUrl: './schedule-management.component.html',
@@ -58,13 +59,21 @@ export class ScheduleManagementComponent implements OnInit {
         this.loadSchedules();
     }
 
-    openUpdateScheduleDialog(schedule: any): void {
-        alert('Mở dialog cập nhật lịch trình');
-
+    openCreateScheduleDialog(): void {
+        const dialogRef = this.dialog.open(ScheduleCreateFormComponent);
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.loadSchedules();
+            }
+        });
     }
 
-    openCreateScheduleDialog(): void {
-
-        alert('Mở dialog tạo lịch trình');
+    openUpdateScheduleDialog(schedule: any): void {
+        const dialogRef = this.dialog.open(ScheduleUpdateFormComponent, { data: schedule });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.loadSchedules();
+            }
+        });
     }
 }

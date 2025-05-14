@@ -86,6 +86,18 @@ public class CoachController {
 		}
 		
 		/**
+		 * 📌 Lấy toàn bộ danh sách Coach
+		 * @return Danh sách tất cả xe khách
+		 */
+		@Operation(summary = "Lấy tất cả danh sách coach", description = "Trả về toàn bộ danh sách xe khách không phân trang, không lọc.")
+		@GetMapping("/no-paging")
+		public ResponseEntity<ApiResponse<List<CoachResponseDTO>>> getAllCoaches() {
+				List<CoachResponseDTO> result = coachService.getAllNoPaging();
+				return ResponseEntity.ok(new ApiResponse<>(200, "Lấy danh sách coach thành công", result));
+		}
+		
+		
+		/**
 		 * 📌 Lọc danh sách Coach
 		 * @param pageable Tham số phân trang
 		 * @param filter Các tham số lọc (loại, trạng thái, sức chứa...)

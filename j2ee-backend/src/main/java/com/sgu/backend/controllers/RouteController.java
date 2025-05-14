@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * RouteController handles all route-related API requests, including retrieving,
  * creating, and updating routes.
@@ -40,6 +42,15 @@ public class RouteController {
 		public ResponseEntity<ApiResponse<Page<RouteResponse>>> getAll(Pageable pageable, RouteFilter filter) {
 				return ResponseEntity.ok(new ApiResponse<>(200, "Danh sách tuyến đường", routeService.getAll(pageable, filter)));
 		}
+		
+
+		@Operation(summary = "Lấy danh sách tuyến đường", description = "Lấy danh sách tất cả tuyến đường, có hỗ trợ lọc.")
+		@GetMapping("no-paging")
+		public ResponseEntity<ApiResponse<List<RouteResponse>>> getAll() {
+				List<RouteResponse> routes = routeService.getAllNoPaging();
+				return ResponseEntity.ok(new ApiResponse<>(200, "Danh sách tuyến đường", routes));
+		}
+
 		
 		/**
 		 * Get the details of a specific route by its ID.

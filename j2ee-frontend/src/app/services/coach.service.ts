@@ -30,6 +30,10 @@ export class CoachService {
         return this.http.get<ApiResponse<any>>(this.apiUrl, { params });
     }
 
+    getCoachNoPaging(): Observable<ApiResponse<any>> {
+        return this.http.get<ApiResponse<any>>(`${this.apiUrl}/no-paging`);
+    }
+
 
     createCoach(Coach: CoachCreateForm): Observable<ApiResponse<any>> {
         return this.http.post<ApiResponse<any>>(this.apiUrl, Coach);

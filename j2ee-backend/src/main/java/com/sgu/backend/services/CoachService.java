@@ -15,4 +15,6 @@ public interface CoachService {
     Coach update(String id, CoachUpdateForm form);
     CoachResponseDTO getById(String id);
     Page<CoachResponseDTO> filter(Pageable pageable, CoachFilter filter);
+	
+	List<CoachResponseDTO> getAllNoPaging();
 }

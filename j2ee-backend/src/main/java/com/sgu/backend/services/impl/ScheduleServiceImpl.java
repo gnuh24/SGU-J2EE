@@ -48,32 +48,53 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public ScheduleResponseDTO create(ScheduleCreateForm form) {
-        Schedule schedule = modelMapper.map(form, Schedule.class);
-
+        Schedule schedule = new Schedule();
+		
+			
         // Gán Route và Coach từ ID
         Route route = routeRepository.findById(form.getRouteId())
                 .orElseThrow(() -> new RuntimeException("Route not found"));
 
-
-        schedule.setRoute(route);
-
-        schedule = scheduleRepository.save(schedule);
-        return modelMapper.map(schedule, ScheduleResponseDTO.class);
-    }
-
-    @Override
-    public ScheduleResponseDTO update(String id, ScheduleUpdateForm form) {
-        Schedule schedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Schedule not found"));
-
-        modelMapper.map(form, schedule);
-
-
-
+		Coach coach = coachRepository.findById(form.getCoachId())
+						.orElseThrow( () -> new RuntimeException("Coach not found"));
+			
+			schedule.setRoute(route);
+			schedule.setCoach(coach);
+			schedule.setDepartureTime(form.getDepartureTime());
+			schedule.setStatus(form.getStatus());
 
         schedule = scheduleRepository.save(schedule);
-        return modelMapper.map(schedule, ScheduleResponseDTO.class);
+			
+			return modelMapper.map(schedule, ScheduleResponseDTO.class);
     }
+		
+		@Override
+		public ScheduleResponseDTO update(String id, ScheduleUpdateForm form) {
+				// Tìm schedule theo ID
+				Schedule schedule = scheduleRepository.findById(id)
+						.orElseThrow(() -> new RuntimeException("Schedule not found"));
+				
+				// Lấy thông tin coach
+				Coach coach = coachRepository.findById(form.getCoachId())
+						.orElseThrow(() -> new RuntimeException("Coach not found"));
+				
+				// Lấy thông tin route
+				Route route = routeRepository.findById(form.getRouteId())
+						.orElseThrow(() -> new RuntimeException("Route not found"));
+				
+				// Cập nhật các trường từ form
+				schedule.setCoach(coach);
+				schedule.setRoute(route);
+				schedule.setDepartureTime(form.getDepartureTime());
+				schedule.setStatus(form.getStatus());
+				
+				// Lưu lại vào DB
+				schedule = scheduleRepository.save(schedule);
+				
+				// Trả về DTO
+				return modelMapper.map(schedule, ScheduleResponseDTO.class);
+		}
+
 
     @Override
     public void delete(String id) {

@@ -17,6 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class RouteServiceImpl implements RouteService {
@@ -79,8 +82,20 @@ public class RouteServiceImpl implements RouteService {
         Page<Route> routes = routeRepository.findAll(RouteSpecification.filter(filter), pageable);
         return routes.map(this::convertToDto);
     }
+		
+		@Override
+		public List<RouteResponse> getAllNoPaging() {
+				// Lấy danh sách tất cả tuyến đường
+				List<Route> routes = routeRepository.findAll();
+				
+				// Ánh xạ từng đối tượng Route thành RouteResponse và trả về danh sách
+				return routes.stream()  // Chuyển đổi List thành Stream
+						.map(this::convertToDto)  // Ánh xạ mỗi đối tượng Route thành RouteResponse
+						.collect(Collectors.toList());  // Thu thập kết quả thành một List
+		}
 
-    private RouteResponse convertToDto(Route route) {
+		
+		private RouteResponse convertToDto(Route route) {
         RouteResponse dto = modelMapper.map(route, RouteResponse.class);
 
         // Chuyển đổi CoachStation -> CoachStationResponseDTO
