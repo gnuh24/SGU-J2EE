@@ -66,9 +66,8 @@ public class AuthServiceImpl implements AuthService {
 
  @Override
   public AuthResponseDTO login(LoginRequestForm request)  {
-
 	Account user = accountService.getAccountByEmail(request.getEmail());
-
+	 System.err.println(user.toString());
 	if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
 	    throw new BadCredentialsException("Email hoặc mật khẩu không đúng!");
 	}
@@ -194,12 +193,13 @@ public class AuthServiceImpl implements AuthService {
 	response.setEmail(user.getEmail());
 	response.setRole(user.getRole().toString());
 
-	// Tạo Token
+		// Tạo Token
 	String jwt = jwtTokenProvider.generateToken(user);
 	response.setToken(jwt);
 	response.setTokenExpirationTime("30 phút");
 
-	redisService.set(RedisContants.TOKEN+jwt,true);
+
+//	redisService.set(RedisContants.TOKEN+jwt,true);
 
 
 	// Tạo Refresh Token

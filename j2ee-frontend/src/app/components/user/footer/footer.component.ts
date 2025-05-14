@@ -22,6 +22,6 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
 })
-export class footerComponent{
+export class FooterComponent {
 
 }

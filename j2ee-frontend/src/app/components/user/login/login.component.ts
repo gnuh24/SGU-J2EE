@@ -4,37 +4,51 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  FormsModule
 } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common'; // ✅ Import CommonModule để dùng *ngIf
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule], // ✅ Thêm CommonModule vào imports
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule] // ✅ Thêm CommonModule vào imports
 })
 export class LoginComponent {
-  authForm: FormGroup;
+  loginForm: FormGroup;
   isLoginMode = true;
+  errorMessage: string;
 
-  constructor(private fb: FormBuilder) {
-    this.authForm = this.fb.group({
-      fullName: [''],
-      phoneNumber: [
-        '',
-        [Validators.required, Validators.pattern('^[0-9]{10}$')],
-      ],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
   onSubmit() {
-    if (this.authForm.valid) {
-      console.log(
-        this.isLoginMode ? 'Đăng nhập' : 'Đăng ký',
-        this.authForm.value
-      );
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      this.authService.login(email, password).subscribe({
+        next: (response) => {
+          sessionStorage.setItem('token', response.data.token);
+          sessionStorage.setItem('refreshToken', response.data.refreshToken);
+          sessionStorage.setItem('userRole', response.data.role);
+          sessionStorage.setItem('userEmail', response.data.email);
+          sessionStorage.setItem('userId', response.data.id);
+          this.router.navigate(['/home']);
+        },
+        error: (error) => {
+          this.errorMessage = error.error.message || 'Đăng nhập thất bại';
+        }
+      });
     }
   }
 

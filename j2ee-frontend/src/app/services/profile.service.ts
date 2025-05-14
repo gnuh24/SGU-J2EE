@@ -3,15 +3,20 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { env } from './env.dev';
 import { ApiResponse } from '../models/apiresponse';
+import { ProfileResponse } from '../models/profile.model';
+import { AuthStateService } from './auth-state.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProfileService {
 
-    private apiUrl = `${env.API_ROOT}/profiles`;
+    private apiUrl = 'http://localhost:8080/api';
 
-    constructor(private http: HttpClient) { }
+    constructor(
+        private http: HttpClient,
+        private authState: AuthStateService
+    ) { }
 
     /**
      * Lấy danh sách các profiles
@@ -51,8 +56,13 @@ export class ProfileService {
      * @param profileData Dữ liệu profile để cập nhật
      * @returns Observable<ApiResponse<any>>
      */
-    updateProfile(profileData: any): Observable<ApiResponse<any>> {
-        const url = `${this.apiUrl}/me`;
-        return this.http.patch<ApiResponse<any>>(url, profileData);
+    updateProfile(profileData: any): Observable<ProfileResponse> {
+        const idUser = this.authState.getIdUser();
+        return this.http.put<ProfileResponse>(`${this.apiUrl}/profiles/${idUser}`, profileData);
+    }
+
+    getProfile(): Observable<ProfileResponse> {
+        const idUser = this.authState.getIdUser();
+        return this.http.get<ProfileResponse>(`${this.apiUrl}/profiles/${idUser}`);
     }
 }

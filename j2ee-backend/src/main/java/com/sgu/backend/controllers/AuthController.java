@@ -41,7 +41,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<AuthResponseDTO>> loginUser(
             @RequestBody @Valid LoginRequestForm loginInputForm) {
-
+        System.err.println(1);
         AuthResponseDTO loginInfo = authService.login(loginInputForm);
         return ResponseEntity.ok(new ApiResponse<>(200, "Login successful", loginInfo));
    }

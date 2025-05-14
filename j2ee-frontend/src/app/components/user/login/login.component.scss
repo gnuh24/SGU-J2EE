@@ -1,3 +1,4 @@
+/* Style cho trang đăng nhập */
 .login-page {
   position: relative;
   padding-top: 360px;
@@ -16,4 +17,14 @@ input:focus {
   border-color: rgb(239, 82, 34);
   outline: none;
   box-shadow: 0 0 5px rgba(239, 82, 34, 0.5);
+}
+
+.login-link {
+  color: #1976d2;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.login-link:hover {
+  color: #0d47a1;
 }

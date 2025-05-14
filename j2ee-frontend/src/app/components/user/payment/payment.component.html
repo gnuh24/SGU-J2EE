@@ -1,0 +1,117 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Thông tin đơn hàng -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <h2 class="text-2xl font-bold mb-4">Thông tin đơn hàng</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="trip-info">
+          <p><span class="font-semibold">Tuyến xe:</span> {{trip?.fromCity}} - {{trip?.toCity}}</p>
+          <p><span class="font-semibold">Thời gian:</span> {{trip?.departureTime}}</p>
+          <p><span class="font-semibold">Số ghế:</span> {{selectedSeats.join(', ')}}</p>
+        </div>
+        <div class="price-info text-right">
+          <p class="text-xl font-bold">Tổng tiền: {{totalAmount | currency:'VND'}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form thanh toán -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-2xl font-bold mb-6">Thông tin thanh toán</h2>
+      
+      <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Thông tin cá nhân -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="form-group">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Họ và tên</label>
+            <input type="text" formControlName="fullName"
+                   class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   [class.border-red-500]="paymentForm.get('fullName')?.invalid && paymentForm.get('fullName')?.touched">
+            <div *ngIf="paymentForm.get('fullName')?.invalid && paymentForm.get('fullName')?.touched"
+                 class="text-red-500 text-sm mt-1">
+              Vui lòng nhập họ tên
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+            <input type="email" formControlName="email"
+                   class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   [class.border-red-500]="paymentForm.get('email')?.invalid && paymentForm.get('email')?.touched">
+            <div *ngIf="paymentForm.get('email')?.invalid && paymentForm.get('email')?.touched"
+                 class="text-red-500 text-sm mt-1">
+              Vui lòng nhập email hợp lệ
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Số điện thoại</label>
+            <input type="tel" formControlName="phone"
+                   class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   [class.border-red-500]="paymentForm.get('phone')?.invalid && paymentForm.get('phone')?.touched">
+            <div *ngIf="paymentForm.get('phone')?.invalid && paymentForm.get('phone')?.touched"
+                 class="text-red-500 text-sm mt-1">
+              Vui lòng nhập số điện thoại hợp lệ
+            </div>
+          </div>
+        </div>
+
+        <!-- Phương thức thanh toán -->
+        <div class="payment-method">
+          <h3 class="text-lg font-semibold mb-4">Phương thức thanh toán</h3>
+          <div class="space-y-4">
+            <div class="flex items-center">
+              <input type="radio" formControlName="paymentMethod" value="banking" id="banking"
+                     class="mr-2">
+              <label for="banking">Chuyển khoản ngân hàng</label>
+            </div>
+            
+            <div class="flex items-center">
+              <input type="radio" formControlName="paymentMethod" value="card" id="card"
+                     class="mr-2">
+              <label for="card">Thẻ tín dụng/ghi nợ</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thông tin thẻ -->
+        <div *ngIf="paymentMethod?.value === 'card'" class="card-details space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-group">
+              <label class="block text-gray-700 text-sm font-bold mb-2">Số thẻ</label>
+              <input type="text" formControlName="cardNumber"
+                     class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div class="form-group">
+              <label class="block text-gray-700 text-sm font-bold mb-2">Tên chủ thẻ</label>
+              <input type="text" formControlName="cardHolder"
+                     class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div class="form-group">
+              <label class="block text-gray-700 text-sm font-bold mb-2">Ngày hết hạn</label>
+              <input type="text" formControlName="expiryDate" placeholder="MM/YY"
+                     class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div class="form-group">
+              <label class="block text-gray-700 text-sm font-bold mb-2">CVV</label>
+              <input type="text" formControlName="cvv"
+                     class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+        </div>
+
+        <!-- Nút thanh toán -->
+        <div class="text-right">
+          <button type="submit"
+                  [disabled]="paymentForm.invalid"
+                  class="bg-green-500 text-white py-3 px-8 rounded-lg hover:bg-green-600 transition duration-200 disabled:bg-gray-400">
+            Thanh toán {{totalAmount | currency:'VND'}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 

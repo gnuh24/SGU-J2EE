@@ -81,4 +81,9 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .orElseThrow(() -> new RuntimeException("Schedule not found"));
         scheduleRepository.delete(schedule);
     }
+
+    @Override
+    public Page<ScheduleResponseDTO> getAllPublic(Pageable pageable, ScheduleFilterForm filter) {
+        return null;
+    }
 }

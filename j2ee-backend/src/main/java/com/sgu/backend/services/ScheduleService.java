@@ -14,4 +14,6 @@ public interface ScheduleService {
     ScheduleResponseDTO create(ScheduleCreateForm form);
     ScheduleResponseDTO update(String id, ScheduleUpdateForm form);
     void delete(String id);
+    Page<ScheduleResponseDTO> getAllPublic(Pageable pageable, ScheduleFilterForm filter);
+
 }

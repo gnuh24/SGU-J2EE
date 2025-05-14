@@ -62,10 +62,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
              *  Hàm tách username ra từ chuỗi JWT -> Lấy được email
              */
             jwtToken = authHeader.substring(7);
-            if(!redisService.exists(RedisContants.TOKEN+jwtToken)){
-                authExceptionHandler.commence(request, response, new TokenExpiredException("Access Token đã hết hạn sử dụng."));
-                return;
-            }
+//            if(!redisService.exists(RedisContants.TOKEN+jwtToken)){
+//                authExceptionHandler.commence(request, response, new TokenExpiredException("Access Token đã hết hạn sử dụng."));
+//                return;
+//            }
 
             try {
                 userEmail = jwtTokenProvider.getUsername(jwtToken);

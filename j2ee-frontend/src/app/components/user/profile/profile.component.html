@@ -1,0 +1,50 @@
+<div class="profile-container">
+  <div class="profile-card">
+    <h2>Profile Information</h2>
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="id">ID</label>
+        <input type="text" id="id" formControlName="id" class="form-control" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" formControlName="fullname" class="form-control"
+          [ngClass]="{'is-invalid': profileForm.get('fullname')?.invalid && profileForm.get('fullname')?.touched}">
+        <div class="invalid-feedback" *ngIf="profileForm.get('fullname')?.errors?.['required']">
+          Full name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" formControlName="email" class="form-control" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" formControlName="phone" class="form-control"
+          [ngClass]="{'is-invalid': profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched}">
+        <div class="invalid-feedback" *ngIf="profileForm.get('phone')?.errors?.['required']">
+          Phone number is required
+        </div>
+        <div class="invalid-feedback" *ngIf="profileForm.get('phone')?.errors?.['pattern']">
+          Please enter a valid 10-digit phone number
+        </div>
+      </div>
+
+      <div class="alert alert-danger" *ngIf="error$ | async as error">
+        {{ error }}
+      </div>
+
+      <div class="alert alert-success" *ngIf="profile$ | async as profile">
+        Profile updated successfully!
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid || (loading$ | async)">
+        <span *ngIf="loading$ | async">Updating...</span>
+        <span *ngIf="!(loading$ | async)">Update Profile</span>
+      </button>
+    </form>
+  </div>
+</div>

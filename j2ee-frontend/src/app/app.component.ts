@@ -9,7 +9,7 @@ import { NavbarComponent } from './components/user/navbar/navbar.component';
 import { NavabarComponent } from './components/admin/navabar/navabar.component';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
-import { footerComponent } from './components/user/footer/footer.component';
+import { FooterComponent } from './components/user/footer/footer.component';
 
 // 🔽 Angular Material Modules cần cho table, sort, phân trang, tìm kiếm, input, button
 import { MatTableModule } from '@angular/material/table';
@@ -29,7 +29,7 @@ import { FormsModule } from '@angular/forms';
         CommonModule,
         FormsModule,              // Cho [(ngModel)]
         NavbarComponent,
-        footerComponent,
+        FooterComponent,
         NavabarComponent,
 
         // Angular Material hỗ trợ bảng
