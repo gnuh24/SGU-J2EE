@@ -28,22 +28,22 @@ public class StatisticsController {
 		
 		private final StatisticsService statisticsService;
 		
-		/**
-		 * Get the top schedules used during a specific month and year.
-		 *
-		 * @param year the year to fetch statistics for
-		 * @param month the month to fetch statistics for
-		 * @return the list of top schedules used in the specified month and year
-		 */
-		@GetMapping("/top-schedules")
-		public ResponseEntity<ApiResponse<List<ScheduleStatisticDTO>>> getTopSchedules(
-				@RequestParam int year,
-				@RequestParam int month) {
-				LocalDate start = LocalDate.of(year, month, 1);
-				LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
-				var result = statisticsService.getTopSchedules(start, end);
-				return ResponseEntity.ok(new ApiResponse<>(200, "Top lịch trình được sử dụng nhiều nhất", result));
-		}
+//		/**
+//		 * Get the top schedules used during a specific month and year.
+//		 *
+//		 * @param year the year to fetch statistics for
+//		 * @param month the month to fetch statistics for
+//		 * @return the list of top schedules used in the specified month and year
+//		 */
+//		@GetMapping("/top-schedules")
+//		public ResponseEntity<ApiResponse<List<ScheduleStatisticDTO>>> getTopSchedules(
+//				@RequestParam int year,
+//				@RequestParam int month) {
+//				LocalDate start = LocalDate.of(year, month, 1);
+//				LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+//				var result = statisticsService.getTopSchedules(start, end);
+//				return ResponseEntity.ok(new ApiResponse<>(200, "Top lịch trình được sử dụng nhiều nhất", result));
+//		}
 		
 		/**
 		 * Get daily revenue statistics for a specific month and year.

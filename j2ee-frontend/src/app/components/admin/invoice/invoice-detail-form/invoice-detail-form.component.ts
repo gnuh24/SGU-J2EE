@@ -45,6 +45,7 @@ export class InvoiceDetailFormComponent implements OnInit {
             .subscribe({
                 next: (res) => {
                     const invoice = res.data;
+                    console.log('Hoá đơn:', invoice);
                     this.tickets = invoice.tickets || [];
                     this.invoiceForm.patchValue({
                         id: invoice.id,

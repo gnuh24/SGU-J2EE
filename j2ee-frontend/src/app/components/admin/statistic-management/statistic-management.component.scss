@@ -45,3 +45,13 @@
         background-color: #e53935;
     }
 }
+
+.chart-container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}

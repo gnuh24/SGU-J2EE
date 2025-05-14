@@ -25,6 +25,18 @@ export class StatisticService {
         return this.http.get<ApiResponse<any>>(this.apiUrl + "/general", { params });
     }
 
+    getDailyRevenuelStatistic(): Observable<ApiResponse<any>> {
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth() + 1; // getMonth() trả về 0–11
+
+        const params = new HttpParams()
+            .set('year', currentYear.toString())
+            .set('month', currentMonth.toString());
+
+        return this.http.get<ApiResponse<any>>(this.apiUrl + "/daily-revenue", { params });
+    }
+
 
 
 }

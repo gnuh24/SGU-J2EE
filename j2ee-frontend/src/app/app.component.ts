@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import { NgChartsModule } from 'ng2-charts';
 
 @Component({
     selector: 'app-root',
@@ -39,6 +40,7 @@ import { FormsModule } from '@angular/forms';
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
+        NgChartsModule
     ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
