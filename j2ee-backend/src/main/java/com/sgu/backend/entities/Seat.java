@@ -19,22 +19,8 @@ public class Seat {
     @Column(nullable = false)
     private Integer number; // Số ghế
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private SeatType type; // NORMAL, VIP
-
-    @Column(nullable = false)
-    private Boolean isNextToWindow; // Ghế gần cửa sổ
-
-    @Column(nullable = false)
-    private Integer floor; // Tầng 1 hoặc 2
-
     @ManyToOne
     @JoinColumn(name = "coachId", nullable = false)
     private Coach coach; // Khóa ngoại tham chiếu Coach
 
-    public enum SeatType {
-	NORMAL,
-	VIP
-    }
 }

@@ -7,11 +7,6 @@ import lombok.Data;
 
 @Data
 public class CoachUpdateForm {
-    @NotNull
-    private Integer capacity;
-
-    @NotBlank
-    private String type;
 
     @NotBlank
     private String licensePlate;

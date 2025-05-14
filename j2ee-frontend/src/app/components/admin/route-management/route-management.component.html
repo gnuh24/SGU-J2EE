@@ -34,12 +34,12 @@
 
         <ng-container matColumnDef="departure">
             <th mat-header-cell *matHeaderCellDef> Điểm đi </th>
-            <td mat-cell *matCellDef="let route"> {{ route.departure }} </td>
+            <td mat-cell *matCellDef="let route"> {{ route.departureStation.name }} </td>
         </ng-container>
 
         <ng-container matColumnDef="destination">
             <th mat-header-cell *matHeaderCellDef> Điểm đến </th>
-            <td mat-cell *matCellDef="let route"> {{ route.destination }} </td>
+            <td mat-cell *matCellDef="let route"> {{ route.arrivalStation.name }} </td>
         </ng-container>
 
         <ng-container matColumnDef="distance">

@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../models/apiresponse';
 import { env } from './env.dev';
+import { CoachCreateForm, CoachUpdateForm } from '../models/coach.response';
 
 @Injectable({
     providedIn: 'root'
@@ -29,12 +30,12 @@ export class CoachService {
         return this.http.get<ApiResponse<any>>(this.apiUrl, { params });
     }
 
-    // Nếu sau này bạn cần lấy chi tiết hoặc xóa theo ID, bạn có thể bỏ comment như dưới đây:
-    // getById(id: number): Observable<ApiResponse<any>> {
-    //     return this.http.get<ApiResponse<any>>(`${this.apiUrl}/${id}`);
-    // }
 
-    // delete(id: number): Observable<ApiResponse<any>> {
-    //     return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`);
-    // }
+    createCoach(Coach: CoachCreateForm): Observable<ApiResponse<any>> {
+        return this.http.post<ApiResponse<any>>(this.apiUrl, Coach);
+    }
+
+    updateCoach(id: string, Coach: CoachUpdateForm): Observable<ApiResponse<any>> {
+        return this.http.patch<ApiResponse<any>>(`${this.apiUrl}/${id}`, Coach);
+    }
 }

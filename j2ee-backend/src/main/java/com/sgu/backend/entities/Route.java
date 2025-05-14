@@ -31,6 +31,7 @@ public class Route {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+	
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RouteStatus status;

@@ -3,8 +3,18 @@ package com.sgu.backend.dto.request.schedule;
 import com.sgu.backend.entities.Schedule;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class ScheduleFilterForm {
-    private String routeId;
+    private String search;
     private Schedule.Status status;
+	
+	
+	// USER
+	private String startCityId;
+	private String endCityId;
+	
+	private Date departureTime;
+	
 }

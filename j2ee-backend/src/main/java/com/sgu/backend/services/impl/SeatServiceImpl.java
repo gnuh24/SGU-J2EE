@@ -3,7 +3,6 @@ package com.sgu.backend.services.impl;
 
 
 import com.sgu.backend.dto.request.seat.SeatCreateForm;
-import com.sgu.backend.dto.request.seat.SeatFilter;
 import com.sgu.backend.dto.request.seat.SeatUpdateForm;
 import com.sgu.backend.dto.response.seat.SeatResponseDTO;
 import com.sgu.backend.entities.Coach;
@@ -15,8 +14,7 @@ import com.sgu.backend.utils.IdGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,46 +23,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SeatServiceImpl implements SeatService {
 
-    private final SeatRepository seatRepository;
-    private final CoachRepository coachRepository;
-    private final ModelMapper modelMapper;
+		@Autowired
+    private SeatRepository seatRepository;
+		
+		@Autowired
+    private CoachRepository coachRepository;
+	
+	@Autowired
+    private ModelMapper modelMapper;
 
 
     @Override
     public Seat create(SeatCreateForm form) {
-        Coach coach = coachRepository.findById(form.getCoachId())
-                .orElseThrow(() -> new EntityNotFoundException("Coach not found with ID: " + form.getCoachId()));
-
         Seat seat = new Seat();
         seat.setNumber(form.getNumber());
-        seat.setType(form.getType());
-        seat.setIsNextToWindow(form.getIsNextToWindow());
-        seat.setFloor(form.getFloor());
-        seat.setCoach(coach);
-
+        seat.setCoach(form.getCoach());
         return seatRepository.save(seat);
     }
 
-    @Override
-    public Seat update(String id, SeatUpdateForm form) {
-        Seat seat = seatRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Seat not found with ID: " + id));
-
-        seat.setNumber(form.getNumber());
-        seat.setType(form.getType());
-        seat.setIsNextToWindow(form.getIsNextToWindow());
-        seat.setFloor(form.getFloor());
-
-        return seatRepository.save(seat);
-    }
-
-    @Override
-    public void delete(String id) {
-        Seat seat = seatRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Seat not found with ID: " + id));
-
-        seatRepository.delete(seat);
-    }
 
     @Override
     public List<SeatResponseDTO> getById(String id) {
@@ -77,17 +53,17 @@ public class SeatServiceImpl implements SeatService {
                 .toList();
         return seatDTOs;
     }
-    @Override
-    public List<Seat> createMany(List<SeatCreateForm> seatForms, Coach coach) {
-        List<Seat> seats = seatForms.stream().map(form -> {
-            Seat seat = modelMapper.map(form, Seat.class);
-            seat.setId(IdGenerator.generateId());
-            seat.setCoach(coach);
-            return seat;
-        }).toList();
-
-        return seatRepository.saveAll(seats);
-    }
+	
+//    @Override
+//    public List<Seat> createMany(List<SeatCreateForm> seatForms, Coach coach) {
+//        List<Seat> seats = seatForms.stream().map(form -> {
+//            Seat seat = modelMapper.map(form, Seat.class);
+//            seat.setCoach(coach);
+//            return seat;
+//        }).toList();
+//
+//        return seatRepository.saveAll(seats);
+//    }
 
 
 }

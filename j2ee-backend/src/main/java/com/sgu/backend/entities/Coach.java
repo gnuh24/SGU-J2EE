@@ -19,7 +19,7 @@ import java.util.List;
 public class Coach {
 
     @Id
-    private String id = IdGenerator.generateId(); // Ví dụ: C001, C002...
+    private String id = IdGenerator.generateId();
 
     @Column(nullable = false)
     private Integer capacity;
@@ -31,9 +31,6 @@ public class Coach {
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime updatedAt;
-
-    @Column(nullable = false, length = 255)
-    private String type; // Ví dụ: "Giường nằm", "Ghế ngồi"
 
     @Column(nullable = false, unique = true, length = 50)
     private String licensePlate;

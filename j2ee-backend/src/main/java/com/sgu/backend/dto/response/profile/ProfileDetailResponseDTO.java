@@ -1,7 +1,6 @@
 package com.sgu.backend.dto.response.profile;
 
-import com.sgu.backend.dto.response.position.PositionResponseDTO;
-import com.sgu.backend.entities.Profile;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,13 +9,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfileDetailResponseDTO {
-
-    private String id;
-
-    private String fullname;
-
-    private String email;
-
-    private String phone;
-
+		
+		@Schema(description = "ID của profile", example = "PROFILE12345")
+		private String id;
+		
+		@Schema(description = "Họ và tên của người dùng", example = "Nguyễn Văn A")
+		private String fullname;
+		
+		@Schema(description = "Email của người dùng", example = "nguyen@gmail.com")
+		private String email;
+		
+		@Schema(description = "Số điện thoại của người dùng", example = "0912345678")
+		private String phone;
 }

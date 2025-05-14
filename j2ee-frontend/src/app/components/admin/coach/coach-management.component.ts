@@ -21,7 +21,7 @@ export class CoachManagementComponent implements OnInit {
     status: string = '';
     sort: string = 'id,asc';
 
-    displayedColumns: string[] = ['id', 'licensePlate', 'type', 'capacity', 'status', 'createdAt', 'updatedAt', 'actions'];
+    displayedColumns: string[] = ['id', 'licensePlate', 'capacity', 'status', 'createdAt', 'updatedAt', 'actions'];
 
     constructor(private coachService: CoachService, private dialog: MatDialog) { }
 
@@ -70,13 +70,4 @@ export class CoachManagementComponent implements OnInit {
         });
     }
 
-    // deleteCoach(id: string) {
-    //     this.coachService.deleteCoach(id).subscribe(
-    //         () => {
-    //             this.coaches = this.coaches.filter(coach => coach.id !== id);
-    //             this.loadCoaches();
-    //         },
-    //         (error) => console.error('Lỗi khi xoá xe khách:', error)
-    //     );
-    // }
 }
