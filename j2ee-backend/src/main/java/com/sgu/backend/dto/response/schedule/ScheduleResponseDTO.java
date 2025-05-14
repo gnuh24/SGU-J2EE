@@ -21,9 +21,6 @@ public class ScheduleResponseDTO {
 		@Schema(description = "Thời gian khởi hành", example = "2023-05-10T08:00:00")
 		private String departureTime;
 		
-		@Schema(description = "Thời gian đến", example = "2023-05-10T10:00:00")
-		private String arrivalTime;
-		
 		@Schema(description = "Thời gian tạo lịch trình", example = "2023-05-10T12:00:00")
 		private String createdAt;
 		

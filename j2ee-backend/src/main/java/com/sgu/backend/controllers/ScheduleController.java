@@ -5,6 +5,7 @@ import com.sgu.backend.dto.request.schedule.ScheduleCreateForm;
 import com.sgu.backend.dto.request.schedule.ScheduleFilterForm;
 import com.sgu.backend.dto.request.schedule.ScheduleUpdateForm;
 import com.sgu.backend.dto.response.schedule.ScheduleResponseDTO;
+import com.sgu.backend.entities.Schedule;
 import com.sgu.backend.services.ScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,6 +46,22 @@ public class ScheduleController {
 		}
 		
 		/**
+		 * Get a paginated list of all public schedules, with optional filtering.
+		 *
+		 * @param pageable the pagination information
+		 * @param filter   the optional filter criteria for retrieving schedules
+		 * @return a paginated list of schedule responses
+		 */
+		@Operation(summary = "Lấy danh sách lịch trình công khai", description = "Lấy danh sách tất cả lịch trình xe chạy (công khai), có hỗ trợ phân trang và lọc theo các tiêu chí.")
+		@GetMapping("/public")
+		public ResponseEntity<ApiResponse<Page<ScheduleResponseDTO>>> getAllPublic(Pageable pageable, ScheduleFilterForm filter) {
+				filter.setStatus(Schedule.Status.ACTIVE);
+				Page<ScheduleResponseDTO> result = scheduleService.getAll(pageable, filter);
+				return ResponseEntity.ok(new ApiResponse<>(200, "Lấy danh sách lịch trình công khai thành công", result));
+		}
+		
+		
+		/**
 		 * Get the details of a specific schedule by its ID.
 		 *
 		 * @param id the ID of the schedule to retrieve
@@ -56,6 +73,8 @@ public class ScheduleController {
 				ScheduleResponseDTO dto = scheduleService.getById(id);
 				return ResponseEntity.ok(new ApiResponse<>(200, "Lấy lịch trình thành công", dto));
 		}
+		
+		
 		
 		/**
 		 * Create a new schedule.

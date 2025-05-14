@@ -173,7 +173,6 @@ INSERT INTO `Route` (`id`, `price`, `createdAt`, `updatedAt`, `duration`, `dista
 
 CREATE TABLE `Schedule` (
     `id` VARCHAR(10) NOT NULL,
-    `arrivalTime` DATETIME NOT NULL,
     `departureTime` DATETIME NOT NULL,
     `status` ENUM('ACTIVE', 'INACTIVE', 'CANCELLED') NOT NULL,
     `createdAt` DATETIME NOT NULL,
@@ -186,21 +185,21 @@ CREATE TABLE `Schedule` (
 );
 
 
--- 5 Schedule trong quá khứ
-INSERT INTO `Schedule` (`id`, `arrivalTime`, `departureTime`, `status`, `createdAt`, `updatedAt`, `routeId`, `coachId`) VALUES
-    ('S001', '2024-08-01 10:30:00', '2024-08-01 07:30:00', 'ACTIVE', NOW(), NOW(), 'R001', 'C001'),
-    ('S002', '2024-08-02 15:00:00', '2024-08-02 11:00:00', 'ACTIVE', NOW(), NOW(), 'R002', 'C002'),
-    ('S003', '2024-08-03 18:45:00', '2024-08-03 15:45:00', 'CANCELLED', NOW(), NOW(), 'R003', 'C003'),
-    ('S004', '2024-08-04 09:15:00', '2024-08-04 06:15:00', 'INACTIVE', NOW(), NOW(), 'R004', 'C004'),
-    ('S005', '2024-08-05 13:00:00', '2024-08-05 09:00:00', 'ACTIVE', NOW(), NOW(), 'R005', 'C005');
+INSERT INTO `Schedule` (`id`, `departureTime`, `status`, `createdAt`, `updatedAt`, `routeId`, `coachId`) VALUES
+    ('S001', '2024-08-01 07:30:00', 'ACTIVE', NOW(), NOW(), 'R001', 'C001'),
+    ('S002', '2024-08-02 11:00:00', 'ACTIVE', NOW(), NOW(), 'R002', 'C002'),
+    ('S003', '2024-08-03 15:45:00', 'CANCELLED', NOW(), NOW(), 'R003', 'C003'),
+    ('S004', '2024-08-04 06:15:00', 'INACTIVE', NOW(), NOW(), 'R004', 'C004'),
+    ('S005', '2024-08-05 09:00:00', 'ACTIVE', NOW(), NOW(), 'R005', 'C005');
+
 
 -- 5 Schedule trong tương lai
-INSERT INTO `Schedule` (`id`, `arrivalTime`, `departureTime`, `status`, `createdAt`, `updatedAt`, `routeId`, `coachId`) VALUES
-    ('S006', '2024-08-10 17:30:00', '2024-08-10 14:30:00', 'ACTIVE', NOW(), NOW(), 'R001', 'C006'),
-    ('S007', '2024-08-11 22:15:00', '2024-08-11 18:15:00', 'ACTIVE', NOW(), NOW(), 'R002', 'C007'),
-    ('S008', '2024-08-12 06:00:00', '2024-08-12 03:00:00', 'INACTIVE', NOW(), NOW(), 'R003', 'C008'),
-    ('S009', '2024-08-13 14:20:00', '2024-08-13 11:20:00', 'ACTIVE', NOW(), NOW(), 'R004', 'C001'),
-    ('S010', '2024-08-14 08:45:00', '2024-08-14 05:45:00', 'ACTIVE', NOW(), NOW(), 'R005', 'C002');
+INSERT INTO `Schedule` (`id`, `departureTime`, `status`, `createdAt`, `updatedAt`, `routeId`, `coachId`) VALUES
+    ('S006', '2024-08-10 14:30:00', 'ACTIVE', NOW(), NOW(), 'R001', 'C006'),
+    ('S007', '2024-08-11 18:15:00', 'ACTIVE', NOW(), NOW(), 'R002', 'C007'),
+    ('S008', '2024-08-12 03:00:00', 'INACTIVE', NOW(), NOW(), 'R003', 'C008'),
+    ('S009', '2024-08-13 11:20:00', 'ACTIVE', NOW(), NOW(), 'R004', 'C001'),
+    ('S010', '2024-08-14 05:45:00', 'ACTIVE', NOW(), NOW(), 'R005', 'C002');
 
 
 CREATE TABLE `Invoice` (

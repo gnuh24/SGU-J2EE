@@ -33,9 +33,6 @@ public class Schedule {
 		private List<Ticket> tickets;
 
     @Column(nullable = false)
-    private LocalTime departureTime;
-
-    @Column(nullable = false)
     private LocalTime arrivalTime;
 
     @Enumerated(EnumType.STRING)
