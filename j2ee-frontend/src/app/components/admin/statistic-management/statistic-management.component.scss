@@ -1,0 +1,47 @@
+.summary-container {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+
+.summary-card {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    min-width: 220px;
+    flex: 1;
+    color: white;
+
+    .summary-icon {
+        font-size: 40px;
+    }
+
+    .summary-title {
+        text-align: center;
+        font-size: 20px;
+        opacity: 0.9;
+    }
+
+    .summary-value {
+        text-align: center;
+        font-size: 35px;
+        font-weight: bold;
+    }
+
+    &.blue {
+        background-color: #1976d2;
+    }
+
+    &.orange {
+        background-color: #fb8c00;
+    }
+
+    &.green {
+        background-color: #43a047;
+    }
+
+    &.red {
+        background-color: #e53935;
+    }
+}

@@ -19,7 +19,7 @@ import java.util.List;
 public class Coach {
 
     @Id
-    private String id = IdGenerator.generateId(); // Ví dụ: C001, C002...
+    private String id = IdGenerator.generateId();
 
     @Column(nullable = false)
     private Integer capacity;

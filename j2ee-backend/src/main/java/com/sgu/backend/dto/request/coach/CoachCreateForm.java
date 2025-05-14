@@ -11,17 +11,10 @@ import java.util.List;
 
 @Data
 public class CoachCreateForm {
-    @NotNull
-    private Integer capacity;
-
-    @NotBlank
-    private String type; // VD: "Giường nằm", "Ghế ngồi"
 
     @NotBlank
     private String licensePlate;
 
     @NotNull
     private Coach.CoachStatus status;
-    @NotEmpty
-    private List<SeatCreateForm> seats;
 }

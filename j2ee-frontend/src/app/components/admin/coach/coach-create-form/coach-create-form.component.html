@@ -1,1 +1,30 @@
-<p>coach-create-form works!</p>
+<h2 mat-dialog-title>Thêm xe mới</h2>
+
+<form [formGroup]="coachForm" (ngSubmit)="onSubmit()" mat-dialog-content class="coach-form">
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Biển số xe</mat-label>
+        <input matInput formControlName="licensePlate" placeholder="Nhập biển số xe" />
+        <mat-error *ngIf="coachForm.get('licensePlate')?.hasError('required')">
+            Biển số xe là bắt buộc
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Trạng thái</mat-label>
+        <mat-select formControlName="status">
+            <mat-option value="ACTIVE">Đang hoạt động</mat-option>
+            <mat-option value="INACTIVE">Tạm dừng</mat-option>
+            <mat-option value="MAINTENANCE">Bảo trì</mat-option>
+        </mat-select>
+        <mat-error *ngIf="coachForm.get('status')?.hasError('required')">
+            Vui lòng chọn trạng thái
+        </mat-error>
+    </mat-form-field>
+
+    <div class="dialog-actions">
+        <button mat-stroked-button color="warn" type="button" (click)="onCancel()">Hủy</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="coachForm.invalid || isSubmitting">
+            Tạo mới
+        </button>
+    </div>
+</form>

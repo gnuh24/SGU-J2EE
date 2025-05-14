@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +30,13 @@ import java.util.List;
 @Tag(name = "Coach API", description = "Quản lý thông tin xe khách")
 public class CoachController {
 		
+		@Autowired
 		private final CoachService coachService;
+		
+		@Autowired
 		private final ModelMapper modelMapper;
+		
+		@Autowired
 		private final SeatService seatService;
 		
 		/**
@@ -41,8 +47,8 @@ public class CoachController {
 		@Operation(summary = "Tạo xe khách mới", description = "Tạo mới một xe khách với thông tin được cung cấp.")
 		@PostMapping
 		public ResponseEntity<ApiResponse<CoachResponseDTO>> createCoach(@RequestBody @Valid CoachCreateForm form) {
-				CoachResponseDTO dto = coachService.create(form);
-				
+				Coach entity = coachService.create(form);
+				CoachResponseDTO dto = modelMapper.map(entity, CoachResponseDTO.class);
 				return ResponseEntity.ok(new ApiResponse<>(200, "Tạo coach thành công", dto));
 		}
 		
@@ -57,22 +63,12 @@ public class CoachController {
 		public ResponseEntity<ApiResponse<CoachResponseDTO>> updateCoach(
 				@Parameter(description = "ID của xe khách cần cập nhật") @PathVariable String id,
 				@RequestBody @Valid CoachUpdateForm form) {
-				CoachResponseDTO dto = coachService.update(id, form);
+				
+				Coach entity = coachService.update(id, form);
+				CoachResponseDTO dto = modelMapper.map(entity, CoachResponseDTO.class);
 				
 				return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật coach thành công", dto));
 		}
-		
-//		/**
-//		 * 📌 Xóa Coach
-//		 * @param id ID của xe khách cần xóa
-//		 * @return Trả về kết quả xóa thành công
-//		 */
-//		@Operation(summary = "Xóa xe khách", description = "Xóa xe khách dựa trên ID của xe khách.")
-//		@DeleteMapping("/{id}")
-//		public ResponseEntity<ApiResponse<Void>> deleteCoach(@PathVariable String id) {
-//				coachService.delete(id);
-//				return ResponseEntity.ok(new ApiResponse<>(200, "Xóa coach thành công", null));
-//		}
 		
 		/**
 		 * 📌 Lấy Coach theo ID

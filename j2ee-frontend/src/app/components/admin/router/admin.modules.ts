@@ -28,6 +28,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+
 import { ProfileManagementComponent } from '../profile/profile-management.component'; // <-- Import component
 
 import { InvoiceManagementComponent } from '../invoice/invoice-management.component'; // <-- Import component
@@ -38,8 +41,9 @@ import { TicketDetailFormComponent } from '../ticket-management/ticket-detail-fo
 import { RouteManagementComponent } from '../route-management/route-management.component';
 // import { RouteUpdateFormComponent } from '../route-management/route-update-form/route-update-form.component'; // <-- Import component
 // import { RouteCreateFormComponent } from '../route-management/route-create-form/route-create-form.component'; // <-- Import component
-
-
+import { CoachCreateFormComponent } from '../coach/coach-create-form/coach-create-form.component'; // <-- Import component
+import { DashboardSummaryComponent } from '../statistic-management/statistic-management.component'; // <-- Import component
+import { CoachUpdateFormComponent } from '../coach/coach-update-form/coach-update-form.component';
 import { ScheduleManagementComponent } from '../schedule-management/schedule-management.component';
 @NgModule({
   declarations: [
@@ -52,8 +56,8 @@ import { ScheduleManagementComponent } from '../schedule-management/schedule-man
     StationCreateFormComponent,  // <-- Thêm vào declarations
 
     CoachManagementComponent,
-    // CoachUpdateFormComponent,  // <-- Thêm vào declarations
-    // CoachCreateFormComponent,  // <-- Thêm vào declarations
+    CoachUpdateFormComponent,  // <-- Thêm vào declarations
+    CoachCreateFormComponent,  // <-- Thêm vào declarations
 
     RouteManagementComponent,
     // RouteUpdateFormComponent,  // <-- Thêm vào declarations
@@ -76,6 +80,8 @@ import { ScheduleManagementComponent } from '../schedule-management/schedule-man
     AccountManagementComponent,
     ProfileManagementComponent,
 
+    DashboardSummaryComponent,
+
   ],
   imports: [
     CommonModule,
@@ -92,6 +98,8 @@ import { ScheduleManagementComponent } from '../schedule-management/schedule-man
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
+    MatCardModule,
+    MatIconModule
   ],
 })
 export class AdminModule { }

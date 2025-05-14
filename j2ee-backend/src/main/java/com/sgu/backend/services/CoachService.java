@@ -11,10 +11,8 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface CoachService {
-    CoachResponseDTO create(CoachCreateForm form);
-    CoachResponseDTO update(String id, CoachUpdateForm form);
-    void delete(String id);
+    Coach create(CoachCreateForm form);
+    Coach update(String id, CoachUpdateForm form);
     CoachResponseDTO getById(String id);
     Page<CoachResponseDTO> filter(Pageable pageable, CoachFilter filter);
-
 }

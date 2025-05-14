@@ -12,11 +12,18 @@ import { TicketManagementComponent } from '../ticket-management/ticket-managemen
 import { RouteManagementComponent } from '../route-management/route-management.component';  // Import CityManagementComponent
 import { ScheduleManagementComponent } from '../schedule-management/schedule-management.component';  // Import CityManagementComponent
 
+import { DashboardSummaryComponent } from '../statistic-management/statistic-management.component';  // Import CityManagementComponent
 export const adminRoutes: Routes = [
     {
         path: '',
         component: LayoutComponent,
         children: [
+            {
+                path: 'dashboard',
+                children: [
+                    { path: "", component: DashboardSummaryComponent }
+                ]
+            },
             {
                 path: 'system',
                 children: [

@@ -12,10 +12,8 @@ import java.util.List;
 
 public interface SeatService {
     Seat create(SeatCreateForm form);
-    Seat update(String id, SeatUpdateForm form);
-    void delete(String id);
     List<SeatResponseDTO> getById(String id);
-    List<Seat> createMany(List<SeatCreateForm> seatForms, Coach coach);
+//    List<Seat> createMany(List<SeatCreateForm> seatForms, Coach coach);
 
 
 }

@@ -1,1 +1,15 @@
-<p>statistic-management works!</p>
+<div class="management-layout mat-elevation-z2">
+    <h2>Báo cáo thống kê</h2>
+
+    <div class="summary-container">
+        <mat-card class="summary-card" *ngFor="let item of summaryItems" [ngClass]="item.color">
+            <div class="summary-icon">
+                <mat-icon>{{ item.icon }}</mat-icon>
+            </div>
+            <div class="summary-content">
+                <div class="summary-title">{{ item.label }}</div>
+                <div class="summary-value">{{ item.value }}</div>
+            </div>
+        </mat-card>
+    </div>
+</div>

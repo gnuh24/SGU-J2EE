@@ -70,13 +70,4 @@ export class CoachManagementComponent implements OnInit {
         });
     }
 
-    // deleteCoach(id: string) {
-    //     this.coachService.deleteCoach(id).subscribe(
-    //         () => {
-    //             this.coaches = this.coaches.filter(coach => coach.id !== id);
-    //             this.loadCoaches();
-    //         },
-    //         (error) => console.error('Lỗi khi xoá xe khách:', error)
-    //     );
-    // }
 }
