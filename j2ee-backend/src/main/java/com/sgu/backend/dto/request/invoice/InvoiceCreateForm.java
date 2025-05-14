@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 public class InvoiceCreateForm {
-    @NotNull
+
     private String profileId;
 
     @NotNull
