@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>Cập nhật tuyến đường</h2>
+
+<form [formGroup]="routeForm" (ngSubmit)="onSubmit()" mat-dialog-content class="coach-form">
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Khoảng cách (km)</mat-label>
+        <input type="number" matInput formControlName="distance" placeholder="Nhập khoảng cách" />
+        <mat-error *ngIf="routeForm.get('distance')?.hasError('required')">
+            Khoảng cách là bắt buộc
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Thời gian di chuyển (phút)</mat-label>
+        <input type="number" matInput formControlName="duration" placeholder="Nhập thời gian di chuyển" />
+        <mat-error *ngIf="routeForm.get('duration')?.hasError('required')">
+            Thời gian là bắt buộc
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Giá vé (VND)</mat-label>
+        <input type="number" matInput formControlName="price" placeholder="Nhập giá vé" />
+        <mat-error *ngIf="routeForm.get('price')?.hasError('required')">
+            Giá vé là bắt buộc
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Bến đi</mat-label>
+        <mat-select formControlName="departureStationId">
+            <mat-option *ngFor="let station of stations" [value]="station.id">
+                {{ station.name }}
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="routeForm.get('departureStationId')?.hasError('required')">Vui lòng chọn bến đi</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Bến đến</mat-label>
+        <mat-select formControlName="arrivalStationId">
+            <mat-option *ngFor="let station of stations" [value]="station.id">
+                {{ station.name }}
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="routeForm.get('arrivalStationId')?.hasError('required')">Vui lòng chọn bến đến</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Trạng thái</mat-label>
+        <mat-select formControlName="status">
+            <mat-option value="ACTIVE">Đang hoạt động</mat-option>
+            <mat-option value="INACTIVE">Tạm dừng</mat-option>
+        </mat-select>
+        <mat-error *ngIf="routeForm.get('status')?.hasError('required')">
+            Trạng thái là bắt buộc
+        </mat-error>
+    </mat-form-field>
+
+    <div class="dialog-actions">
+        <button mat-stroked-button color="warn" type="button" (click)="onCancel()">Hủy</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="routeForm.invalid || isSubmitting">
+            Cập nhật
+        </button>
+    </div>
+</form>

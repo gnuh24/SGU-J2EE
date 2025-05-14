@@ -73,7 +73,7 @@ public class RouteController {
 		 * @return the response of the updated route
 		 */
 		@Operation(summary = "Cập nhật tuyến đường", description = "Cập nhật thông tin của tuyến đường hiện tại.")
-		@PutMapping("/{id}")
+		@PatchMapping("/{id}")
 		public ResponseEntity<ApiResponse<RouteResponse>> update(@PathVariable String id, @RequestBody @Valid RouteUpdateForm form) {
 				return ResponseEntity.ok(new ApiResponse<>(200, "Cập nhật tuyến đường thành công", routeService.update(id, form)));
 		}

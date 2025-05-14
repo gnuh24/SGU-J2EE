@@ -3,8 +3,8 @@ import { RouteService } from '../../../services/route.service';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-// import { RouteCreateFormComponent } from './route-create-form/route-create-form.component';
-// import { RouteUpdateFormComponent } from './route-update-form/route-update-form.component';
+import { RouteCreateFormComponent } from './route-create-form/route-create-form.component';
+import { RouteUpdateFormComponent } from './route-update-form/route-update-form.component';
 
 @Component({
     selector: 'app-route-management',
@@ -56,20 +56,20 @@ export class RouteManagementComponent implements OnInit {
     }
 
     openCreateRouteDialog() {
-        // const dialogRef = this.dialog.open(RouteCreateFormComponent);
-        // dialogRef.afterClosed().subscribe(result => {
-        //     if (result) {
-        //         this.loadRoutes();
-        //     }
-        // });
+        const dialogRef = this.dialog.open(RouteCreateFormComponent);
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.loadRoutes();
+            }
+        });
     }
 
     updateRouteInfo(route: any) {
-        // const dialogRef = this.dialog.open(RouteUpdateFormComponent, { data: route });
-        // dialogRef.afterClosed().subscribe(result => {
-        //     if (result) {
-        //         this.loadRoutes();
-        //     }
-        // });
+        const dialogRef = this.dialog.open(RouteUpdateFormComponent, { data: route });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.loadRoutes();
+            }
+        });
     }
 }

@@ -1,6 +1,8 @@
 package com.sgu.backend.dto.response.route;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sgu.backend.dto.response.coach.CoachResponseDTO;
+import com.sgu.backend.dto.response.coach_station.CoachStationResponseDTO;
 import com.sgu.backend.entities.Route;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -28,13 +30,11 @@ public class RouteResponse {
 		@Schema(description = "Thời gian cập nhật tuyến đường", example = "2023-06-10T12:00:00")
 		private String updatedAt;
 		
-		@JsonProperty("departure")
 		@Schema(description = "Tên trạm xuất phát", example = "Trạm xe Bến Thành")
-		private String departureStationName;
+		private CoachStationResponseDTO departureStation;
 		
-		@JsonProperty("destination")
 		@Schema(description = "Tên trạm đến", example = "Trạm xe Mỹ Đình")
-		private String arrivalStationName;
+		private CoachStationResponseDTO arrivalStation;
 		
 		@Schema(description = "Trạng thái của tuyến đường", example = "ACTIVE")
 		private Route.RouteStatus status;

@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { env } from './env.dev';
 import { ApiResponse } from '../models/apiresponse';
+import { RouteCreateForm, RouteUpdateForm } from '../models/route.response';
 
 @Injectable({
     providedIn: 'root'
@@ -49,13 +50,18 @@ export class RouteService {
         return this.http.get<ApiResponse<any>>(url);
     }
 
+    createRoute(routeData: RouteCreateForm): Observable<any> {
+        return this.http.post(this.apiUrl, routeData);
+    }
+
+
     /**
      * Cập nhật thông tin tuyến đường
      * @param id ID tuyến đường
      * @param routeData Dữ liệu cần cập nhật
      * @returns Observable<ApiResponse<any>>
      */
-    updateRoute(id: string, routeData: any): Observable<ApiResponse<any>> {
+    updateRoute(id: string, routeData: RouteUpdateForm): Observable<ApiResponse<any>> {
         const url = `${this.apiUrl}/${id}`;
         return this.http.patch<ApiResponse<any>>(url, routeData);
     }

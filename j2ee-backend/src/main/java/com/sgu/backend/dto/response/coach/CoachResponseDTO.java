@@ -10,6 +10,7 @@ public class CoachResponseDTO {
 		@Schema(description = "ID của xe", example = "COACH12345")
 		private String id;
 		
+		
 		@Schema(description = "Biển số xe", example = "29A-12345")
 		private String licensePlate;
 	
