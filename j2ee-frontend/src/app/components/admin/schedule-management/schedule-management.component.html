@@ -31,29 +31,10 @@
             <td mat-cell *matCellDef="let s"> {{ s.id }} </td>
         </ng-container>
 
-        <!-- <ng-container matColumnDef="route">
-            <th mat-header-cell *matHeaderCellDef> Tuyến đường </th>
-            <td mat-cell *matCellDef="let s"> {{ s.route?.name }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="driver">
-            <th mat-header-cell *matHeaderCellDef> Tài xế </th>
-            <td mat-cell *matCellDef="let s"> {{ s.driver?.name }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="price">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Giá vé </th>
-            <td mat-cell *matCellDef="let s"> {{ s.price | number:'1.0-0' }} VNĐ </td>
-        </ng-container> -->
 
         <ng-container matColumnDef="departureTime">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Giờ đi </th>
             <td mat-cell *matCellDef="let s"> {{ s.departureTime }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="arrivalTime">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Giờ đến </th>
-            <td mat-cell *matCellDef="let s"> {{ s.arrivalTime }} </td>
         </ng-container>
 
 

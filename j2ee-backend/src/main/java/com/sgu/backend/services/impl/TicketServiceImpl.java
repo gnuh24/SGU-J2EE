@@ -74,7 +74,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Page<TicketResponseDTO> getAll(Pageable pageable, TicketFilter filter) {
+			System.err.println("Check 1");
         Page<Ticket> tickets = ticketRepository.findAll(TicketSpecification.filter(filter), pageable);
-	return tickets.map(ticket -> modelMapper.map(ticket, TicketResponseDTO.class));
+			System.err.println("Check 2");
+		return tickets.map(ticket -> modelMapper.map(ticket, TicketResponseDTO.class));
     }
 }

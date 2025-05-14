@@ -20,14 +20,8 @@ export class ScheduleManagementComponent implements OnInit {
     sort: string = 'id,asc';
     displayedColumns: string[] = [
         'id',
-        // 'departure',
-        // 'destination',
-        // 'distance',
-        // 'duration',
-        // 'price',
         'status',
         'departureTime',
-        'arrivalTime',
         'createdAt',
         'updatedAt',
         'actions'

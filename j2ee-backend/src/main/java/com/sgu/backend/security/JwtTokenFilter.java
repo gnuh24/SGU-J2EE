@@ -33,6 +33,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+	
     @Autowired
     private RedisService redisService;
 

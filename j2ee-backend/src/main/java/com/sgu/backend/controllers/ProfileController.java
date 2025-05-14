@@ -61,20 +61,20 @@ public class ProfileController {
 		public ResponseEntity<ApiResponse<ProfileDetailResponseDTO>> getProfileById(
 				@Parameter(description = "ID của profile") @PathVariable String profileId) {
 				
-				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-				Account account = (Account) authentication.getPrincipal();
-				
-				if (account.getRole() == Account.Role.ADMIN) {
+//				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//				Account account = (Account) authentication.getPrincipal();
+//
+//				if (account.getRole() == Account.Role.ADMIN) {
 						ProfileDetailResponseDTO profile = modelMapper.map(profileService.getProfileById(profileId), ProfileDetailResponseDTO.class);
 						return ResponseEntity.ok(new ApiResponse<>(200, "Lấy thông tin profile thành công", profile));
-				}
-				
-				if (!account.getId().equals(profileId)) {
-						throw new AccessDeniedException("Bạn không có quyền truy cập thông tin người khác");
-				}
-				
-				ProfileDetailResponseDTO profile = modelMapper.map(account.getProfile(), ProfileDetailResponseDTO.class);
-				return ResponseEntity.ok(new ApiResponse<>(200, "Lấy thông tin profile thành công", profile));
+//				}
+//
+//				if (!account.getId().equals(profileId)) {
+//						throw new AccessDeniedException("Bạn không có quyền truy cập thông tin người khác");
+//				}
+//
+//				ProfileDetailResponseDTO profile = modelMapper.map(account.getProfile(), ProfileDetailResponseDTO.class);
+//				return ResponseEntity.ok(new ApiResponse<>(200, "Lấy thông tin profile thành công", profile));
 		}
 		
 		@Operation(summary = "Tạo profile mới", description = "Tạo mới một hồ sơ người dùng")
