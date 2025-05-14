@@ -1,9 +1,11 @@
 package com.sgu.backend.specifications;
 
 import com.sgu.backend.dto.request.schedule.ScheduleFilterForm;
+import com.sgu.backend.entities.Route;
 import com.sgu.backend.entities.Schedule;
 import com.sgu.backend.services.ScheduleService;
 import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,15 +39,18 @@ public class ScheduleSpecification {
 						Expression<Date> dateExpr = cb.function("date", java.sql.Date.class, root.get("departureTime"));
 						predicates.add(cb.equal(dateExpr, filter.getDepartureTime()));
 				}
-				
-				
-				if (filter.getStartCityId() != null) {
-						predicates.add(cb.equal(root.get("route").get("departureStation").get("city").get("id"), filter.getStartCityId()));
-				}
-				
-				if (filter.getEndCityId() != null) {
-						predicates.add(cb.equal(root.get("route").get("arrivalStation").get("city").get("id"), filter.getStartCityId()));
-				}
+
+
+			Join<Schedule, Route> routeJoin = root.join("route");
+
+			// Lọc theo CoachStation.id
+			if (filter.getStartCityId() != null) {
+				predicates.add(cb.equal(routeJoin.get("departureStation").get("id"), filter.getStartCityId()));
+			}
+
+			if (filter.getEndCityId() != null) {
+				predicates.add(cb.equal(routeJoin.get("arrivalStation").get("id"), filter.getEndCityId()));
+			}
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };
