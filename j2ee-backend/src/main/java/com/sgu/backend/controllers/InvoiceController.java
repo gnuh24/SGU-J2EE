@@ -8,6 +8,7 @@ import com.sgu.backend.dto.request.invoice.InvoiceUpdateForm;
 import com.sgu.backend.dto.response.invoice.InvoiceDetailResponseDTO;
 import com.sgu.backend.dto.response.invoice.InvoiceResponseDTO;
 import com.sgu.backend.entities.Invoice;
+import com.sgu.backend.entities.Profile;
 import com.sgu.backend.services.InvoiceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -20,6 +21,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * InvoiceController is responsible for handling all invoice-related requests.
@@ -49,6 +53,25 @@ public class InvoiceController {
 		public ResponseEntity<ApiResponse<Page<InvoiceResponseDTO>>> getAll(Pageable pageable, InvoiceFilter filter) {
 				return ResponseEntity.ok(new ApiResponse<>(200, "Danh sách hoá đơn", invoiceService.getAll(pageable, filter)));
 		}
+		
+		
+		@Operation(summary = "Lấy danh sách hoá đơn", description = "Lấy danh sách hoá đơn có phân trang và bộ lọc.")
+		@GetMapping("profile/{profileId}")
+		public ResponseEntity<ApiResponse<List<InvoiceResponseDTO>>> getAllByProfileId(@PathVariable String profileId) {
+				List<Invoice> entities = invoiceService.getAllByProfileId(profileId);
+				
+				List<InvoiceResponseDTO> dtoList = entities.stream()
+						.map(
+								(invoice) -> (
+										modelMapper.map(invoice, InvoiceResponseDTO.class)
+								)
+						)
+						.collect(Collectors.toList());
+				
+				return ResponseEntity.ok(new ApiResponse<>(200, "Danh sách hoá đơn", dtoList));
+		}
+
+
 		
 		/**
 		 * Get the details of a specific invoice by its ID.

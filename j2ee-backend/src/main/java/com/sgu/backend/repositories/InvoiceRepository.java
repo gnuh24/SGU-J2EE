@@ -13,6 +13,8 @@ import java.util.List;
 
 public interface InvoiceRepository extends JpaRepository<Invoice,String> , JpaSpecificationExecutor<Invoice> {
     long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+	
+	List<Invoice> findByProfile_Id(String id);
 
     @Query("SELECT SUM(i.totalAmount) FROM Invoice i WHERE i.createdAt BETWEEN :start AND :end")
     Double sumTotalAmountByCreatedAtBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);

@@ -20,6 +20,7 @@ import com.sgu.backend.utils.IdGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -35,10 +36,19 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class InvoiceServiceImpl implements InvoiceService {
 
+		@Autowired
     private final InvoiceRepository invoiceRepository;
+		
+		@Autowired
     private final TicketService ticketService;
+		
+		@Autowired
     private final ProfileService profileService;
+		
+		@Autowired
     private final ProfileRepository profileRepository;
+		
+		@Autowired
     private final ModelMapper modelMapper;
 
     @Override
@@ -89,9 +99,14 @@ public class InvoiceServiceImpl implements InvoiceService {
 						() -> new EntityNotFoundException("Invoice with id " + id + " not found")
 				);
 		}
-
-
-    @Override
+		
+		@Override
+		public List<Invoice> getAllByProfileId(String id) {
+			return invoiceRepository.findByProfile_Id(id);
+		}
+		
+		
+		@Override
     public Page<InvoiceResponseDTO> getAll(Pageable pageable, InvoiceFilter filter) {
         Page<Invoice> invoices = invoiceRepository.findAll(InvoiceSpecification.filter(filter), pageable);
         return invoices.map(invoice -> {

@@ -9,11 +9,14 @@ import com.sgu.backend.entities.Invoice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface InvoiceService {
     InvoiceResponseDTO createByUser(InvoiceCreateForm form);
     InvoiceResponseDTO update(String id, InvoiceUpdateForm form);
     InvoiceResponseDTO getDTOById(String id);
 		Invoice getById(String id);
+		List<Invoice> getAllByProfileId(String id);
     Page<InvoiceResponseDTO> getAll(Pageable pageable, InvoiceFilter filter);
     InvoiceResponseDTO createInvoiceByAdmin(InvoiceCreateFormByAdmin form);
 }
