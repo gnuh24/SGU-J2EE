@@ -45,10 +45,9 @@ export class ProfileComponent implements OnInit {
         next: (response: ApiResponse<any>) => {
           if (response.data) {
             this.profileForm.patchValue({
-              fullName: response.data.fullName,
+              fullName: response.data.fullname,
               phone: response.data.phone,
-              address: response.data.address,
-              dateOfBirth: response.data.dateOfBirth
+
             });
           }
           this.loading = false;
@@ -71,7 +70,7 @@ export class ProfileComponent implements OnInit {
       this.profileService.updateProfile(profileData).subscribe({
         next: (response: ApiResponse<any>) => {
           this.successMessage = 'Cập nhật thông tin thành công';
-          this.userSession.setUserFullName(profileData.fullName);
+          this.userSession.setUserFullName(profileData.fullname);
           this.loading = false;
         },
         error: (error) => {

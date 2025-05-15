@@ -9,6 +9,7 @@ import { ProfileComponent } from './components/user/profile/profile.component';
 import { PaymentComponent } from './components/user/payment/payment.component';
 import { TicketLookupComponent } from './components/user/ticket-lookup/ticket-lookup.component';
 import { TripSearchComponent } from './components/user/trip-search/trip-search.component';
+import { OrderHistoryComponent } from './components/user/order-history/order-history.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -28,6 +29,11 @@ export const routes: Routes = [
       import('./components/admin/router/admin.modules').then(
         (m) => m.AdminModule
       ),
+  },
+  {
+    path: 'order-history',
+    component: OrderHistoryComponent,
+    canActivate: [() => !!sessionStorage.getItem('user_data')],
   },
   // {
   //   path: 'booking',
