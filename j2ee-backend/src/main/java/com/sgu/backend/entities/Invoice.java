@@ -17,6 +17,14 @@ public class Invoice {
 		@Id
 		private String id = IdGenerator.generateId();
 		
+		@Column(unique = true, length = 50)
+		private String transactionId;
+		
+		@Column(columnDefinition = "TEXT")
+		private String paymentNote;
+		
+		private LocalDateTime  paymentTime;
+		
 		@ManyToOne
 		@JoinColumn(name = "profileId", nullable = false)
 		private Profile profile;
@@ -47,6 +55,12 @@ public class Invoice {
 		public enum PaymentStatus {
 				PENDING,
 				PAID,
-				CANCELLED
+				COMPLETE,
+				FAILED,
+				CANCELLED,
+				EXPIRED,
+				REFUNDED,
+				DISPUTED,
+				PROCESSING
 		}
 }

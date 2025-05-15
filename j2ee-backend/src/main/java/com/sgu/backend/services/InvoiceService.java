@@ -12,8 +12,8 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface InvoiceService {
-    InvoiceResponseDTO createByUser(InvoiceCreateForm form);
-    InvoiceResponseDTO update(String id, InvoiceUpdateForm form);
+    Invoice createByUser(InvoiceCreateForm form);
+    Invoice update(String id, InvoiceUpdateForm form);
     InvoiceResponseDTO getDTOById(String id);
 		Invoice getById(String id);
 		List<Invoice> getAllByProfileId(String id);

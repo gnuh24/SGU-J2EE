@@ -30,8 +30,12 @@ export class InvoiceDetailFormComponent implements OnInit {
             paymentMethod: [''],
             paymentStatus: [''],
             createdAt: [''],
-            totalAmount: ['']
+            totalAmount: [''],
+            transactionId: [''],      // NEW
+            paymentNote: [''],        // NEW
+            paymentTime: ['']         // NEW
         });
+
 
         if (this.data?.id) {
             this.loadInvoiceDetail(this.data.id);
@@ -43,7 +47,7 @@ export class InvoiceDetailFormComponent implements OnInit {
             .pipe(finalize(() => this.isLoading = false))
 
             .subscribe({
-                next: (res) => {
+                next: (res: any) => {
                     const invoice = res.data;
                     console.log('Hoá đơn:', invoice);
                     this.tickets = invoice.tickets || [];
@@ -54,10 +58,14 @@ export class InvoiceDetailFormComponent implements OnInit {
                         paymentMethod: invoice.paymentMethod,
                         paymentStatus: invoice.paymentStatus,
                         createdAt: this.formatDateTime(invoice.createdAt),
-                        totalAmount: invoice.totalAmount
+                        totalAmount: invoice.totalAmount,
+                        transactionId: invoice.transactionId,                     // NEW
+                        paymentNote: invoice.paymentNote,                         // NEW
+                        paymentTime: this.formatDateTime(invoice.paymentTime)     // NEW
                     });
+
                 },
-                error: (err) => {
+                error: (err: any) => {
                     console.error('Lỗi khi tải hoá đơn:', err);
                 }
             });

@@ -196,7 +196,10 @@ CREATE TABLE `Invoice` (
     `totalAmount` DECIMAL(10,2) NOT NULL,
     `createdAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `paymentMethod` ENUM('CASH', 'VNPAY') NOT NULL,
-    `paymentStatus` ENUM('PENDING', 'PAID', 'CANCELLED') NOT NULL,
+	`paymentStatus`     ENUM('PENDING', 'PAID', 'COMPLETE,','FAILED', 'CANCELLED', 'EXPIRED', 'REFUNDED', 'DISPUTED', 'PROCESSING') NOT NULL DEFAULT 'PENDING',    
+    `transactionId`     VARCHAR(50) UNIQUE,  
+    `paymentTime`       TIMESTAMP NULL,  
+    `paymentNote`       TEXT,  
     `profileId` VARCHAR(10) NOT NULL,
     FOREIGN KEY (`profileId`) REFERENCES `Profile` (`id`)
 );

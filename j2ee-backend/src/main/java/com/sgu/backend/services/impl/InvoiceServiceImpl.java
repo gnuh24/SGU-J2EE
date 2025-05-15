@@ -7,7 +7,6 @@ import com.sgu.backend.dto.request.invoice.InvoiceUpdateForm;
 import com.sgu.backend.dto.request.ticket.TicketCreateForm;
 import com.sgu.backend.dto.response.invoice.InvoiceResponseDTO;
 import com.sgu.backend.dto.response.ticket.TicketResponseDTO;
-import com.sgu.backend.entities.Account;
 import com.sgu.backend.entities.Invoice;
 import com.sgu.backend.entities.Profile;
 import com.sgu.backend.repositories.InvoiceRepository;
@@ -16,6 +15,7 @@ import com.sgu.backend.services.InvoiceService;
 import com.sgu.backend.services.ProfileService;
 import com.sgu.backend.services.TicketService;
 import com.sgu.backend.specifications.InvoiceSpecification;
+import com.sgu.backend.utils.DateFormat;
 import com.sgu.backend.utils.IdGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -23,15 +23,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +51,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
 	@Transactional
-    public InvoiceResponseDTO createByUser(InvoiceCreateForm form) {
+    public Invoice createByUser(InvoiceCreateForm form) {
         Invoice invoice = new Invoice();
         invoice.setId(IdGenerator.generateId());
         invoice.setCreatedAt(LocalDateTime.now());
@@ -71,29 +68,25 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         // Gọi ticketService để tạo từng vé, gắn invoiceId vào mỗi form
         List<TicketResponseDTO> ticketResponses = new ArrayList<>();
-			System.err.println("Tạo hóa đơn thành công");
         for (TicketCreateForm ticketForm : form.getTickets()) {
             ticketForm.setInvoice(invoice); // gán invoiceId cho ticket
             ticketService.create(ticketForm);
         }
-			
-			System.err.println("Tạo xong cả vé");
+		
 
-        // Nếu InvoiceResponseDTO của bạn có danh sách tickets thì bạn cần set vào đây
-        InvoiceResponseDTO invoiceResponse = convertToDto(invoice);
-
-        return invoiceResponse;
+        return invoice;
     }
 
     @Override
-    public InvoiceResponseDTO update(String id, InvoiceUpdateForm form) {
+    public Invoice update(String id, InvoiceUpdateForm form) {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow();
-
-        if (form.getTotalAmount() != null)
-            invoice.setTotalAmount(form.getTotalAmount());
-
-        invoiceRepository.save(invoice);
-        return convertToDto(invoice);
+		
+		invoice.setPaymentStatus(form.getPaymentStatus());
+		invoice.setPaymentTime(DateFormat.convertStringToLocalDateTime(form.getPaymentTime()));
+     	invoice.setPaymentNote(form.getPaymentNote());
+		invoice.setTransactionId(form.getTransactionId());
+     
+        return  invoiceRepository.save(invoice);
     }
 
     @Override

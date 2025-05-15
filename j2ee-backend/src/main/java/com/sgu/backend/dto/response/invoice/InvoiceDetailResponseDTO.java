@@ -3,8 +3,10 @@ package com.sgu.backend.dto.response.invoice;
 import com.sgu.backend.dto.response.ticket.TicketResponseDTO;
 import com.sgu.backend.entities.Invoice;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -24,6 +26,12 @@ public class InvoiceDetailResponseDTO {
 		
 		@Schema(description = "Phương thức thanh toán", example = "CREDIT_CARD")
 		private Invoice.PaymentMethod paymentMethod;
+		
+		private String transactionId;
+		
+		private String paymentNote;
+		
+		private String paymentTime;
 		
 		@Schema(description = "Trạng thái thanh toán", example = "PAID")
 		private Invoice.PaymentStatus paymentStatus;

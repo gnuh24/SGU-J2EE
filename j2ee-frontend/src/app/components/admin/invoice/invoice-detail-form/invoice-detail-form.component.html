@@ -28,6 +28,21 @@
     </mat-form-field>
 
     <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Mã giao dịch</mat-label>
+        <input matInput formControlName="transactionId" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Ghi chú thanh toán</mat-label>
+        <input matInput formControlName="paymentNote" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Thời gian thanh toán</mat-label>
+        <input matInput formControlName="paymentTime" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-full" appearance="outline">
         <mat-label>Thời gian tạo</mat-label>
         <input matInput formControlName="createdAt" readonly>
     </mat-form-field>

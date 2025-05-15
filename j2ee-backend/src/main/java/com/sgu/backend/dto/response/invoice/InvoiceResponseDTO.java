@@ -27,4 +27,7 @@ public class InvoiceResponseDTO {
 		
 		@Schema(description = "Tổng số tiền của hóa đơn", example = "500000")
 		private Double totalAmount;
+		
+		@Schema(description = "Link trả về của VNPay nếu thành toán online", example = "500000")
+		private String url;
 }
