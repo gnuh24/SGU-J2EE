@@ -1,106 +1,82 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { UserData } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserSessionService {
-  private readonly TOKEN_KEY = 'token';
-  private readonly REFRESH_TOKEN_KEY = 'refreshToken';
-  private readonly USER_ID_KEY = 'userId';
-  private readonly USER_EMAIL_KEY = 'userEmail';
-  private readonly USER_ROLE_KEY = 'userRole';
-  private readonly USER_FULLNAME_KEY = 'userFullName';
+  private readonly USER_KEY = 'user_data';
+  private userSubject = new BehaviorSubject<UserData | null>(this.getUserData());
+  public user$ = this.userSubject.asObservable();
 
-  constructor() {}
+  constructor() {
+    // Kiểm tra và load user data từ sessionStorage khi service được khởi tạo
+    const userData = this.getUserData();
+    if (userData) {
+      this.userSubject.next(userData);
+    }
+  }
 
-  // Token methods
-  setToken(token: string): void {
-    sessionStorage.setItem(this.TOKEN_KEY, token);
+  setUserData(userData: UserData): void {
+    sessionStorage.setItem(this.USER_KEY, JSON.stringify(userData));
+    this.userSubject.next(userData);
+  }
+
+  getUserData(): UserData | null {
+    const data = sessionStorage.getItem(this.USER_KEY);
+    return data ? JSON.parse(data) : null;
+  }
+
+  clearSession(): void {
+    sessionStorage.removeItem(this.USER_KEY);
+    this.userSubject.next(null);
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.getUserData();
   }
 
   getToken(): string | null {
-    return sessionStorage.getItem(this.TOKEN_KEY);
-  }
-
-  // Refresh token methods
-  setRefreshToken(token: string): void {
-    sessionStorage.setItem(this.REFRESH_TOKEN_KEY, token);
+    return this.getUserData()?.token || null;
   }
 
   getRefreshToken(): string | null {
-    return sessionStorage.getItem(this.REFRESH_TOKEN_KEY);
-  }
-
-  // User ID methods
-  setUserId(id: string): void {
-    sessionStorage.setItem(this.USER_ID_KEY, id);
+    return this.getUserData()?.refreshToken || null;
   }
 
   getUserId(): string | null {
-    return sessionStorage.getItem(this.USER_ID_KEY);
-  }
-
-  // User email methods
-  setUserEmail(email: string): void {
-    sessionStorage.setItem(this.USER_EMAIL_KEY, email);
+    return this.getUserData()?.id || null;
   }
 
   getUserEmail(): string | null {
-    return sessionStorage.getItem(this.USER_EMAIL_KEY);
-  }
-
-  // User role methods
-  setUserRole(role: string): void {
-    sessionStorage.setItem(this.USER_ROLE_KEY, role);
+    return this.getUserData()?.email || null;
   }
 
   getUserRole(): string | null {
-    return sessionStorage.getItem(this.USER_ROLE_KEY);
-  }
-
-  // User fullname methods
-  setUserFullName(fullName: string): void {
-    sessionStorage.setItem(this.USER_FULLNAME_KEY, fullName);
+    return this.getUserData()?.role || null;
   }
 
   getUserFullName(): string | null {
-    return sessionStorage.getItem(this.USER_FULLNAME_KEY);
+    return this.getUserData()?.fullName || null;
   }
 
-  // Check if user is logged in
-  isLoggedIn(): boolean {
-    return !!this.getToken();
+  setUserFullName(fullName: string): void {
+    const userData = this.getUserData();
+    if (userData) {
+      userData.fullName = fullName;
+      this.setUserData(userData);
+    }
   }
 
-  // Check if user is admin
-  isAdmin(): boolean {
-    return this.getUserRole() === 'ADMIN';
-  }
-
-  // Clear all session data
-  clearSession(): void {
-    sessionStorage.removeItem(this.TOKEN_KEY);
-    sessionStorage.removeItem(this.REFRESH_TOKEN_KEY);
-    sessionStorage.removeItem(this.USER_ID_KEY);
-    sessionStorage.removeItem(this.USER_EMAIL_KEY);
-    sessionStorage.removeItem(this.USER_ROLE_KEY);
-    sessionStorage.removeItem(this.USER_FULLNAME_KEY);
-  }
-
-  // Set all user data at once
-  setUserData(data: {
-    token: string;
-    refreshToken: string;
-    id: string;
-    email: string;
-    role: string;
-    fullName: string;
-  }): void {
-    this.setToken(data.token);
-    this.setRefreshToken(data.refreshToken);
-    this.setUserId(data.id);
-    this.setUserEmail(data.email);
-    this.setUserRole(data.role);
-    this.setUserFullName(data.fullName);
+  // Observable để theo dõi trạng thái đăng nhập
+  isLoggedIn$(): Observable<boolean> {
+    return new Observable<boolean>(observer => {
+      observer.next(this.isLoggedIn());
+      const subscription = this.user$.subscribe(() => {
+        observer.next(this.isLoggedIn());
+      });
+      return () => subscription.unsubscribe();
+    });
   }
 } 

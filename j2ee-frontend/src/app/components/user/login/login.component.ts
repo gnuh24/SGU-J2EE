@@ -10,7 +10,8 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common'; // ✅ Import CommonModule để dùng *ngIf
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../../services/auth.service';
-import { AuthResponseDTO } from '../../../models/auth.model';
+import { ApiResponse } from '../../../models/apiresponse';
+import { UserData } from '../../../models/user.model';
 import { UserSessionService } from '../../../services/user-session.service';
 
 @Component({
@@ -29,7 +30,7 @@ import { UserSessionService } from '../../../services/user-session.service';
 export class LoginComponent {
   loginForm: FormGroup;
   isLoginMode = true;
-  errorMessage: string;
+  errorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -46,14 +47,15 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      this.authService.login(email, password).subscribe({
-        next: (response: AuthResponseDTO) => {
-          this.router.navigate(['/home']);
+      this.authService.login(email, password).subscribe(
+        (response: ApiResponse<UserData>) => {
+          // Đăng nhập thành công, user đã được lưu vào sessionStorage
+          this.router.navigate(['/']);
         },
-        error: (error: any) => {
-          this.errorMessage = error.error.message || 'Đăng nhập thất bại';
+        (error) => {
+          this.errorMessage = error.error?.message || 'Đăng nhập thất bại';
         }
-      });
+      );
     }
   }
 
