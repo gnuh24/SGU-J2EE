@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CityService } from '../../../services/city.service';
 import { ApiResponse } from '../../../models/apiresponse';
+import { TripListComponent } from '../trip-list/trip-list.component';
 
 interface City {
   id: string;
@@ -15,7 +16,7 @@ interface City {
 @Component({
   selector: 'app-trip-search',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, HttpClientModule, TripListComponent],
   templateUrl: './trip-search.component.html',
   styleUrls: ['./trip-search.component.scss']
 })
@@ -28,38 +29,35 @@ export class TripSearchComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.searchForm = this.fb.group({
-      fromCity: ['', Validators.required],
-      toCity: ['', Validators.required],
-      departureDate: [this.getToday(), Validators.required],
-      returnDate: ['']
+      fromCity: [''],
+      toCity: [''],
+      departureDate: ['']
     });
   }
 
   ngOnInit(): void {
-    this.loadCities();
-    // Không gọi searchTrips() ở đây nữa, gọi khi submit form
-  }
-
-  getToday(): string {
-    const today = new Date();
-    return today.toISOString().substring(0, 10);
+    console.log('Component initialized');
+    this.loadCities().then(() => {
+      console.log('Cities loaded, calling searchTrips');
+      this.searchTrips();
+    });
   }
 
   loadCities() {
-    this.http.get<any>('http://localhost:8080/api/cities/no-paging').subscribe({
-      next: (res) => {
-        this.cities = (res.data || []).filter((city: City) => city.status === 'ACTIVE');
-        if (this.cities.length > 0) {
-          // Thiết lập giá trị mặc định nếu có cities
-          this.searchForm.patchValue({
-            fromCity: this.cities[0].id,
-            toCity: this.cities.length > 1 ? this.cities[1].id : this.cities[0].id // Tránh lỗi nếu chỉ có 1 city
-          });
+    console.log('Loading cities...');
+    return new Promise<void>((resolve) => {
+      this.http.get<any>('http://localhost:8080/api/cities/no-paging').subscribe({
+        next: (res) => {
+          console.log('Cities loaded:', res);
+          this.cities = (res.data || []).filter((city: City) => city.status === 'ACTIVE');
+          resolve();
+        },
+        error: (err) => {
+          console.error('Error loading cities:', err);
+          this.cities = [];
+          resolve();
         }
-      },
-      error: () => {
-        this.cities = [];
-      }
+      });
     });
   }
 
@@ -71,42 +69,46 @@ export class TripSearchComponent implements OnInit {
   }
 
   searchTrips() {
-    console.log('searchTrips called', this.searchForm.value, this.searchForm.valid);
+    console.log('searchTrips called with form value:', this.searchForm.value);
     this.loading = true;
     this.error = null;
     this.trips = [];
 
-    const { fromCity, toCity, departureDate } = this.searchForm.value;
-    const params = [
-      'page=0',
-      'size=10',
-      'sort=',
-      'search=',
-      'status=ACTIVE',
-      `startCityId=${fromCity}`,
-      `endCityId=${toCity}`,
-      `departureTime=${departureDate}`
-    ].join('&');
-    const url = `http://localhost:8080/api/schedules/public?${params}`;
+    const { departureDate } = this.searchForm.value;
+    console.log('Form value:', { departureDate });
+
+    // Chỉ truyền mỗi departureTime
+    let url = 'http://localhost:8080/api/schedules/public';
+    if (departureDate) {
+      const formattedDate = departureDate.length > 10 ? departureDate.substring(0, 10) : departureDate;
+      url += `?departureTime=${encodeURIComponent(formattedDate)}`;
+    }
+    console.log('Making API call to:', url);
 
     this.http.get<any>(url).subscribe({
       next: (res) => {
-        this.trips = res.data || [];
-        console.log('Trips loaded:', this.trips);
+        console.log('API response:', res);
+        // Ensure we're working with an array
+        if (res && res.data) {
+          this.trips = Array.isArray(res.data) ? res.data : [res.data];
+        } else {
+          this.trips = [];
+        }
         if (this.trips.length === 0) {
           this.error = 'Không tìm thấy chuyến đi phù hợp.';
         }
         this.loading = false;
       },
       error: (err) => {
+        console.error('API error:', err);
         this.error = 'Lỗi khi tìm kiếm chuyến đi.';
-        console.error('API schedule error:', err);
+        this.trips = [];
         this.loading = false;
       }
     });
   }
 
-  viewTripDetail(tripId: number) {
-    alert('Xem chi tiết chuyến đi: ' + tripId);
+  viewTripDetail(tripId: string) {
+    console.log('Xem chi tiết chuyến:', tripId);
   }
 }

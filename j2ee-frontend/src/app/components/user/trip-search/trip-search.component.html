@@ -1,38 +1,34 @@
 <div class="container mx-auto px-4 py-8">
   <!-- Form tìm kiếm -->
   <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-    <form [formGroup]="searchForm" (ngSubmit)="searchTrips()" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <form [formGroup]="searchForm" (ngSubmit)="searchTrips()" class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div class="form-group">
         <label class="block text-gray-700 text-sm font-bold mb-2">Điểm đi</label>
-        <select formControlName="fromCity" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="" disabled selected>Chọn thành phố đi</option>
+        <select formControlName="fromCity"
+          class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Chọn thành phố đi</option>
           <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
         </select>
       </div>
-      
+
       <div class="form-group">
         <label class="block text-gray-700 text-sm font-bold mb-2">Điểm đến</label>
-        <select formControlName="toCity" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="" disabled selected>Chọn thành phố đến</option>
+        <select formControlName="toCity"
+          class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Chọn thành phố đến</option>
           <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
         </select>
       </div>
-      
+
       <div class="form-group">
         <label class="block text-gray-700 text-sm font-bold mb-2">Ngày đi</label>
         <input type="date" formControlName="departureDate"
-               class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
       </div>
-      
-      <div class="form-group">
-        <label class="block text-gray-700 text-sm font-bold mb-2">Ngày về</label>
-        <input type="date" formControlName="returnDate"
-               class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-      </div>
-      
-      <div class="md:col-span-4">
-        <button type="submit" 
-                class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">
+
+      <div class="md:col-span-3">
+        <button type="submit"
+          class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">
           Tìm kiếm
         </button>
       </div>
@@ -40,32 +36,5 @@
   </div>
 
   <!-- Danh sách chuyến xe -->
-  <div class="space-y-4">
-    <div *ngFor="let trip of trips" 
-         class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-200">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="trip-info">
-          <h3 class="text-lg font-semibold">{{trip.fromCity}} - {{trip.toCity}}</h3>
-          <p class="text-gray-600">{{trip.departureTime}} - {{trip.arrivalTime}}</p>
-        </div>
-        
-        <div class="trip-details">
-          <p class="text-gray-700">Giá: {{trip.price | currency:'VND'}}</p>
-          <p class="text-gray-700">Còn {{trip.availableSeats}} chỗ trống</p>
-        </div>
-        
-        <div class="trip-company">
-          <p class="text-gray-700">Nhà xe: {{trip.companyName}}</p>
-          <p class="text-gray-700">Loại xe: {{trip.busType}}</p>
-        </div>
-        
-        <div class="trip-actions">
-          <button (click)="viewTripDetail(trip.id)"
-                  class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-200">
-            Xem chi tiết
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> 
+  <app-trip-list [trips]="trips" (viewDetail)="viewTripDetail($event)"></app-trip-list>
+</div>

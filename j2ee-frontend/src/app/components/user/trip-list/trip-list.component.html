@@ -1,0 +1,32 @@
+<div class="space-y-4">
+    <div *ngFor="let trip of trips" class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-200">
+        <div class="grid grid-cols-1 md:grid-cols-6 gap-4 items-center">
+            <div class="font-bold text-orange-600">
+                {{ trip.route.departureStation.city.name }}
+            </div>
+            <div class="text-orange-600 text-xl text-center">
+                <span>&rarr;</span>
+            </div>
+            <div class="font-bold">
+                {{ trip.route.arrivalStation.city.name }}
+            </div>
+            <div class="text-center">
+                <span>{{ trip.route.distance }} km</span>
+            </div>
+            <div class="text-center">
+                <span>{{ (trip.route.duration / 60) | number:'1.0-0' }} giờ</span>
+            </div>
+            <div class="text-center">
+                <span>{{ trip.route.price | number }} đ</span>
+            </div>
+            <div class="text-center">
+                <span>{{ trip.departureTime | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            <div class="text-center">
+                <button (click)="onViewDetail(trip.id)" class="bg-orange-100 text-orange-600 px-4 py-2 rounded-full">
+                    Xem chi tiết
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
