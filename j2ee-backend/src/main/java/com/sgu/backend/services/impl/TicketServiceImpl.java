@@ -9,12 +9,15 @@ import com.sgu.backend.repositories.InvoiceRepository;
 import com.sgu.backend.repositories.ScheduleRepository;
 import com.sgu.backend.repositories.SeatRepository;
 import com.sgu.backend.repositories.TicketRepository;
+import com.sgu.backend.services.ScheduleService;
+import com.sgu.backend.services.SeatService;
 import com.sgu.backend.services.TicketService;
 import com.sgu.backend.specifications.TicketSpecification;
 import com.sgu.backend.utils.IdGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,22 +29,33 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
 		
+		
+		@Autowired
     private final TicketRepository ticketRepository;
-    private final ScheduleRepository scheduleRepository;
-    private final SeatRepository seatRepository;
+		
+		@Autowired
+    private final ScheduleService scheduleService;
+		
+		@Autowired
+    private final SeatService seatService;
+		
+		@Autowired
     private final InvoiceRepository invoiceRepository;
+		
+		@Autowired
     private final ModelMapper modelMapper;
 
     @Override
-    public TicketResponseDTO create(TicketCreateForm form) {
+    public Ticket create(TicketCreateForm form) {
         Ticket ticket = new Ticket();
-        ticket.setId(IdGenerator.generateId());
-        ticket.setSchedule(scheduleRepository.findById(form.getScheduleId()).orElseThrow());
-        ticket.setSeat(seatRepository.findById(form.getSeatId()).orElseThrow());
-        ticket.setInvoice(form.getInvoiceId() != null ? invoiceRepository.findById(form.getInvoiceId()).orElse(null) : null);
-        ticket.setPrice(form.getPrice());
-        ticket.setStatus(form.getStatus());
-        return modelMapper.map(ticketRepository.save(ticket), TicketResponseDTO.class);
+		
+        ticket.setSchedule(scheduleService.getScheduleById(form.getScheduleId()));
+		ticket.setSeat(seatService.getSeatById(form.getSeatId()));
+		ticket.setInvoice(form.getInvoice());
+			
+		ticket.setPrice(form.getPrice());
+			
+        return ticketRepository.save(ticket);
     }
 
     @Override

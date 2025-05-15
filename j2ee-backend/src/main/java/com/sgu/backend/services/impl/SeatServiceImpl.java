@@ -42,6 +42,11 @@ public class SeatServiceImpl implements SeatService {
     }
 		
 		@Override
+		public Seat getSeatById(String id) {
+				return seatRepository.findById(id).orElseThrow( () -> new EntityNotFoundException("Không tìm thấy ghế với id: " + id));
+		}
+		
+		@Override
 		public List<Seat> getByScheduleId(String scheduleId) {
 			return seatRepository.findByScheduleId(scheduleId);
 		}

@@ -54,14 +54,14 @@ public class TicketController {
 				return ResponseEntity.ok(new ApiResponse<>(200, "Chi tiết vé", ticket));
 		}
 		
-		/**
-		 * Tạo vé
-		 */
-		@Operation(summary = "Tạo vé", description = "Tạo một vé mới.")
-		@PostMapping
-		public ResponseEntity<ApiResponse<TicketResponseDTO>> create(@RequestBody @Valid TicketCreateForm form) {
-				return ResponseEntity.ok(new ApiResponse<>(201, "Tạo vé thành công", ticketService.create(form)));
-		}
+//		/**
+//		 * Tạo vé
+//		 */
+//		@Operation(summary = "Tạo vé", description = "Tạo một vé mới.")
+//		@PostMapping
+//		public ResponseEntity<ApiResponse<TicketResponseDTO>> create(@RequestBody @Valid TicketCreateForm form) {
+//				return ResponseEntity.ok(new ApiResponse<>(201, "Tạo vé thành công", ticketService.create(form)));
+//		}
 		
 		/**
 		 * Cập nhật trạng thái vé

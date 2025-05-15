@@ -11,7 +11,9 @@ import org.springframework.data.domain.Pageable;
 public interface ScheduleService {
     Page<ScheduleResponseDTO> getAll(Pageable pageable, ScheduleFilterForm filter);
     ScheduleResponseDTO getById(String id);
-    ScheduleResponseDTO create(ScheduleCreateForm form);
+		Schedule getScheduleById(String id);
+		
+		ScheduleResponseDTO create(ScheduleCreateForm form);
     ScheduleResponseDTO update(String id, ScheduleUpdateForm form);
     void delete(String id);
 }

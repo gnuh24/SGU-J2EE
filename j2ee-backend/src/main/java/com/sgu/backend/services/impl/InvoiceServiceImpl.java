@@ -26,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -52,24 +53,31 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final ModelMapper modelMapper;
 
     @Override
+	@Transactional
     public InvoiceResponseDTO createByUser(InvoiceCreateForm form) {
         Invoice invoice = new Invoice();
         invoice.setId(IdGenerator.generateId());
         invoice.setCreatedAt(LocalDateTime.now());
         invoice.setTotalAmount(form.getTotalAmount());
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Account user = (Account) authentication.getPrincipal();
-        invoice.setProfile(user.getProfile());
+		invoice.setPaymentMethod(form.getPaymentMethod());
+		invoice.setPaymentStatus(Invoice.PaymentStatus.PENDING);
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Account user = (Account) authentication.getPrincipal();
+			
+			Profile profile = profileService.getProfileById(form.getProfileId());
+        invoice.setProfile(profile);
 
         invoiceRepository.save(invoice); // phải lưu trước để có id dùng cho ticket
 
         // Gọi ticketService để tạo từng vé, gắn invoiceId vào mỗi form
         List<TicketResponseDTO> ticketResponses = new ArrayList<>();
+			System.err.println("Tạo hóa đơn thành công");
         for (TicketCreateForm ticketForm : form.getTickets()) {
-            ticketForm.setInvoiceId(invoice.getId()); // gán invoiceId cho ticket
-            TicketResponseDTO ticketDTO = ticketService.create(ticketForm);
-            ticketResponses.add(ticketDTO);
+            ticketForm.setInvoice(invoice); // gán invoiceId cho ticket
+            ticketService.create(ticketForm);
         }
+			
+			System.err.println("Tạo xong cả vé");
 
         // Nếu InvoiceResponseDTO của bạn có danh sách tickets thì bạn cần set vào đây
         InvoiceResponseDTO invoiceResponse = convertToDto(invoice);
@@ -143,13 +151,12 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setProfile(profile);
         invoiceRepository.save(invoice);
 
-        // 3. Tạo ticket
-        List<TicketResponseDTO> ticketResponses = new ArrayList<>();
-        for (TicketCreateForm ticketForm : form.getTickets()) {
-            ticketForm.setInvoiceId(invoice.getId());
-            TicketResponseDTO ticketDTO = ticketService.create(ticketForm);
-            ticketResponses.add(ticketDTO);
-        }
+//        // 3. Tạo ticket
+//        List<TicketResponseDTO> ticketResponses = new ArrayList<>();
+//        for (TicketCreateForm ticketForm : form.getTickets()) {
+//            ticketForm.setInvoiceId(invoice.getId());
+//            ticketService.create(ticketForm);
+//        }
 
         // 4. Trả về response
         InvoiceResponseDTO responseDTO = convertToDto(invoice);

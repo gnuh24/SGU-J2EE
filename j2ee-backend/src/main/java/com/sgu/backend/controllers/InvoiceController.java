@@ -11,7 +11,6 @@ import com.sgu.backend.entities.Invoice;
 import com.sgu.backend.entities.Profile;
 import com.sgu.backend.services.InvoiceService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -96,6 +95,8 @@ public class InvoiceController {
 		@Operation(summary = "Tạo hoá đơn bởi người dùng", description = "Người dùng có thể tạo một hoá đơn mới.")
 		@PostMapping
 		public ResponseEntity<ApiResponse<InvoiceResponseDTO>> createByUser(@RequestBody @Valid InvoiceCreateForm form) {
+				System.err.println("Đúng API");
+				System.err.println("Form" + form);
 				return ResponseEntity.ok(new ApiResponse<>(201, "Tạo hoá đơn thành công", invoiceService.createByUser(form)));
 		}
 		

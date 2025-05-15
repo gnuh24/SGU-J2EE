@@ -45,8 +45,14 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .orElseThrow(() -> new RuntimeException("Schedule not found"));
         return modelMapper.map(schedule, ScheduleResponseDTO.class);
     }
-
-    @Override
+		
+		@Override
+		public Schedule getScheduleById(String id) {
+				return scheduleRepository.findById(id)
+						.orElseThrow(() -> new RuntimeException("Schedule not found"));
+		}
+		
+		@Override
     public ScheduleResponseDTO create(ScheduleCreateForm form) {
         Schedule schedule = new Schedule();
 		

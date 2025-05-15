@@ -66,7 +66,6 @@ public class SeatController {
 										.filter(seat -> ticket.getSeat().getId().equals(seat.getId()))
 										.forEach(matchingSeat -> {
 												// Thực hiện hành động nào đó khi ghế khớp
-												System.out.println("Match found: " + ticket.getId());
 												matchingSeat.setStatus(SeatDetailResponseDTO.Status.BOOKED);
 										});
 						});

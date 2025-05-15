@@ -13,5 +13,5 @@ import java.util.List;
 public interface SeatService {
     Seat create(SeatCreateForm form);
     List<Seat> getByScheduleId(String id);
-
+		Seat getSeatById(String id);
 }
