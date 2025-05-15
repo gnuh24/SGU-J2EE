@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,17 +40,24 @@ public class ScheduleSpecification {
 						Expression<Date> dateExpr = cb.function("date", java.sql.Date.class, root.get("departureTime"));
 						predicates.add(cb.equal(dateExpr, filter.getDepartureTime()));
 				}
-
-
-			Join<Schedule, Route> routeJoin = root.join("route");
+				
+				if (filter.getNow() != null) {
+						Expression<Date> dateExpr = cb.function("date", Date.class, root.get("departureTime"));
+						Date today = java.sql.Date.valueOf(LocalDate.now());
+						predicates.add(cb.greaterThanOrEqualTo(dateExpr, today));
+				}
+				
+				
+				
+				Join<Schedule, Route> routeJoin = root.join("route");
 
 			// Lọc theo CoachStation.id
 			if (filter.getStartCityId() != null) {
-				predicates.add(cb.equal(routeJoin.get("departureStation").get("id"), filter.getStartCityId()));
+				predicates.add(cb.equal(routeJoin.get("departureStation").get("city").get("id"), filter.getStartCityId()));
 			}
 
 			if (filter.getEndCityId() != null) {
-				predicates.add(cb.equal(routeJoin.get("arrivalStation").get("id"), filter.getEndCityId()));
+				predicates.add(cb.equal(routeJoin.get("arrivalStation").get("city").get("id"), filter.getEndCityId()));
 			}
 
             return cb.and(predicates.toArray(new Predicate[0]));

@@ -12,6 +12,13 @@ import { TripSearchComponent } from './components/user/trip-search/trip-search.c
 import { OrderHistoryComponent } from './components/user/order-history/order-history.component';
 
 export const routes: Routes = [
+  {
+    path: 'admin',
+    loadChildren: () =>
+      import('./components/admin/router/admin.modules').then(
+        (m) => m.AdminModule
+      ),
+  },
   { path: 'home', component: HomeComponent },
   { path: 'lich-trinh', component: TripSearchComponent },
   { path: 'tra-cuu-ve', component: TicketLookupComponent },
@@ -23,13 +30,7 @@ export const routes: Routes = [
   { path: 'forget-password', component: ForgetPasswordComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/home' },
-  {
-    path: 'admin',
-    loadChildren: () =>
-      import('./components/admin/router/admin.modules').then(
-        (m) => m.AdminModule
-      ),
-  },
+
   {
     path: 'order-history',
     component: OrderHistoryComponent,

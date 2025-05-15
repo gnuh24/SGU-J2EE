@@ -1,6 +1,6 @@
-<h2 mat-dialog-title>Thêm lịch trình</h2>
-
 <form [formGroup]="scheduleForm" (ngSubmit)="onSubmit()" mat-dialog-content class="schedule-form">
+    <h2 mat-dialog-title>Thêm lịch trình</h2>
+
     <mat-form-field appearance="outline" class="full-width">
         <mat-label>Tuyến xe</mat-label>
         <mat-select formControlName="routeId" placeholder="Chọn tuyến xe">

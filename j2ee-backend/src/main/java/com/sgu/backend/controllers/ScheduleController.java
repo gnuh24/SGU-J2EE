@@ -18,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 /**
  * ScheduleController handles all schedule-related API requests, including retrieving,
  * creating, and updating schedules.
@@ -56,6 +58,7 @@ public class ScheduleController {
 		@GetMapping("/public")
 		public ResponseEntity<ApiResponse<Page<ScheduleResponseDTO>>> getAllPublic(Pageable pageable, ScheduleFilterForm filter) {
 				filter.setStatus(Schedule.Status.ACTIVE);
+						filter.setNow(LocalDateTime.now());
 				Page<ScheduleResponseDTO> result = scheduleService.getAll(pageable, filter);
 				return ResponseEntity.ok(new ApiResponse<>(200, "Lấy danh sách lịch trình công khai thành công", result));
 		}

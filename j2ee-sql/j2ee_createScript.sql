@@ -98,52 +98,56 @@ INSERT INTO `Coach` (`id`, `capacity`, `licensePlate`, `status`) VALUES
     ('C008', 28, '49H-66778', 'INACTIVE');
 
                         
+-- Tạo bảng Seat với number là kiểu INT
 CREATE TABLE `Seat` (
-    `id` 		VARCHAR(10) PRIMARY KEY,
-    `number` 	VARCHAR(10) NOT NULL,
-    `coachId` 	VARCHAR(10) NOT NULL,
+    `id` VARCHAR(10) PRIMARY KEY,
+    `number` INT NOT NULL,
+    `coachId` VARCHAR(10) NOT NULL,
     FOREIGN KEY (`coachId`) REFERENCES `Coach`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Tầng 1: A001 → A017
-INSERT INTO `Seat` (`id`, `number`, `coachId`) VALUES
-('A001', 'A001', 'C001'),
-('A002', 'A002', 'C001'),
-('A003', 'A003', 'C001'),
-('A004', 'A004', 'C001'),
-('A005', 'A005', 'C001'),
-('A006', 'A006', 'C001'),
-('A007', 'A007', 'C001'),
-('A008', 'A008', 'C001'),
-('A009', 'A009', 'C001'),
-('A010', 'A010', 'C001'),
-('A011', 'A011', 'C001'),
-('A012', 'A012', 'C001'),
-('A013', 'A013', 'C001'),
-('A014', 'A014', 'C001'),
-('A015', 'A015', 'C001'),
-('A016', 'A016', 'C001'),
-('A017', 'A017', 'C001');
+-- Chèn dữ liệu: Lấy phần số trong mã ghế (bỏ ký tự đầu 'A' hoặc 'B') rồi chuyển sang số nguyên
 
--- Tầng 2: B001 → B017
+-- Tầng 1: A001 → A017 (number = 1 → 17)
 INSERT INTO `Seat` (`id`, `number`, `coachId`) VALUES
-('B001', 'B001', 'C001'),
-('B002', 'B002', 'C001'),
-('B003', 'B003', 'C001'),
-('B004', 'B004', 'C001'),
-('B005', 'B005', 'C001'),
-('B006', 'B006', 'C001'),
-('B007', 'B007', 'C001'),
-('B008', 'B008', 'C001'),
-('B009', 'B009', 'C001'),
-('B010', 'B010', 'C001'),
-('B011', 'B011', 'C001'),
-('B012', 'B012', 'C001'),
-('B013', 'B013', 'C001'),
-('B014', 'B014', 'C001'),
-('B015', 'B015', 'C001'),
-('B016', 'B016', 'C001'),
-('B017', 'B017', 'C001');
+('A001', 1, 'C001'),
+('A002', 2, 'C001'),
+('A003', 3, 'C001'),
+('A004', 4, 'C001'),
+('A005', 5, 'C001'),
+('A006', 6, 'C001'),
+('A007', 7, 'C001'),
+('A008', 8, 'C001'),
+('A009', 9, 'C001'),
+('A010', 10, 'C001'),
+('A011', 11, 'C001'),
+('A012', 12, 'C001'),
+('A013', 13, 'C001'),
+('A014', 14, 'C001'),
+('A015', 15, 'C001'),
+('A016', 16, 'C001'),
+('A017', 17, 'C001');
+
+-- Tầng 2: B001 → B017 (number = 1 → 17)
+INSERT INTO `Seat` (`id`, `number`, `coachId`) VALUES
+('B001', 1, 'C001'),
+('B002', 2, 'C001'),
+('B003', 3, 'C001'),
+('B004', 4, 'C001'),
+('B005', 5, 'C001'),
+('B006', 6, 'C001'),
+('B007', 7, 'C001'),
+('B008', 8, 'C001'),
+('B009', 9, 'C001'),
+('B010', 10, 'C001'),
+('B011', 11, 'C001'),
+('B012', 12, 'C001'),
+('B013', 13, 'C001'),
+('B014', 14, 'C001'),
+('B015', 15, 'C001'),
+('B016', 16, 'C001'),
+('B017', 17, 'C001');
+
 
 
 
@@ -184,22 +188,22 @@ CREATE TABLE `Schedule` (
     FOREIGN KEY (`coachId`) REFERENCES `Coach`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-
+-- 5 Schedule trong quá khứ hoặc hiện tại (giữ nguyên cho mục đích test nếu cần)
 INSERT INTO `Schedule` (`id`, `departureTime`, `status`, `createdAt`, `updatedAt`, `routeId`, `coachId`) VALUES
-    ('S001', '2024-08-01 07:30:00', 'ACTIVE', NOW(), NOW(), 'R001', 'C001'),
-    ('S002', '2024-08-02 11:00:00', 'ACTIVE', NOW(), NOW(), 'R002', 'C002'),
-    ('S003', '2024-08-03 15:45:00', 'CANCELLED', NOW(), NOW(), 'R003', 'C003'),
-    ('S004', '2024-08-04 06:15:00', 'INACTIVE', NOW(), NOW(), 'R004', 'C004'),
-    ('S005', '2024-08-05 09:00:00', 'ACTIVE', NOW(), NOW(), 'R005', 'C005');
-
+    ('S001', DATE_ADD(NOW(), INTERVAL -2 DAY), 'ACTIVE', NOW(), NOW(), 'R001', 'C001'),
+    ('S002', DATE_ADD(NOW(), INTERVAL -1 DAY), 'ACTIVE', NOW(), NOW(), 'R002', 'C002'),
+    ('S003', NOW(), 'CANCELLED', NOW(), NOW(), 'R003', 'C003'),
+    ('S004', DATE_ADD(NOW(), INTERVAL 1 HOUR), 'INACTIVE', NOW(), NOW(), 'R004', 'C004'),
+    ('S005', DATE_ADD(NOW(), INTERVAL 4 HOUR), 'ACTIVE', NOW(), NOW(), 'R005', 'C005');
 
 -- 5 Schedule trong tương lai
 INSERT INTO `Schedule` (`id`, `departureTime`, `status`, `createdAt`, `updatedAt`, `routeId`, `coachId`) VALUES
-    ('S006', '2024-08-10 14:30:00', 'ACTIVE', NOW(), NOW(), 'R001', 'C006'),
-    ('S007', '2024-08-11 18:15:00', 'ACTIVE', NOW(), NOW(), 'R002', 'C007'),
-    ('S008', '2024-08-12 03:00:00', 'INACTIVE', NOW(), NOW(), 'R003', 'C008'),
-    ('S009', '2024-08-13 11:20:00', 'ACTIVE', NOW(), NOW(), 'R004', 'C001'),
-    ('S010', '2024-08-14 05:45:00', 'ACTIVE', NOW(), NOW(), 'R005', 'C002');
+    ('S006', DATE_ADD(NOW(), INTERVAL 1 DAY), 'ACTIVE', NOW(), NOW(), 'R001', 'C006'),
+    ('S007', DATE_ADD(NOW(), INTERVAL 2 DAY), 'ACTIVE', NOW(), NOW(), 'R002', 'C007'),
+    ('S008', DATE_ADD(NOW(), INTERVAL 3 DAY), 'INACTIVE', NOW(), NOW(), 'R003', 'C008'),
+    ('S009', DATE_ADD(NOW(), INTERVAL 4 DAY), 'ACTIVE', NOW(), NOW(), 'R004', 'C001'),
+    ('S010', DATE_ADD(NOW(), INTERVAL 5 DAY), 'ACTIVE', NOW(), NOW(), 'R005', 'C002');
+
 
 
 CREATE TABLE `Invoice` (

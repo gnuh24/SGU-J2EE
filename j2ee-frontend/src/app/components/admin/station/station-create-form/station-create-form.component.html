@@ -1,6 +1,6 @@
-<h2 mat-dialog-title>Tạo mới trạm</h2>
-
 <form [formGroup]="stationForm" (ngSubmit)="onSubmit()" mat-dialog-content class="station-form">
+    <h2 mat-dialog-title>Tạo mới trạm</h2>
+
     <mat-form-field appearance="outline" class="full-width">
         <mat-label>Tên trạm</mat-label>
         <input matInput formControlName="name" placeholder="Nhập tên trạm" />
@@ -39,6 +39,7 @@
 
     <div class="dialog-actions">
         <button mat-stroked-button color="warn" type="button" (click)="onCancel()">Hủy</button>
-        <button mat-flat-button color="primary" type="submit" [disabled]="!stationForm.valid || isSubmitting">Tạo mới</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="!stationForm.valid || isSubmitting">Tạo
+            mới</button>
     </div>
 </form>

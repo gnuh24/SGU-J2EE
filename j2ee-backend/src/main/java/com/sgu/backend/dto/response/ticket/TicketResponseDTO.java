@@ -19,13 +19,13 @@ public class TicketResponseDTO {
 		@Schema(description = "Tên trạm đến trong lịch trình", example = "Trạm xe Mỹ Đình")
 		private String scheduleRouteArrivalStationName;
 		
-//		@JsonProperty("fullname")
-//		@Schema(description = "Tên người mua vé", example = "Nguyễn Văn A")
-//		private String invoiceProfileFullname;
-//
-//		@JsonProperty("phone")
-//		@Schema(description = "Số điện thoại của người mua vé", example = "0912345678")
-//		private String invoiceProfilePhone;
+		@JsonProperty("fullname")
+		@Schema(description = "Tên người mua vé", example = "Nguyễn Văn A")
+		private String invoiceProfileFullname;
+
+		@JsonProperty("phone")
+		@Schema(description = "Số điện thoại của người mua vé", example = "0912345678")
+		private String invoiceProfilePhone;
 		
 		@Schema(description = "Giá vé", example = "200000")
 		private Double price;

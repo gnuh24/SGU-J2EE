@@ -1,6 +1,6 @@
-<h2 mat-dialog-title>Thêm thành phố mới</h2>
-
 <form [formGroup]="cityForm" (ngSubmit)="onSubmit()" mat-dialog-content class="city-form">
+    <h2 mat-dialog-title>Thêm thành phố mới</h2>
+
     <mat-form-field appearance="outline" class="full-width">
         <mat-label>Tên thành phố</mat-label>
         <input matInput formControlName="name" placeholder="Nhập tên thành phố" />
