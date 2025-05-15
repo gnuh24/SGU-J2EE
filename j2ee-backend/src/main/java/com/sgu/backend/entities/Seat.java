@@ -23,4 +23,5 @@ public class Seat {
     @JoinColumn(name = "coachId", nullable = false)
     private Coach coach; // Khóa ngoại tham chiếu Coach
 
+	
 }

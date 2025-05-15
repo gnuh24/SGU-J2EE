@@ -40,19 +40,14 @@ public class SeatServiceImpl implements SeatService {
         seat.setCoach(form.getCoach());
         return seatRepository.save(seat);
     }
+		
+		@Override
+		public List<Seat> getByScheduleId(String scheduleId) {
+			return seatRepository.findByScheduleId(scheduleId);
+		}
+		
+		
 
-
-    @Override
-    public List<SeatResponseDTO> getById(String id) {
-        Coach coach = coachRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Coach not found with ID: " + id));
-
-        List<Seat> seats= seatRepository.findByCoach(coach);
-        List<SeatResponseDTO> seatDTOs = seats.stream()
-                .map(seat -> modelMapper.map(seat, SeatResponseDTO.class))
-                .toList();
-        return seatDTOs;
-    }
 	
 //    @Override
 //    public List<Seat> createMany(List<SeatCreateForm> seatForms, Coach coach) {

@@ -12,8 +12,6 @@ import java.util.List;
 
 public interface SeatService {
     Seat create(SeatCreateForm form);
-    List<SeatResponseDTO> getById(String id);
-//    List<Seat> createMany(List<SeatCreateForm> seatForms, Coach coach);
-
+    List<Seat> getByScheduleId(String id);
 
 }

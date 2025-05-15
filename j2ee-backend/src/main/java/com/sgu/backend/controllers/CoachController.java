@@ -80,8 +80,6 @@ public class CoachController {
 		public ResponseEntity<ApiResponse<CoachResponseDTO>> getCoachById(
 				@Parameter(description = "ID của xe khách cần lấy thông tin") @PathVariable String id) {
 				CoachResponseDTO dto  = coachService.getById(id);
-				List<SeatResponseDTO> seatResponseDTOS = seatService.getById(id);
-				
 				return ResponseEntity.ok(new ApiResponse<>(200, "Lấy coach thành công", dto));
 		}
 		

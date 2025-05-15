@@ -20,6 +20,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
@@ -70,9 +72,14 @@ public class TicketServiceImpl implements TicketService {
 						.orElseThrow(() -> new EntityNotFoundException("Ticket with id " + id + " not found"));
 		}
 		
+		@Override
+		public List<Ticket> getByScheduleId(String scheduleId) {
+			
+			return ticketRepository.findByScheduleId(scheduleId);
+		}
 		
-
-    @Override
+		
+		@Override
     public Page<TicketResponseDTO> getAll(Pageable pageable, TicketFilter filter) {
         Page<Ticket> tickets = ticketRepository.findAll(TicketSpecification.filter(filter), pageable);
 		return tickets.map(ticket -> modelMapper.map(ticket, TicketResponseDTO.class));

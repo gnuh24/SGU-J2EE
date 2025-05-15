@@ -1,8 +1,13 @@
 package com.sgu.backend.controllers;
 
 import com.sgu.backend.apiresponse.ApiResponse;
+import com.sgu.backend.dto.response.invoice.InvoiceResponseDTO;
+import com.sgu.backend.dto.response.seat.SeatDetailResponseDTO;
 import com.sgu.backend.dto.response.seat.SeatResponseDTO;
+import com.sgu.backend.entities.Seat;
+import com.sgu.backend.entities.Ticket;
 import com.sgu.backend.services.SeatService;
+import com.sgu.backend.services.TicketService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * SeatController handles the seat-related API requests, including retrieving,
@@ -30,6 +36,9 @@ public class SeatController {
 		@Autowired
 		private ModelMapper modelMapper;
 		
+		@Autowired
+		private TicketService ticketService;
+		
 		/**
 		 * Get the list of seats for a specific coach by its ID.
 		 *
@@ -38,10 +47,30 @@ public class SeatController {
 		 */
 		@Operation(summary = "Lấy thông tin ghế",
 				description = "Lấy thông tin về các ghế của một xe khách cụ thể dựa trên ID của xe.")
-		@GetMapping("/{id}")
-		public ResponseEntity<ApiResponse<List<SeatResponseDTO>>> getSeatById(@PathVariable String id) {
-				List<SeatResponseDTO> dto = seatService.getById(id);
+		@GetMapping("/schedule/{id}")
+		public ResponseEntity<ApiResponse<List<SeatDetailResponseDTO>>> getSeatById(@PathVariable String id) {
+				List<Seat> entities = seatService.getByScheduleId(id);
 				
+				List<SeatDetailResponseDTO> dto = entities.stream()
+						.map(
+								(seat) -> (
+										modelMapper.map(seat, SeatDetailResponseDTO.class)
+								)
+						).collect(Collectors.toList());
+				
+				List<Ticket> tickets = ticketService.getByScheduleId(id);
+				
+				tickets.stream()
+						.forEach(ticket -> {
+								dto.stream()
+										.filter(seat -> ticket.getSeat().getId().equals(seat.getId()))
+										.forEach(matchingSeat -> {
+												// Thực hiện hành động nào đó khi ghế khớp
+												System.out.println("Match found: " + ticket.getId());
+												matchingSeat.setStatus(SeatDetailResponseDTO.Status.BOOKED);
+										});
+						});
+
 				return ResponseEntity.ok(new ApiResponse<>(200, "Lấy ghế thành công", dto));
 		}
 		
