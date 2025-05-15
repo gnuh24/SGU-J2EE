@@ -4,37 +4,56 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  FormsModule
 } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common'; // ✅ Import CommonModule để dùng *ngIf
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../../../services/auth.service';
+import { AuthResponseDTO } from '../../../models/auth.model';
+import { UserSessionService } from '../../../services/user-session.service';
 
 @Component({
   standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule], // ✅ Thêm CommonModule vào imports
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule, 
+    FormsModule, 
+    RouterModule,
+    HttpClientModule
+  ]
 })
 export class LoginComponent {
-  authForm: FormGroup;
+  loginForm: FormGroup;
   isLoginMode = true;
+  errorMessage: string;
 
-  constructor(private fb: FormBuilder) {
-    this.authForm = this.fb.group({
-      fullName: [''],
-      phoneNumber: [
-        '',
-        [Validators.required, Validators.pattern('^[0-9]{10}$')],
-      ],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService,
+    private userSession: UserSessionService
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
   onSubmit() {
-    if (this.authForm.valid) {
-      console.log(
-        this.isLoginMode ? 'Đăng nhập' : 'Đăng ký',
-        this.authForm.value
-      );
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      this.authService.login(email, password).subscribe({
+        next: (response: AuthResponseDTO) => {
+          this.router.navigate(['/home']);
+        },
+        error: (error: any) => {
+          this.errorMessage = error.error.message || 'Đăng nhập thất bại';
+        }
+      });
     }
   }
 

@@ -1,0 +1,65 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="mb-0">Thông tin cá nhân</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+            <!-- Alert messages -->
+            <div class="alert alert-danger" *ngIf="error">
+              {{ error }}
+            </div>
+            <div class="alert alert-success" *ngIf="successMessage">
+              {{ successMessage }}
+            </div>
+
+            <!-- Full Name -->
+            <div class="mb-3">
+              <label for="fullName" class="form-label">Họ và tên</label>
+              <input type="text" class="form-control" id="fullName" formControlName="fullName"
+                [ngClass]="{'is-invalid': profileForm.get('fullName')?.invalid && profileForm.get('fullName')?.touched}">
+              <div class="invalid-feedback" *ngIf="profileForm.get('fullName')?.errors?.['required']">
+                Vui lòng nhập họ và tên
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="mb-3">
+              <label for="phone" class="form-label">Số điện thoại</label>
+              <input type="tel" class="form-control" id="phone" formControlName="phone"
+                [ngClass]="{'is-invalid': profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched}">
+              <div class="invalid-feedback" *ngIf="profileForm.get('phone')?.errors?.['required']">
+                Vui lòng nhập số điện thoại
+              </div>
+              <div class="invalid-feedback" *ngIf="profileForm.get('phone')?.errors?.['pattern']">
+                Số điện thoại không hợp lệ
+              </div>
+            </div>
+
+            <!-- Address -->
+            <div class="mb-3">
+              <label for="address" class="form-label">Địa chỉ</label>
+              <input type="text" class="form-control" id="address" formControlName="address">
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="mb-3">
+              <label for="dateOfBirth" class="form-label">Ngày sinh</label>
+              <input type="date" class="form-control" id="dateOfBirth" formControlName="dateOfBirth">
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid || loading">
+                <span *ngIf="loading">Đang cập nhật...</span>
+                <span *ngIf="!loading">Cập nhật thông tin</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

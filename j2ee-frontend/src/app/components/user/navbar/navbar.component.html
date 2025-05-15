@@ -1,66 +1,49 @@
-<!-- Bao toàn bộ nội dung vào ng-container
-<ng-container *ngIf="dataLoaded">
+<ng-container>
   <header class="header-home-page">
     <div class="header-first-component">
       <div style="display: block; width: 336px"></div>
       <div class="header-first-logo">
-        <a routerLink="/">
-          <img
-            alt="logo_banner"
-            loading="lazy"
-            width="295"
-            height="60"
-            decoding="async"
-            data-nimg="1"
-            style="color: transparent"
-            src="https://futabus.vn/_next/static/media/logo_new.8a0251b8.svg"
-          />
+        <a routerLink="/home">
+          <img alt="logo_banner" loading="lazy" width="295" height="60" decoding="async" data-nimg="1"
+            style="color: transparent" src="https://futabus.vn/_next/static/media/logo_new.8a0251b8.svg" />
         </a>
       </div>
       <div class="header-first-log">
         <div class="flex items-start gap-4 text-center text-sm font-medium">
-          <a
-            class="flex h-8 w-44 cursor-pointer items-center gap-3 rounded-2xl bg-white p-2 text-black"
-            routerLink="/login"
-          >
-            <img
-              src="../../../../assets/img/LOGO/person.svg"
-              alt="person"
-              width="20"
-              height="20"
-            />Đăng nhập / Đăng ký
-          </a>
+          <div *ngIf="!isLoggedIn">
+            <a routerLink="/login"
+              class="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow text-black font-medium hover:bg-gray-100">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                class="w-6 h-6 text-gray-500">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Đăng nhập
+            </a>
+            <a routerLink="/signup"
+              class="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow text-black font-medium hover:bg-gray-100">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                class="w-6 h-6 text-gray-500">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              Đăng ký
+            </a>
+          </div>
+          <div class="navbar-user" *ngIf="isLoggedIn">
+            <a routerLink="/profile" class="navbar-user-email">{{ userEmail }}</a>
+            <button (click)="logout()" class="navbar-btn logout-btn">Đăng xuất</button>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="header-second-component">
-      <a
-        class="mx-2 w-32 pb-3 text-center text-sm uppercase text-white hover:font-bold hover:text-white border-b-4 border-b-white font-bold"
-        routerLink="/home"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        >Trang chủ</a
-      >
-      <a
-        class="mx-2 w-32 pb-3 text-center text-sm uppercase text-white hover:font-bold hover:text-white font-medium"
-        routerLink="/lich-trinh"
-        routerLinkActive="active"
-        >Lịch trình</a
-      >
-      <a
-        class="mx-2 w-32 pb-3 text-center text-sm uppercase text-white hover:font-bold hover:text-white font-medium"
-        routerLink="/tra-cuu-ve"
-        routerLinkActive="active"
-        >Tra cứu vé</a
-      >
-      <a
-        class="mx-2 w-32 pb-3 text-center text-sm uppercase text-whiteF hover:font-bold hover:text-white font-medium"
-        rel="noopener noreferrer"
-        target="_blank"
-        href="https://hoadon.futabus.vn/#/tracuuhoadon/tracuu"
-        >Hóa đơn</a
-      >
+      <a class="nav-link" routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Trang
+        chủ</a>
+      <a class="nav-link" routerLink="/lich-trinh" routerLinkActive="active">Lịch trình</a>
+      <a class="nav-link" routerLink="/tra-cuu-ve" routerLinkActive="active">Tra cứu vé</a>
+      <a class="nav-link" rel="noopener noreferrer" target="_blank"
+        href="https://hoadon.futabus.vn/#/tracuuhoadon/tracuu">Hóa đơn</a>
     </div>
   </header>
-</ng-container> -->
+</ng-container>

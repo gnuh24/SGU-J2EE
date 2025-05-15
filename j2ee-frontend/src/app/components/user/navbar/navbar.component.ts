@@ -5,6 +5,7 @@ import {
   RouterLink,
   RouterLinkActive, // Import RouterLinkActive
   RouterModule, // Import RouterModule
+  NavigationEnd
 } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
@@ -21,9 +22,42 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent  {
+export class NavbarComponent implements OnInit {
 
-// export class NavbarComponent implements OnInit {
+  isLoggedIn = false;
+  userEmail = '';
+
+  constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.checkLogin();
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.checkLogin();
+  }
+
+  checkLogin() {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = sessionStorage.getItem('token');
+      this.isLoggedIn = !!token;
+      this.userEmail = sessionStorage.getItem('userEmail') || '';
+    } else {
+      this.isLoggedIn = false;
+      this.userEmail = '';
+    }
+  }
+
+  logout() {
+    if (isPlatformBrowser(this.platformId)) {
+      sessionStorage.clear();
+    }
+    this.checkLogin();
+    this.router.navigate(['/login']);
+  }
+
   // CurrentUser: string | null = null;
   // mobileNavbarContent: string = '';
   // socialLinks: { icon: string; url: string }[] = [

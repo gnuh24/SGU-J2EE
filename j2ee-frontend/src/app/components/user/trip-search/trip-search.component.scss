@@ -1,0 +1,124 @@
+/* Style cho form tìm kiếm chuyến xe, cập nhật theo giao diện mẫu */
+.trip-search-form {
+  /* ... */
+}
+
+// Container
+.search-form {
+  border: 2px solid #fbbf91;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 2px 12px 0 rgba(241,90,36,0.06);
+  padding: 32px 24px 24px 24px;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+// Radio
+.search-form .radio-group {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 18px;
+}
+.search-form .radio-group label {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  gap: 6px;
+}
+.search-form .radio-group input[type="radio"] {
+  accent-color: #f15a24;
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+}
+
+// Input, select, date
+.search-form input,
+.search-form select {
+  border: 1.5px solid #fbbf91;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 1.05rem;
+  color: #222;
+  background: #fff;
+  margin-bottom: 8px;
+  outline: none;
+  transition: border 0.2s;
+}
+.search-form input:focus,
+.search-form select:focus {
+  border-color: #f15a24;
+}
+.search-form input::placeholder {
+  color: #bdbdbd;
+}
+
+// Icon đổi chiều
+.search-form .swap-btn {
+  border-radius: 50%;
+  border: 2px solid #fbbf91;
+  background: #fff;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 12px;
+  transition: background 0.2s, border 0.2s;
+  cursor: pointer;
+}
+.search-form .swap-btn:hover {
+  background: #fff3e0;
+  border-color: #f15a24;
+}
+
+// Nút tìm chuyến xe
+.search-form .search-btn {
+  background: #f15a24;
+  color: #fff;
+  border: none;
+  border-radius: 32px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 16px 0;
+  margin-top: 18px;
+  width: 340px;
+  max-width: 100%;
+  box-shadow: 0 2px 8px 0 rgba(241,90,36,0.10);
+  transition: background 0.2s;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.search-form .search-btn:hover {
+  background: #d94d1a;
+}
+
+// Link hướng dẫn
+.search-form .guide-link {
+  color: #1976d2;
+  text-decoration: underline;
+  font-size: 1.05rem;
+  position: absolute;
+  top: 18px;
+  right: 24px;
+  transition: color 0.2s;
+}
+.search-form .guide-link:hover {
+  color: #0d47a1;
+}
+
+// Responsive
+@media (max-width: 900px) {
+  .search-form {
+    padding: 18px 8px 16px 8px;
+  }
+  .search-form .search-btn {
+    width: 100%;
+    font-size: 1.05rem;
+    padding: 12px 0;
+  }
+} 

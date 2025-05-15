@@ -12,25 +12,18 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 // import { GetPageResponse } from '../../../models/response/home/get-page-response';
 import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  providers: [
-    { provide: HTTP_INTERCEPTORS, 
-      // useClass: AuthInterceptor, 
-      useClass: null, 
-      multi: true },
-    // UserService,
-    null,
-
-  ],
   imports: [
     CarouselModule,
     CommonModule,
-    // LocationListComponent,
-    // LocationDetailComponent,
     HttpClientModule,
+    NavbarComponent,
+    FooterComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
