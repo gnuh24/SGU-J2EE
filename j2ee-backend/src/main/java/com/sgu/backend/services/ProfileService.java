@@ -18,4 +18,6 @@ public interface ProfileService {
 
     Profile updateProfile(Profile profile);
     Profile updatePersionalInformationOfProfile(Profile profile, ProfileUpdateForm form);
+		Profile updatePersionalInformationOfProfile(String id, ProfileUpdateForm form);
+		
 }

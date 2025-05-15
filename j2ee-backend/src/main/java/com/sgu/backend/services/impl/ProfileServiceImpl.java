@@ -83,13 +83,26 @@ public class ProfileServiceImpl implements ProfileService {
 	if (form.getPhone() != null) {
 	    profile.setPhone(form.getPhone());
 	}
-	if (form.getBirthday() != null) {
-
-	}
 
 	// Lưu lại vào database
 	return profileRepository.save(profile);
     }
-
-
+		
+		@Override
+		public Profile updatePersionalInformationOfProfile(String id, ProfileUpdateForm form) {
+				Profile profile = getProfileById(id);
+			
+				// Kiểm tra từng trường, nếu không null thì mới cập nhật
+				if (form.getFullname() != null) {
+						profile.setFullname(form.getFullname());
+				}
+				if (form.getPhone() != null) {
+						profile.setPhone(form.getPhone());
+				}
+				
+				// Lưu lại vào database
+				return profileRepository.save(profile);
+		}
+		
+		
 }

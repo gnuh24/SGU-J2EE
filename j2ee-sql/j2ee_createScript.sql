@@ -206,6 +206,7 @@ INSERT INTO `Schedule` (`id`, `departureTime`, `status`, `createdAt`, `updatedAt
 
 
 
+
 CREATE TABLE `Invoice` (
     `id` VARCHAR(10) PRIMARY KEY,
     `totalAmount` DECIMAL(10,2) NOT NULL,

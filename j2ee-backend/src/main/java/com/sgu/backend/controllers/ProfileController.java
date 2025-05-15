@@ -104,4 +104,21 @@ public class ProfileController {
 						new ApiResponse<>(200, "Cập nhật profile thành công", responseDTO)
 				);
 		}
+		
+		@Operation(summary = "Cập nhật profile cá nhân", description = "Cập nhật thông tin hồ sơ của người dùng đang đăng nhập")
+		@PatchMapping("/{id}")
+		public ResponseEntity<ApiResponse<ProfileDetailResponseDTO>> updateProfile(
+				@PathVariable String id,
+				@RequestBody @Valid ProfileUpdateForm form) {
+				
+//				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//				Account account = (Account) authentication.getPrincipal();
+				
+				Profile updatedProfile = profileService.updatePersionalInformationOfProfile(id, form);
+				ProfileDetailResponseDTO responseDTO = modelMapper.map(updatedProfile, ProfileDetailResponseDTO.class);
+				
+				return ResponseEntity.ok(
+						new ApiResponse<>(200, "Cập nhật profile thành công", responseDTO)
+				);
+		}
 }

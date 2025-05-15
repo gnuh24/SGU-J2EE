@@ -15,9 +15,5 @@ public class ProfileUpdateForm {
 
     private String phone;
 
-    private Boolean gender;
-
-    private Date birthday;
-
 }
 
