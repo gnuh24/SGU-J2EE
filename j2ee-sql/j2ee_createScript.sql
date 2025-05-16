@@ -248,7 +248,7 @@ INSERT INTO `Ticket` (`id`, `status`, `price`, `createdAt`, `updatedAt`, `invoic
 ('T007', 'USED', 200000.00, NOW(), NOW(), 'I007', 'S007', 'A007'),
 ('T008', 'BOOKED', 180000.00, NOW(), NOW(), 'I008', 'S008', 'A008'),
 ('T009', 'BOOKED', 220000.00, NOW(), NOW(), 'I009', 'S009', 'A009'),
-('T010', 'USED', 175000.00, NOW(), NOW(), 'I001', 'S001', 'A010');
+('T010', 'CANCELLED', 175000.00, NOW(), NOW(), 'I001', 'S001', 'A010');
 
 
     

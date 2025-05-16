@@ -61,14 +61,16 @@ public class SeatController {
 				List<Ticket> tickets = ticketService.getByScheduleId(id);
 				
 				tickets.stream()
-						.forEach(ticket -> {
+						.filter(ticket -> ticket.getStatus().equals(Ticket.TicketStatus.BOOKED))  // Đóng ngoặc cho filter
+						.forEach(ticket -> {  // forEach mở ngoặc nhọn
 								dto.stream()
 										.filter(seat -> ticket.getSeat().getId().equals(seat.getId()))
 										.forEach(matchingSeat -> {
-												// Thực hiện hành động nào đó khi ghế khớp
+												// Thực hiện hành động khi ghế khớp
 												matchingSeat.setStatus(SeatDetailResponseDTO.Status.BOOKED);
 										});
 						});
+
 
 				return ResponseEntity.ok(new ApiResponse<>(200, "Lấy ghế thành công", dto));
 		}

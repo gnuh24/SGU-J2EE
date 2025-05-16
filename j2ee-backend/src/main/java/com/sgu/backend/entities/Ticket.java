@@ -2,18 +2,16 @@ package com.sgu.backend.entities;
 
 import com.sgu.backend.utils.IdGenerator;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 import static java.time.LocalTime.now;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Ticket {
     @Id
     private String id = IdGenerator.generateId();
