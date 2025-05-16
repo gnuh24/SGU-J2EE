@@ -19,7 +19,9 @@ export class UserSessionService {
   }
 
   setUserData(userData: UserData): void {
-    sessionStorage.setItem(this.USER_KEY, JSON.stringify(userData));
+    if (this.isBrowser()) {
+      sessionStorage.setItem(this.USER_KEY, JSON.stringify(userData));
+    }
     this.userSubject.next(userData);
   }
 
@@ -29,7 +31,9 @@ export class UserSessionService {
   }
 
   clearSession(): void {
-    sessionStorage.removeItem(this.USER_KEY);
+    if (this.isBrowser()) {
+      sessionStorage.removeItem(this.USER_KEY);
+    }
     this.userSubject.next(null);
   }
 
@@ -62,10 +66,13 @@ export class UserSessionService {
   }
 
   setUserFullName(fullName: string): void {
-    const userData = this.getUserData();
-    if (userData) {
-      userData.fullName = fullName;
-      this.setUserData(userData);
+    if (this.isBrowser()) {
+      const data = sessionStorage.getItem(this.USER_KEY);
+      if (data) {
+        const user = JSON.parse(data);
+        user.fullName = fullName;
+        sessionStorage.setItem(this.USER_KEY, JSON.stringify(user));
+      }
     }
   }
 
@@ -78,5 +85,9 @@ export class UserSessionService {
       });
       return () => subscription.unsubscribe();
     });
+  }
+
+  private isBrowser(): boolean {
+    return typeof window !== 'undefined';
   }
 } 

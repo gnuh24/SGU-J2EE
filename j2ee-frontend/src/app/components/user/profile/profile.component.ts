@@ -28,8 +28,7 @@ export class ProfileComponent implements OnInit {
     this.profileForm = this.fb.group({
       fullName: ['', Validators.required],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      address: [''],
-      dateOfBirth: ['']
+
     });
   }
 
@@ -66,11 +65,14 @@ export class ProfileComponent implements OnInit {
       this.error = null;
       this.successMessage = null;
 
-      const profileData = this.profileForm.value;
+      const profileData = {
+        fullName: this.profileForm.value.fullName,
+        phone: this.profileForm.value.phone
+      };
       this.profileService.updateProfile(profileData).subscribe({
         next: (response: ApiResponse<any>) => {
           this.successMessage = 'Cập nhật thông tin thành công';
-          this.userSession.setUserFullName(profileData.fullname);
+          this.userSession.setUserFullName(profileData.fullName);
           this.loading = false;
         },
         error: (error) => {

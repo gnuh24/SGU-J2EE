@@ -20,6 +20,7 @@ export class TripDetailComponent implements OnInit {
   totalPrice: number = 0;
   bookedSeats: number[] = [];
   activeTab: 'seat' | 'schedule' | 'transfer' | 'policy' = 'seat';
+  seats: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -38,7 +39,6 @@ export class TripDetailComponent implements OnInit {
     this.error = null;
     this.http.get<any>(`http://localhost:8080/api/schedules/${this.tripId}`).subscribe({
       next: (res) => {
-        console.log('API response:', res);
         this.tripDetail = res.data;
         this.loading = false;
         this.loadSeatInformation();
@@ -51,42 +51,29 @@ export class TripDetailComponent implements OnInit {
   }
 
   loadSeatInformation(): void {
-    if (!this.tripDetail?.coach?.id) {
-      console.error('No coach ID available');
-      return;
-    }
-
-    this.http.get<any>(`http://localhost:8080/api/seats/coach/${this.tripDetail.coach.id}`).subscribe({
-      next: (res) => {
-        console.log('Seat information:', res);
-        if (res.data) {
-          // Get booked seats for this schedule
-          this.http.get<any>(`http://localhost:8080/api/seats/schedule/${this.tripId}`).subscribe({
-            next: (scheduleRes) => {
-              if (scheduleRes.data) {
-                this.bookedSeats = scheduleRes.data
-                  .filter((seat: any) => seat.status === 'BOOKED')
-                  .map((seat: any) => seat.number);
-              }
-            },
-            error: (err) => {
-              console.error('Error loading booked seats:', err);
-            }
-          });
+    const scheduleId = this.tripDetail?.id;
+    if (scheduleId) {
+      this.http.get<any>(`http://localhost:8080/api/seats/schedule/${scheduleId}`).subscribe({
+        next: (res) => {
+          if (res.data) {
+            // Lấy đúng 17 ghế đầu tiên nếu API trả nhiều hơn
+            this.seats = res.data.slice(0, 17);
+          }
+        },
+        error: (err) => {
+          console.error('Lỗi khi lấy danh sách ghế:', err);
         }
-      },
-      error: (err) => {
-        console.error('Error loading seat information:', err);
-      }
-    });
+      });
+    }
   }
 
-  isSeatSelected(seat: number): boolean {
-    return this.selectedSeats.includes(seat);
+  isSeatBooked(seatNumber: number): boolean {
+    const seat = this.seats.find(s => s.number === seatNumber);
+    return seat?.status === 'BOOKED';
   }
 
-  isSeatBooked(seat: number): boolean {
-    return this.bookedSeats.includes(seat);
+  isSeatSelected(seatNumber: number): boolean {
+    return this.selectedSeats?.includes(seatNumber);
   }
 
   toggleSeat(seatNumber: number): void {
@@ -101,19 +88,52 @@ export class TripDetailComponent implements OnInit {
   }
 
   calculateTotal(): void {
-    this.totalPrice = this.selectedSeats.length * (this.tripDetail?.price || 0);
+    const price = this.tripDetail?.route?.price || 0;
+    this.totalPrice = this.selectedSeats.length * price;
   }
 
-  proceedToPayment(): void {
-    if (this.selectedSeats.length > 0) {
-      this.router.navigate(['/payment'], {
-        queryParams: {
-          tripId: this.tripId,
-          seats: this.selectedSeats.join(','),
-          total: this.totalPrice
-        }
-      });
+  bookSeats(): void {
+    // Kiểm tra đăng nhập
+    const userData = sessionStorage.getItem('user_data');
+    if (!userData) {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+      return;
     }
+    const user = JSON.parse(userData);
+    const profileId = user.id || user.profileId; // tuỳ theo cấu trúc user_data
+
+    // Chuẩn bị tickets
+    const tickets = this.selectedSeats.map(seatNumber => {
+      const seat = this.seats.find(s => s.number === seatNumber);
+      return {
+        scheduleId: this.tripDetail.id,
+        seatId: seat.id,
+        price: this.tripDetail.route.price,
+        status: 'BOOKED'
+      };
+    });
+
+    const payload = {
+      profileId,
+      totalAmount: this.totalPrice,
+      paymentMethod: 'VNPAY',
+      tickets
+    };
+    this.http.post('http://localhost:8080/api/invoices', payload).subscribe({
+      next: (res: any) => {
+        // Nếu có url thanh toán, chuyển hướng sang url đó
+        if (res?.data?.url) {
+          window.location.href = res.data.url;
+        } else {
+          alert('Đặt vé thành công!');
+        }
+        // this.router.navigate(['/success']); // hoặc trang xác nhận
+      },
+      error: (err) => {
+        alert('Đặt vé thất bại!');
+        console.error(err);
+      }
+    });
   }
 
   goBack(): void {

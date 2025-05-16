@@ -74,13 +74,11 @@
         <div>
           <h2 class="text-xl font-bold mb-2">Chọn ghế</h2>
           <a class="text-blue-600 text-sm underline cursor-pointer mb-4 inline-block">Thông tin xe</a>
-          <div class="mb-4 font-semibold">Tầng dưới</div>
-          <!-- Sơ đồ ghế 28 ghế, 4 cột, 7 hàng -->
           <div class="grid grid-cols-4 gap-2 mb-4">
-            <div *ngFor="let seat of [].constructor(28); let i = index"
-              [class]="'seat-box ' + (isSeatBooked(i+1) ? 'booked' : isSeatSelected(i+1) ? 'selected' : '')"
-              (click)="!isSeatBooked(i+1) && toggleSeat(i+1)">
-              {{ (i+1) | number:'2.0' }}
+            <div *ngFor="let seat of seats"
+              [class]="'seat-box ' + (isSeatBooked(seat.number) ? 'booked' : isSeatSelected(seat.number) ? 'selected' : '')"
+              (click)="seat.status !== 'BOOKED' && toggleSeat(seat.number)">
+              {{ seat.number | number:'2.0' }}
             </div>
           </div>
           <!-- Chú thích -->
@@ -104,25 +102,30 @@
               <span>Đã bán</span>
             </div>
           </div>
+          <!-- Bảng thông tin ghế đã chọn và thành tiền -->
+          <div class="mt-4 mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+              <div>
+                <span class="font-semibold">Số ghế đang chọn:</span>
+                <span class="text-blue-600 font-bold">{{ selectedSeats.length }}</span>
+                <span *ngIf="selectedSeats.length > 0"> ({{ selectedSeats.join(', ') }})</span>
+              </div>
+              <div>
+                <span class="font-semibold">Thành tiền:</span>
+                <span class="text-orange-600 font-bold text-lg">{{ totalPrice | number }} đ</span>
+              </div>
+            </div>
+          </div>
+          <!-- Nút đặt ghế -->
+          <div class="flex justify-end">
+            <button
+              class="px-6 py-2 bg-orange-500 text-white font-bold rounded-lg shadow hover:bg-orange-600 transition disabled:opacity-50"
+              [disabled]="selectedSeats.length === 0" (click)="bookSeats()">
+              Đặt ghế
+            </button>
+          </div>
         </div>
-        <!-- Thông tin khách hàng -->
-        <div class="mt-8">
-          <h3 class="text-lg font-bold mb-2">Thông tin khách hàng</h3>
-          <form class="grid grid-cols-1 gap-4 md:max-w-md">
-            <div>
-              <label class="block font-medium">Họ và tên <span class="text-red-500">*</span></label>
-              <input type="text" class="form-input w-full" placeholder="Nhập họ tên">
-            </div>
-            <div>
-              <label class="block font-medium">Số điện thoại <span class="text-red-500">*</span></label>
-              <input type="text" class="form-input w-full" placeholder="Nhập số điện thoại">
-            </div>
-            <div>
-              <label class="block font-medium">Email</label>
-              <input type="email" class="form-input w-full" placeholder="Nhập email">
-            </div>
-          </form>
-        </div>
+
         <!-- Điều khoản & lưu ý -->
         <div class="mt-8">
           <div class="text-center text-orange-600 font-semibold mb-2">ĐIỀU KHOẢN & LƯU Ý</div>
@@ -192,6 +195,28 @@
         <li>Xuất trình thông tin vé được gửi qua SMS/Email/Futa App hoặc liên hệ quầy vé để nhận thông tin vé trước khi
           lên xe.</li>
         <li>Không mang thức ăn/đồ uống có mùi lên xe.</li>
+        <li>Không hút thuốc, không sử dụng đồ uống có cồn hoặc sử dụng chất kích thích trên xe.</li>
+        <li>Không mang các vật dễ cháy nổ lên xe.</li>
+        <li>Không vứt rác trên xe.</li>
+        <li>Không mang động vật lên xe.</li>
+      </ul>
+      <b>Hành lý xách tay</b>
+      <ul>
+        <li>Tổng trọng lượng hành lý không vượt quá 20kg</li>
+        <li>Không vận chuyển hàng hoá cồng kềnh</li>
+      </ul>
+      <b>Trẻ em dưới 6 tuổi và phụ nữ có thai</b>
+      <ul>
+        <li>Trẻ em dưới 6 tuổi, cao từ 1.3m trở xuống, cân nặng dưới 30kg thì không phải mua vé.</li>
+        <li>Trong trường hợp trẻ em không thoả 1 trong 3 tiêu chí trên sẽ mua 01 vé tương đương với người lớn.</li>
+        <li>Mỗi người lớn sẽ đi kèm tối đa một trẻ em.</li>
+        <li>Phụ nữ có thai cần đảm bảo sức khoẻ trong suốt quá trình di chuyển.</li>
+      </ul>
+      <b>Vé đón đường</b>
+      <ul>
+        <li>Trường hợp có nhu cầu lên xe dọc đường, Quý khách vui lòng liên hệ tổng đài 19006067 để đăng kí trước ít
+          nhất 2 tiếng so với giờ xe khởi hành và vui lòng chuẩn bị hành lý nhỏ gọn (tối đa 20kg).</li>
+        <li>Lưu ý, chúng tôi chỉ hỗ trợ đón ở một số địa điểm thuận tiện nằm trên lộ trình</li>
       </ul>
     </div>
   </div>
@@ -227,3 +252,19 @@
     background-color: #6b7280;
   }
 </style>
+
+<script>
+  // Sau khi nhận được tripDetail từ API:
+  const coachId = this.tripDetail?.coach?.id;
+  if (coachId) {
+    this.http.get < any > (`http://localhost:8080/api/seats/schedule/${coachId}`).subscribe({
+      next: (res) => {
+        // Xử lý danh sách ghế ở đây
+        console.log('Danh sách ghế:', res.data);
+      },
+      error: (err) => {
+        console.error('Lỗi khi lấy danh sách ghế:', err);
+      }
+    });
+  }
+</script>
