@@ -29,6 +29,10 @@ export class InvoiceService {
         return this.http.get<ApiResponse<any>>(this.apiUrl, { params });
     }
 
+    getInvoiceByUserId(id: string): Observable<ApiResponse<any>> {
+        return this.http.get<ApiResponse<any>>(`${this.apiUrl}/profile/${id}`);
+    }
+
     getInvoiceById(id: string): Observable<ApiResponse<any>> {
         return this.http.get<ApiResponse<any>>(`${this.apiUrl}/${id}`);
     }

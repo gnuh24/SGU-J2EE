@@ -29,14 +29,21 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'forget-password', component: ForgetPasswordComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: '**', redirectTo: '/home' },
 
   {
     path: 'order-history',
     component: OrderHistoryComponent,
     canActivate: [() => !!sessionStorage.getItem('user_data')],
   },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', redirectTo: '/home' },
+
+
+  // {
+  //   path: 'order-history',
+  //   component: OrderHistoryComponent,
+  //   canActivate: [() => !!sessionStorage.getItem('user_data')],
+  // },
   // {
   //   path: 'booking',
   //   component: BookingComponent,
