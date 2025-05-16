@@ -6,6 +6,7 @@ import com.sgu.backend.dto.request.invoice.InvoiceCreateFormByAdmin;
 import com.sgu.backend.dto.request.invoice.InvoiceFilter;
 import com.sgu.backend.dto.request.invoice.InvoiceUpdateForm;
 import com.sgu.backend.dto.response.invoice.InvoiceDetailResponseDTO;
+import com.sgu.backend.dto.response.invoice.InvoicePdfExporter;
 import com.sgu.backend.dto.response.invoice.InvoiceResponseDTO;
 import com.sgu.backend.entities.Invoice;
 import com.sgu.backend.entities.Profile;
@@ -14,6 +15,7 @@ import com.sgu.backend.services.InvoiceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,6 +93,26 @@ public class InvoiceController {
 				Invoice invoice = invoiceService.getById(id);
 				InvoiceDetailResponseDTO invoiceDetailResponseDTO = modelMapper.map(invoice, InvoiceDetailResponseDTO.class);
 				return ResponseEntity.ok(new ApiResponse<>(200, "Chi tiết hoá đơn", invoiceDetailResponseDTO));
+		}
+		
+		@GetMapping("/{id}/export-pdf")
+		public void exportInvoiceToPDF(@PathVariable("id") String id, HttpServletResponse response) throws IOException {
+				// Thiết lập header để trình duyệt tải file về
+				response.setContentType("application/pdf");
+				String headerKey = "Content-Disposition";
+				String headerValue = "attachment; filename=invoice_" + id + ".pdf";
+				response.setHeader(headerKey, headerValue);
+				
+				// Lấy hóa đơn từ service
+				Invoice invoice = invoiceService.getById(id); // đảm bảo có hàm này
+				if (invoice == null) {
+						response.sendError(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy hóa đơn");
+						return;
+				}
+				
+				// Xuất PDF
+				InvoicePdfExporter exporter = new InvoicePdfExporter(invoice);
+				exporter.export(response);
 		}
 		
 		/**

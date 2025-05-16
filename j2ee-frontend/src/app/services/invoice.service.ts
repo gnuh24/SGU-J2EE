@@ -33,6 +33,11 @@ export class InvoiceService {
         return this.http.get<ApiResponse<any>>(`${this.apiUrl}/${id}`);
     }
 
+    exportInvoicePdf(id: string) {
+        return this.http.get(`${this.apiUrl}/${id}/export-pdf`, {
+            responseType: 'blob',  // nhận file dạng blob
+        });
+    }
 
 
     // getById(id: number): Observable<ApiResponse> {

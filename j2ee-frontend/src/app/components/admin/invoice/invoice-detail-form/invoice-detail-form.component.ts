@@ -71,6 +71,30 @@ export class InvoiceDetailFormComponent implements OnInit {
             });
     }
 
+    exportPdf(): void {
+        const invoiceId = this.invoiceForm.get('id')?.value;
+        if (!invoiceId) return;
+
+        this.isLoading = true;
+        this.invoiceService.exportInvoicePdf(invoiceId).subscribe({
+            next: (blob: Blob) => {
+                this.isLoading = false;
+                // Tạo link tải file PDF
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Invoice_${invoiceId}.pdf`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            },
+            error: (err: any) => {
+                this.isLoading = false;
+                console.error('Failed to export PDF', err);
+            }
+        });
+    }
+
+
     formatDateTime(datetime: string): string {
         const date = new Date(datetime);
         return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;

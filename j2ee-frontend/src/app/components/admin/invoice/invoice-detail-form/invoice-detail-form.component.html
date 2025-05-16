@@ -89,5 +89,8 @@
 
     <div class="actions mt-4">
         <button mat-button type="button" (click)="onClose()">Đóng</button>
+        <button mat-raised-button color="primary" type="button" (click)="exportPdf()" [disabled]="isLoading">
+            Export PDF
+        </button>
     </div>
 </form>
