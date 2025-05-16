@@ -1,5 +1,6 @@
 package com.sgu.backend.dto.response.schedule;
 
+import com.sgu.backend.dto.response.coach.CoachResponseDTO;
 import com.sgu.backend.dto.response.route.RouteResponse;
 import com.sgu.backend.entities.Route;
 import com.sgu.backend.entities.Schedule;
@@ -26,4 +27,6 @@ public class ScheduleResponseDTO {
 		
 		@Schema(description = "Thời gian cập nhật lịch trình", example = "2023-06-10T12:00:00")
 		private String updatedAt;
+		
+		private CoachResponseDTO coach;
 }
