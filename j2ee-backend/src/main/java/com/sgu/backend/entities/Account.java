@@ -29,7 +29,7 @@ public class Account implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status status = Status.INACTIVE;
+    private Status status = Status.ACTIVE;
 
     @Column(nullable = false, unique = true, length = 255)
     private String email;
