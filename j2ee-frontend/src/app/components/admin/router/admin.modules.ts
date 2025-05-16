@@ -45,7 +45,10 @@ import { ScheduleManagementComponent } from '../schedule-management/schedule-man
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ScheduleUpdateFormComponent } from '../schedule-management/schedule-update-form/schedule-update-form.component';
 import { ScheduleCreateFormComponent } from '../schedule-management/schedule-create-form/schedule-create-form.component';
+import { TicketCheckingComponent } from '../ticket-checking/ticket-checking.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+// import { jsQRModule } from 'jsqr';
 @NgModule({
     declarations: [
         CityManagementComponent,
@@ -70,7 +73,7 @@ import { ScheduleCreateFormComponent } from '../schedule-management/schedule-cre
         ScheduleCreateFormComponent,
         // ScheduleDetailFormComponent,  
 
-
+        TicketCheckingComponent,
 
         InvoiceManagementComponent,
         InvoiceDetailFormComponent,
@@ -101,6 +104,8 @@ import { ScheduleCreateFormComponent } from '../schedule-management/schedule-cre
         MatOptionModule,
         MatCardModule,
         MatIconModule,
+        MatProgressSpinnerModule,
+        // jsQRModule
     ],
 })
 export class AdminModule { }

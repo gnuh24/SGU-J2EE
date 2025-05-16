@@ -1,0 +1,66 @@
+<div class="ticket-checking-container">
+
+    <h2>Soát vé</h2>
+
+    <!-- Nhập ID vé -->
+    <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Nhập ID vé</mat-label>
+        <input matInput [formControl]="ticketIdControl" placeholder="VD: 123">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="checkTicket()">Kiểm tra vé</button>
+
+    <!-- Upload ảnh QR -->
+    <div class="qr-section">
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" hidden #fileInput>
+        <button mat-stroked-button color="accent" (click)="fileInput.click()">Tải ảnh QR lên</button>
+    </div>
+
+    <hr />
+
+
+
+    <!-- Loading spinner -->
+    <div *ngIf="loading" class="loading">
+        <mat-spinner diameter="40"></mat-spinner>
+    </div>
+
+    <!-- Hiển thị vé -->
+    <mat-card *ngIf="ticket" class="ticket-card">
+        <mat-card-title>Thông tin vé</mat-card-title>
+        <mat-card-content>
+
+            <h4>Thông tin tổng quát</h4>
+            <p><strong>ID:</strong> {{ ticket.id }}</p>
+            <p><strong>Trạng thái:</strong> {{ ticket.status }}</p>
+            <p><strong>Giá:</strong> {{ ticket.price | currency:'VND' }}</p>
+            <p><strong>Ngày tạo:</strong> {{ ticket.createdAt | date:'HH:mm:ss dd/MM/yyyy' }}</p>
+
+            <hr />
+
+            <h4>Thông tin ghế ngồi</h4>
+            <p><strong>Số ghế:</strong> {{ ticket.seat?.number }}</p>
+
+            <hr />
+
+            <h4>Thông tin chuyến đi</h4>
+            <p><strong>Thời gian khởi hành:</strong> {{ ticket.schedule?.departureTime | date:'HH:mm:ss dd/MM/yyyy' }}
+            </p>
+            <p><strong>Điểm xuất phát:</strong> {{ ticket.schedule?.route?.departureStation?.name }}</p>
+            <p><strong>Điểm đến:</strong> {{ ticket.schedule?.route?.arrivalStation?.name }}</p>
+
+            <hr />
+
+            <h4>Thông tin xe</h4>
+            <p><strong>Biển số xe:</strong> {{ ticket.schedule?.coach?.licensePlate }}</p>
+
+            <hr />
+
+            <h4>Thông tin người dùng</h4>
+            <p><strong>Họ tên:</strong> {{ ticket.profile?.fullname }}</p>
+            <p><strong>Số điện thoại:</strong> {{ ticket.profile?.phone }}</p>
+        </mat-card-content>
+    </mat-card>
+
+
+</div>

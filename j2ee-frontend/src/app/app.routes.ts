@@ -10,7 +10,6 @@ import { PaymentComponent } from './components/user/payment/payment.component';
 import { TicketLookupComponent } from './components/user/ticket-lookup/ticket-lookup.component';
 import { TripSearchComponent } from './components/user/trip-search/trip-search.component';
 import { OrderHistoryComponent } from './components/user/order-history/order-history.component';
-import { Router } from '@angular/router';
 
 export const routes: Routes = [
   {
@@ -35,6 +34,8 @@ export const routes: Routes = [
     component: OrderHistoryComponent,
     canActivate: [() => !!sessionStorage.getItem('user_data')],
   },
+  // { path: 'order-history/invoice/:id', component: InvoiceDetailFormComponent },
+
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/home' },
 

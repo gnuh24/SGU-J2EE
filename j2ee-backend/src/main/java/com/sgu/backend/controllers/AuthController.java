@@ -8,6 +8,7 @@ import com.sgu.backend.dto.response.auth.RegisterResponseDTO;
 import com.sgu.backend.entities.Account;
 import com.sgu.backend.services.AccountService;
 import com.sgu.backend.services.AuthService;
+import com.sgu.backend.services.OTPService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,6 +29,9 @@ public class AuthController {
 		
 		@Autowired
 		private AccountService accountService;
+		
+		@Autowired
+		private OTPService otpService;
 		
 		@Autowired
 		private ModelMapper modelMapper;
@@ -125,5 +129,18 @@ public class AuthController {
 						"Refresh token thành công",
 						authResponse
 				));
+		}
+		
+		@PostMapping("/send-otp-reset-password")
+		public ResponseEntity<ApiResponse<String>> sendOtpForResetPassword(@RequestHeader("Authorization") String jwtToken ) {
+				
+				String request = otpService.getOTPForResetPassword(jwtToken);
+				return ResponseEntity.ok(
+						new ApiResponse<>(
+								200, // HTTP status code
+								request, // Success message
+								null
+						)
+				);
 		}
 }

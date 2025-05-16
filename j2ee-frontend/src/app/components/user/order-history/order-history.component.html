@@ -14,16 +14,71 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let order of orders">
-                <td>{{ order.id }}</td>
-                <td>{{ order.createdAt | date: 'HH:mm:ss dd/MM/yyyy' }}</td>
-                <td>{{ order.totalAmount | number }} đ</td>
-                <td>
-                    <button class="btn btn-danger btn-sm" (click)="exportPdf(order.id)">
-                        Xuất PDF
-                    </button>
-                </td>
-            </tr>
+            <ng-container *ngFor="let order of orders">
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.createdAt | date: 'HH:mm:ss dd/MM/yyyy' }}</td>
+                    <td>{{ order.totalAmount | number }} đ</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm me-2" (click)="exportPdf(order.id)">
+                            Xuất PDF
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="invoice-details">
+                        <div *ngIf="invoiceDetailsMap[order.id]; else loadingDetails">
+                            <h5>Thông tin hóa đơn</h5>
+                            <p><strong>Họ tên:</strong> {{ invoiceDetailsMap[order.id].profileFullname }}</p>
+                            <p><strong>Điện thoại:</strong> {{ invoiceDetailsMap[order.id].profilePhone }}</p>
+                            <p><strong>Phương thức thanh toán:</strong> {{ invoiceDetailsMap[order.id].paymentMethod }}
+                            </p>
+                            <p><strong>Trạng thái thanh toán:</strong> {{ invoiceDetailsMap[order.id].paymentStatus }}
+                            </p>
+                            <p><strong>Ngày tạo:</strong> {{ invoiceDetailsMap[order.id].createdAt | date: 'HH:mm:ss
+                                dd/MM/yyyy' }}</p>
+                            <p><strong>Tổng tiền:</strong> {{ invoiceDetailsMap[order.id].totalAmount | number }} đ</p>
+
+                            <h6>Chi tiết vé:</h6>
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Mã vé</th>
+                                        <th>Giá</th>
+                                        <th>Trạng thái</th>
+                                        <th>Ngày tạo</th>
+                                        <th>Điểm đi</th>
+                                        <th>Điểm đến</th>
+                                        <th>Hành khách</th>
+                                        <th>Điện thoại</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let ticket of invoiceDetailsMap[order.id].tickets">
+                                        <td>{{ ticket.id }}</td>
+                                        <td>{{ ticket.price | number }} đ</td>
+                                        <td>{{ ticket.status }}</td>
+                                        <td>{{ ticket.createdAt | date: 'HH:mm:ss dd/MM/yyyy' }}</td>
+                                        <td>{{ ticket.departure }}</td>
+                                        <td>{{ ticket.arrival }}</td>
+                                        <td>{{ ticket.fullname }}</td>
+                                        <td>{{ ticket.phone }}</td>
+                                        <td>
+                                            <button class="btn btn-success btn-sm" (click)="exportTicketPdf(ticket.id)">
+                                                QR CODE
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <ng-template #loadingDetails>
+                            <p>Đang tải chi tiết hóa đơn...</p>
+                        </ng-template>
+                    </td>
+                </tr>
+            </ng-container>
         </tbody>
     </table>
 

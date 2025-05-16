@@ -33,6 +33,13 @@ export class TicketService {
         return this.http.get<ApiResponse<any>>(`${this.apiUrl}/${id}`);
     }
 
+    exportTicketQrCode(id: string): Observable<Blob> {
+        const url = `${this.apiUrl}/${id}/qrcode`;
+        // Vì trả về file (image), nên responseType là 'blob'
+        return this.http.get(url, { responseType: 'blob' });
+    }
+
+
     createTicket(ticketData: FormData | any): Observable<ApiResponse<any>> {
         return this.http.post<ApiResponse<any>>(this.apiUrl, ticketData);
     }

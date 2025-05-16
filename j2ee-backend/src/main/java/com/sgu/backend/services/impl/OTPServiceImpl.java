@@ -1,12 +1,18 @@
 package com.sgu.backend.services.impl;
 
+import com.sgu.backend.entities.Account;
+import com.sgu.backend.entities.OTP;
 import com.sgu.backend.security.JwtTokenProvider;
 import com.sgu.backend.services.AccountService;
 import com.sgu.backend.services.EmailService;
 import com.sgu.backend.services.OTPService;
+import com.sgu.backend.utils.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class OTPServiceImpl implements OTPService {
@@ -37,17 +43,23 @@ public class OTPServiceImpl implements OTPService {
 //        return "Khởi tạo mã xác thực thành công !! Hãy kiểm tra email: " + newEmail;
 //    }
 //
-//    @Override
-//    public String getOTPForResetPassword(String jwtToken) {
-//        String oldEmail = jwtTokenProvider.getUsernameWithoutExpired(jwtToken);
-//        Account account = accountService.getAccountByEmail(oldEmail);
-//
-//        OTP otp = createOTP(account, OTP.Category.RESET_PASSWORD, 6);
-//
-//        emailService.sendResetPasswordUserConfirm(oldEmail,  otp);
-//
-//        return "Khởi tạo mã xác thực thành công !! Hãy kiểm tra email: " + oldEmail;
-//    }
+    @Override
+    public String getOTPForResetPassword(String jwtToken) {
+        String oldEmail = jwtTokenProvider.getUsernameWithoutExpired(jwtToken);
+        Account account = accountService.getAccountByEmail(oldEmail);
+
+        OTP otp = createOTP(account);
+
+        emailService.sendResetPasswordUserConfirm(oldEmail,  otp);
+
+        return "Khởi tạo mã xác thực thành công !! Hãy kiểm tra email: " + oldEmail;
+    }
+		
+		@Override
+		public OTP createOTP(Account account) {
+			
+			return null;
+		}
 //
 //    @Override
 //    @Transactional
@@ -69,29 +81,18 @@ public class OTPServiceImpl implements OTPService {
 //        return true;
 //    }
 //
-//    @Override
-//    public OTP createOTP(Account account, OTP.Category category, int length) {
-//        OTP otp = new OTP();
-//        otp.setAccount(account);
-////        otp.setCode(IdGenerator.generateRandomCode(length));
-//        otp.setCategory(category);
-//        otp.setCreateTime(LocalDateTime.now());
-//        otp.setExpirationTime(LocalDateTime.now().plusMinutes(5));
-//        otp = otpRepository.save(otp);
-//        return otp;
-//    }
-//
-//
-//    @Override
-//    public OTP getOTPByCode(String code, OTP.Category category) {
+
+
+    @Override
+    public OTP getOTPByCode(String code) {return null;
 //        return otpRepository.findByCodeAndCategory(code, category)
 //                .orElseThrow(() -> new UsernameNotFoundException("OTP with code " + code + " not found"));
-//    }
-//
-//    @Override
-//    public void deleteOTP(OTP otp, OTP.Category category) {
+    }
+
+    @Override
+    public void deleteOTP(OTP otp) {
 //        otpRepository.deleteByCodeAndCategory(otp.getCode(), category);
-//    }
+    }
 
 
 }

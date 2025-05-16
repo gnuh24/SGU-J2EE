@@ -11,7 +11,7 @@ import { TicketManagementComponent } from '../ticket-management/ticket-managemen
 
 import { RouteManagementComponent } from '../route-management/route-management.component';  // Import CityManagementComponent
 import { ScheduleManagementComponent } from '../schedule-management/schedule-management.component';  // Import CityManagementComponent
-
+import { TicketCheckingComponent } from '../ticket-checking/ticket-checking.component';  // Import CityManagementComponent
 import { DashboardSummaryComponent } from '../statistic-management/statistic-management.component';  // Import CityManagementComponent
 export const adminRoutes: Routes = [
     {
@@ -62,6 +62,7 @@ export const adminRoutes: Routes = [
                 children: [
                     { path: 'invoice', component: InvoiceManagementComponent },
                     { path: 'ticket', component: TicketManagementComponent },
+                    { path: 'ticket-checking', component: TicketCheckingComponent },  // Thêm route cho CityManagementComponent
 
                 ]
             },
