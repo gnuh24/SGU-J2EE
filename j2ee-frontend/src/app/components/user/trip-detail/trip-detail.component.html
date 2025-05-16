@@ -1,24 +1,62 @@
-<div class="container mx-auto px-4 py-8">
-  <!-- Thông tin chuyến xe -->
-  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="trip-info">
-        <h2 class="text-2xl font-bold mb-4">Thông tin chuyến xe</h2>
-        <div class="space-y-2">
-          <p><span class="font-semibold">Tuyến xe:</span> {{trip?.fromCity}} - {{trip?.toCity}}</p>
-          <p><span class="font-semibold">Thời gian:</span> {{trip?.departureTime}} - {{trip?.arrivalTime}}</p>
-          <p><span class="font-semibold">Nhà xe:</span> {{trip?.companyName}}</p>
-          <p><span class="font-semibold">Loại xe:</span> {{trip?.busType}}</p>
-          <p><span class="font-semibold">Giá vé:</span> {{trip?.price | currency:'VND'}}</p>
-        </div>
+<div *ngIf="loading" class="text-center py-8">Đang tải chi tiết chuyến xe...</div>
+<div *ngIf="error" class="text-center text-red-500 py-8">{{ error }}</div>
+
+<div *ngIf="tripDetail && !loading && !error"
+  class="trip-detail bg-white rounded-xl shadow-md p-8 max-w-3xl mx-auto mt-8">
+  <h2 class="text-2xl font-bold mb-6 text-orange-600">Chi tiết chuyến xe</h2>
+  <div class="grid grid-cols-2 gap-6 mb-6">
+    <div>
+      <div class="font-semibold text-gray-700 mb-1">Tuyến xe</div>
+      <div class="text-lg font-bold text-orange-600">
+        {{ tripDetail.route?.departureStation?.name }}
+        <span class="mx-2 text-orange-600">→</span>
+        {{ tripDetail.route?.arrivalStation?.name }}
       </div>
-      
-      <div class="trip-map">
-        <h3 class="text-xl font-semibold mb-4">Lộ trình</h3>
-        <!-- TODO: Thêm bản đồ hoặc sơ đồ lộ trình -->
+    </div>
+    <div>
+      <div class="font-semibold text-gray-700 mb-1">Thời gian khởi hành</div>
+      <div class="text-lg text-gray-800">
+        {{ tripDetail.departureTime | date:'dd/MM/yyyy HH:mm' }}
+      </div>
+    </div>
+    <div>
+      <div class="font-semibold text-gray-700 mb-1">Quãng đường</div>
+      <div class="text-lg text-gray-800">
+        {{ tripDetail.route?.distance }} km
+      </div>
+    </div>
+    <div>
+      <div class="font-semibold text-gray-700 mb-1">Thời gian hành trình</div>
+      <div class="text-lg text-gray-800">
+        {{ (tripDetail.route?.duration / 60) | number:'1.0-0' }} giờ
+      </div>
+    </div>
+    <div>
+      <div class="font-semibold text-gray-700 mb-1">Giá vé</div>
+      <div class="text-lg text-gray-800">
+        {{ tripDetail.route?.price | number }} đ
+      </div>
+    </div>
+    <div>
+      <div class="font-semibold text-gray-700 mb-1">Bến đi</div>
+      <div class="text-lg text-gray-800">
+        {{ tripDetail.route?.departureStation?.name }}<br>
+        <span class="text-sm text-gray-500">{{ tripDetail.route?.departureStation?.address }}</span>
+      </div>
+    </div>
+    <div>
+      <div class="font-semibold text-gray-700 mb-1">Bến đến</div>
+      <div class="text-lg text-gray-800">
+        {{ tripDetail.route?.arrivalStation?.name }}<br>
+        <span class="text-sm text-gray-500">{{ tripDetail.route?.arrivalStation?.address }}</span>
       </div>
     </div>
   </div>
+  <!-- Có thể bổ sung thêm các thông tin khác như loại xe, số ghế, ... nếu cần -->
+</div>
+
+<div class="container mx-auto px-4 py-8">
+
 
   <!-- Tab navigation -->
   <div class="tab-list mb-6">
@@ -40,23 +78,29 @@
           <!-- Sơ đồ ghế 28 ghế, 4 cột, 7 hàng -->
           <div class="grid grid-cols-4 gap-2 mb-4">
             <div *ngFor="let seat of [].constructor(28); let i = index"
-                 [class]="'seat-box ' + (isSeatBooked(i+1) ? 'booked' : isSeatSelected(i+1) ? 'selected' : '')"
-                 (click)="!isSeatBooked(i+1) && toggleSeat(i+1)">
+              [class]="'seat-box ' + (isSeatBooked(i+1) ? 'booked' : isSeatSelected(i+1) ? 'selected' : '')"
+              (click)="!isSeatBooked(i+1) && toggleSeat(i+1)">
               {{ (i+1) | number:'2.0' }}
             </div>
           </div>
           <!-- Chú thích -->
           <div class="flex gap-8 mb-6 mt-2 items-center">
             <div class="flex items-center gap-2">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#d1eaff" stroke="#60a5fa" stroke-width="2"/></svg>
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <rect width="28" height="28" rx="6" fill="#d1eaff" stroke="#60a5fa" stroke-width="2" />
+              </svg>
               <span>Còn trống</span>
             </div>
             <div class="flex items-center gap-2">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#ffeaea" stroke="#ffb4b4" stroke-width="2"/></svg>
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <rect width="28" height="28" rx="6" fill="#ffeaea" stroke="#ffb4b4" stroke-width="2" />
+              </svg>
               <span>Đang chọn</span>
             </div>
             <div class="flex items-center gap-2">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/></svg>
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <rect width="28" height="28" rx="6" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2" />
+              </svg>
               <span>Đã bán</span>
             </div>
           </div>
@@ -83,34 +127,16 @@
         <div class="mt-8">
           <div class="text-center text-orange-600 font-semibold mb-2">ĐIỀU KHOẢN & LƯU Ý</div>
           <div class="text-sm text-gray-700">
-            <p>(*) Quý khách vui lòng có mặt tại bến xuất phát của xe trước ít nhất 30 phút giờ xe khởi hành, mang theo thông báo đã thanh toán vé thành công có chứa mã vé được gửi từ hệ thống FUTA BUS LINES. Vui lòng liên hệ Trung tâm tổng đài <span class="text-red-500 font-bold">1900 6067</span> để được hỗ trợ.</p>
-            <p class="mt-2">(*) Nếu quý khách có nhu cầu trung chuyển, vui lòng liên hệ Tổng đài trung chuyển <span class="text-red-500 font-bold">1900 6918</span> trước khi đặt vé. Chúng tôi không đón/trung chuyển tại những điểm xe trung chuyển không thể tới được.</p>
+            <p>(*) Quý khách vui lòng có mặt tại bến xuất phát của xe trước ít nhất 30 phút giờ xe khởi hành, mang theo
+              thông báo đã thanh toán vé thành công có chứa mã vé được gửi từ hệ thống FUTA BUS LINES. Vui lòng liên hệ
+              Trung tâm tổng đài <span class="text-red-500 font-bold">1900 6067</span> để được hỗ trợ.</p>
+            <p class="mt-2">(*) Nếu quý khách có nhu cầu trung chuyển, vui lòng liên hệ Tổng đài trung chuyển <span
+                class="text-red-500 font-bold">1900 6918</span> trước khi đặt vé. Chúng tôi không đón/trung chuyển tại
+              những điểm xe trung chuyển không thể tới được.</p>
           </div>
         </div>
       </div>
-      <!-- Cột phải: Thông tin lượt đi, chi tiết giá -->
-      <div class="w-full md:w-96 flex flex-col gap-6">
-        <div class="bg-white rounded-lg shadow-md p-4">
-          <div class="font-bold text-lg mb-2">Thông tin lượt đi</div>
-          <div class="text-sm">
-            <div class="flex justify-between"><span>Tuyến xe</span> <span class="font-semibold">{{trip?.fromCity}} - {{trip?.toCity}}</span></div>
-            <div class="flex justify-between"><span>Thời gian xuất bến</span> <span class="font-semibold">{{trip?.departureTime}} 13/05/2025</span></div>
-            <div class="flex justify-between"><span>Số lượng ghế</span> <span class="font-semibold">{{selectedSeats.length}} Ghế</span></div>
-            <div class="flex justify-between"><span>Số ghế</span> <span class="font-semibold">{{selectedSeats.join(', ')}}</span></div>
-            <div class="flex justify-between"><span>Điểm trả khách</span> <span class="text-green-600">-</span></div>
-            <div class="flex justify-between font-bold mt-2"><span>Tổng tiền lượt đi</span> <span class="text-green-600">{{totalPrice | currency:'VND'}}</span></div>
-          </div>
-        </div>
-        <div class="bg-white rounded-lg shadow-md p-4">
-          <div class="flex items-center gap-2 font-bold text-lg mb-2">Chi tiết giá <span class="text-orange-500 cursor-pointer" title="Giá đã bao gồm thuế phí">&#9432;</span></div>
-          <div class="text-sm">
-            <div class="flex justify-between"><span>Giá vé lượt đi</span> <span>{{(selectedSeats.length * (trip?.price || 0)) | currency:'VND'}}</span></div>
-            <div class="flex justify-between"><span>Phí thanh toán</span> <span>0đ</span></div>
-            <div class="flex justify-between font-bold mt-2"><span>Tổng tiền</span> <span class="text-orange-600">{{totalPrice | currency:'VND'}}</span></div>
-          </div>
-        </div>
-        <button (click)="proceedToPayment()" [disabled]="selectedSeats.length === 0" class="bg-green-500 text-white py-3 px-6 rounded-lg hover:bg-green-600 transition duration-200 disabled:bg-gray-400 w-full font-bold mt-2">Tiến hành thanh toán</button>
-      </div>
+
     </div>
   </div>
 
@@ -129,7 +155,8 @@
         </div>
       </div>
       <div class="text-gray-600 text-sm mt-4">
-        <b>Lưu ý</b>: Thời gian các mốc lịch trình là thời gian dự kiến. Lịch trình này có thể thay đổi tùy vào tình hình thực tế xuất bến sớm hay trễ.
+        <b>Lưu ý</b>: Thời gian các mốc lịch trình là thời gian dự kiến. Lịch trình này có thể thay đổi tùy vào tình
+        hình thực tế xuất bến sớm hay trễ.
       </div>
     </div>
   </div>
@@ -138,10 +165,12 @@
     <div class="transfer-info">
       <b>Đón/ trả tận nơi:</b><br />
       - Thời gian nhận khách: <i>Trước 4 tiếng.</i><br />
-      - Thời gian xe đón: <i>Chuẩn bị trước 2-3 tiếng, do mật độ giao thông trong thành phố và sẽ kết hợp đón nhiều điểm khác nhau nên thời gian đón cụ thể tài xế sẽ liên hệ hẹn giờ.</i><br />
+      - Thời gian xe đón: <i>Chuẩn bị trước 2-3 tiếng, do mật độ giao thông trong thành phố và sẽ kết hợp đón nhiều điểm
+        khác nhau nên thời gian đón cụ thể tài xế sẽ liên hệ hẹn giờ.</i><br />
       - Hẻm nhỏ xe không quay đầu được: <i>Xe trung chuyển sẽ đón Khách đầu hẻm/ đầu đường.</i><br />
       - Khu vực có biển cấm dừng đỗ xe không đón được: <i>Xe trung chuyển sẽ đón tại vị trí gần nhất có thể.</i><br />
-      - Hành lý: <i>Hành lý nhỏ gọn dưới 20 kg, không vận chuyển kèm động vật, thú cưng, không mang đồ có mùi, đồ chảy nước trên xe.</i>
+      - Hành lý: <i>Hành lý nhỏ gọn dưới 20 kg, không vận chuyển kèm động vật, thú cưng, không mang đồ có mùi, đồ chảy
+        nước trên xe.</i>
     </div>
   </div>
 
@@ -150,13 +179,18 @@
       <b>Chính sách huỷ vé</b>
       <ul>
         <li>Chỉ được chuyển đổi vé 1 lần duy nhất</li>
-        <li>Chi phí huỷ vé từ 10% – 30% giá vé tuỳ thuộc thời gian huỷ vé so với giờ khởi hành ghi trên vé và số lượng vé cá nhân/tập thể áp dụng theo các quy định hiện hành.</li>
-        <li>Quý khách khi có nhu cầu muốn thay đổi hoặc huỷ vé đã thanh toán, cần liên hệ với Trung tâm tổng đài 1900 6067 hoặc quầy vé chậm nhất trước 24h so với giờ xe khởi hành được ghi trên vé, trên email hoặc tin nhắn để được hướng dẫn thêm.</li>
+        <li>Chi phí huỷ vé từ 10% – 30% giá vé tuỳ thuộc thời gian huỷ vé so với giờ khởi hành ghi trên vé và số lượng
+          vé cá nhân/tập thể áp dụng theo các quy định hiện hành.</li>
+        <li>Quý khách khi có nhu cầu muốn thay đổi hoặc huỷ vé đã thanh toán, cần liên hệ với Trung tâm tổng đài 1900
+          6067 hoặc quầy vé chậm nhất trước 24h so với giờ xe khởi hành được ghi trên vé, trên email hoặc tin nhắn để
+          được hướng dẫn thêm.</li>
       </ul>
       <b>Yêu cầu khi lên xe</b>
       <ul>
-        <li>Có mặt tại Văn phòng/Bến xe (Địa điểm xe đón trực tiếp) trước 30 phút để làm thủ tục lên xe (đối với ngày lễ tết cần ra trước 60 phút).</li>
-        <li>Xuất trình thông tin vé được gửi qua SMS/Email/Futa App hoặc liên hệ quầy vé để nhận thông tin vé trước khi lên xe.</li>
+        <li>Có mặt tại Văn phòng/Bến xe (Địa điểm xe đón trực tiếp) trước 30 phút để làm thủ tục lên xe (đối với ngày lễ
+          tết cần ra trước 60 phút).</li>
+        <li>Xuất trình thông tin vé được gửi qua SMS/Email/Futa App hoặc liên hệ quầy vé để nhận thông tin vé trước khi
+          lên xe.</li>
         <li>Không mang thức ăn/đồ uống có mùi lên xe.</li>
       </ul>
     </div>
@@ -168,16 +202,28 @@
   .seat-box {
     @apply w-12 h-12 flex items-center justify-center rounded-lg border border-gray-300 cursor-pointer bg-gray-100 text-base font-semibold transition;
   }
+
   .seat-box.selected {
     @apply bg-blue-400 text-white border-blue-600;
   }
+
   .seat-box.booked {
     @apply bg-gray-500 text-white border-gray-700 cursor-not-allowed;
   }
+
   .legend-box {
     @apply w-6 h-6 rounded border border-gray-400 inline-block;
   }
-  .legend-box.bg-blue-400 { background-color: #60a5fa; }
-  .legend-box.bg-gray-300 { background-color: #d1d5db; }
-  .legend-box.bg-gray-500 { background-color: #6b7280; }
-</style> 
+
+  .legend-box.bg-blue-400 {
+    background-color: #60a5fa;
+  }
+
+  .legend-box.bg-gray-300 {
+    background-color: #d1d5db;
+  }
+
+  .legend-box.bg-gray-500 {
+    background-color: #6b7280;
+  }
+</style>

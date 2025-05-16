@@ -18,38 +18,38 @@ import java.util.List;
 @NoArgsConstructor
 public class Schedule {
 
-    @Id
-    private String id = IdGenerator.generateId(); // Ví dụ: SC001
+  @Id
+  private String id = IdGenerator.generateId(); // Ví dụ: SC001
 
-    @ManyToOne
-    @JoinColumn(name = "routeId", nullable = false)
-    private Route route;
-		
-		@ManyToOne
-		@JoinColumn(name = "coachId", nullable = false)
-		private Coach coach;
-		
-		@OneToMany(mappedBy = "schedule")
-		private List<Ticket> tickets;
+  @ManyToOne
+  @JoinColumn(name = "routeId", nullable = false)
+  private Route route;
 
-    @Column(nullable = false)
-    private LocalDateTime departureTime;
+  @ManyToOne
+  @JoinColumn(name = "coachId", nullable = false)
+  private Coach coach;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Status status;
+  @OneToMany(mappedBy = "schedule")
+  private List<Ticket> tickets;
 
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+  @Column(nullable = false)
+  private LocalDateTime departureTime;
 
-    @UpdateTimestamp
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private Status status;
 
-    public enum Status {
-        ACTIVE,
-        INACTIVE,
-			CANCELLED
-    }
+  @CreationTimestamp
+  @Column(nullable = false, updatable = false)
+  private LocalDateTime createdAt;
+
+  @UpdateTimestamp
+  @Column(nullable = false)
+  private LocalDateTime updatedAt;
+
+  public enum Status {
+    ACTIVE,
+    INACTIVE,
+    CANCELLED
+  }
 }

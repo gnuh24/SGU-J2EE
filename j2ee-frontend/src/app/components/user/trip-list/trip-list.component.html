@@ -1,32 +1,47 @@
-<div class="space-y-4">
-    <div *ngFor="let trip of trips" class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-200">
-        <div class="grid grid-cols-1 md:grid-cols-6 gap-4 items-center">
-            <div class="font-bold text-orange-600">
-                {{ trip.route.departureStation.city.name }}
-            </div>
-            <div class="text-orange-600 text-xl text-center">
-                <span>&rarr;</span>
-            </div>
-            <div class="font-bold">
-                {{ trip.route.arrivalStation.city.name }}
-            </div>
-            <div class="text-center">
-                <span>{{ trip.route.distance }} km</span>
-            </div>
-            <div class="text-center">
-                <span>{{ (trip.route.duration / 60) | number:'1.0-0' }} giờ</span>
-            </div>
-            <div class="text-center">
-                <span>{{ trip.route.price | number }} đ</span>
-            </div>
-            <div class="text-center">
-                <span>{{ trip.departureTime | date:'dd/MM/yyyy HH:mm' }}</span>
+<div class="trip-list">
+    <div class="trip-list__header grid grid-cols-6 font-bold py-2 px-4 border-b">
+        <div>Tuyến xe</div>
+        <div>Thời gian</div>
+        <div>Quãng đường</div>
+        <div>Thời gian hành trình</div>
+        <div>Giá vé</div>
+        <div></div>
+    </div>
+    <ng-container *ngIf="trips && trips.length > 0; else emptyState">
+        <div *ngFor="let trip of trips"
+            class="trip-list__item grid grid-cols-6 items-center py-6 px-4 border-b bg-white rounded-xl mb-4">
+            <div>
+                <div class="text-orange-600 font-bold text-lg">
+                    {{ trip.route?.departureStation?.city?.name }}
+                </div>
+                <div class="text-orange-600 text-xl leading-none">&rarr;</div>
+                <div class="font-bold text-gray-800 text-lg">
+                    {{ trip.route?.arrivalStation?.city?.name }}
+                </div>
             </div>
             <div class="text-center">
-                <button (click)="onViewDetail(trip.id)" class="bg-orange-100 text-orange-600 px-4 py-2 rounded-full">
+                <span class="text-gray-500 mt-2">
+                    {{ trip.departureTime ? (trip.departureTime | date:'dd/MM/yyyy HH:mm') : '' }}
+                </span>
+            </div>
+            <div class="text-center">
+                {{ trip.route?.distance != null ? (trip.route.distance + ' km') : '' }}
+            </div>
+            <div class="text-center">
+                {{ trip.route?.duration != null ? ((trip.route.duration / 60) | number:'1.0-0') + ' giờ' : '' }}
+            </div>
+            <div class="text-center">
+                {{ trip.route?.price != null ? (trip.route.price | number) + ' đ' : '' }}
+            </div>
+            <div class="flex justify-end">
+                <button (click)="onViewDetail(trip.id)"
+                    class="bg-orange-100 text-orange-600 px-8 py-3 rounded-full font-semibold text-lg">
                     Xem chi tiết
                 </button>
             </div>
         </div>
-    </div>
+    </ng-container>
+    <ng-template #emptyState>
+        <div class="trip-list__empty text-center py-8 text-gray-500">Không có chuyến xe nào.</div>
+    </ng-template>
 </div>

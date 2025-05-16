@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CityService } from '../../../services/city.service';
 import { ApiResponse } from '../../../models/apiresponse';
@@ -27,7 +27,7 @@ export class TripSearchComponent implements OnInit {
   loading = false;
   cities: City[] = [];
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
     this.searchForm = this.fb.group({
       fromCity: [''],
       toCity: [''],
@@ -74,23 +74,42 @@ export class TripSearchComponent implements OnInit {
     this.error = null;
     this.trips = [];
 
-    const { departureDate } = this.searchForm.value;
-    console.log('Form value:', { departureDate });
+    const { fromCity, toCity, departureDate } = this.searchForm.value;
+    console.log('Form value:', { fromCity, toCity, departureDate });
 
-    // Chỉ truyền mỗi departureTime
+    // Build URL with all required parameters
     let url = 'http://localhost:8080/api/schedules/public';
+    const params = new URLSearchParams();
+
+    // Add pagination params
+    params.append('page', '0');
+    params.append('size', '5');
+
+    // Add filter params
+    if (fromCity) {
+      params.append('startCityId', fromCity);
+    }
+    if (toCity) {
+      params.append('endCityId', toCity); 
+    }
     if (departureDate) {
       const formattedDate = departureDate.length > 10 ? departureDate.substring(0, 10) : departureDate;
-      url += `?departureTime=${encodeURIComponent(formattedDate)}`;
+      params.append('departureTime', formattedDate);
     }
+
+    // Append params to URL
+    const queryString = params.toString();
+    if (queryString) {
+      url += `?${queryString}`;
+    }
+
     console.log('Making API call to:', url);
 
     this.http.get<any>(url).subscribe({
       next: (res) => {
         console.log('API response:', res);
-        // Ensure we're working with an array
-        if (res && res.data) {
-          this.trips = Array.isArray(res.data) ? res.data : [res.data];
+        if (res && res.data && Array.isArray(res.data.content)) {
+          this.trips = res.data.content;
         } else {
           this.trips = [];
         }
@@ -110,5 +129,6 @@ export class TripSearchComponent implements OnInit {
 
   viewTripDetail(tripId: string) {
     console.log('Xem chi tiết chuyến:', tripId);
+    this.router.navigate(['/trip-detail', tripId]);
   }
 }

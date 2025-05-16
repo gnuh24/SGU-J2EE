@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-trip-detail',
@@ -11,8 +12,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class TripDetailComponent implements OnInit {
-  tripId: string;
-  trip: any; // Sẽ được thay thế bằng interface Trip
+  tripId: string = '';
+  tripDetail: any = null;
+  loading = false;
+  error: string | null = null;
   selectedSeats: number[] = [];
   totalPrice: number = 0;
   bookedSeats: number[] = [];
@@ -20,7 +23,8 @@ export class TripDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {
     this.tripId = this.route.snapshot.params['id'];
   }
@@ -30,18 +34,36 @@ export class TripDetailComponent implements OnInit {
   }
 
   loadTripDetail(): void {
-    this.trip = {
-      id: 1,
-      fromCity: 'An Hữu (Tiền Giang)',
-      toCity: 'TP.Hồ Chí Minh',
-      busType: 'Limousine',
-      price: 110000,
-      availableSeats: 22,
-      companyName: 'FUTA',
-      departureTime: '10:00',
-      arrivalTime: '12:00'
-    };
-    this.bookedSeats = [3, 7, 12];
+    this.loading = true;
+    this.error = null;
+    this.http.get<any>(`http://localhost:8080/api/schedules/${this.tripId}`).subscribe({
+      next: (res) => {
+        console.log('API response:', res);
+        this.tripDetail = res.data;
+        this.loading = false;
+        this.loadSeatInformation();
+      },
+      error: (err) => {
+        this.error = 'Không thể tải chi tiết chuyến xe.';
+        this.loading = false;
+      }
+    });
+  }
+
+  loadSeatInformation(): void {
+    this.http.get<any>(`http://localhost:8080/api/seats/schedule/${this.tripId}`).subscribe({
+      next: (res) => {
+        console.log('Seat information:', res);
+        if (res.data) {
+          this.bookedSeats = res.data
+            .filter((seat: any) => seat.status === 'BOOKED')
+            .map((seat: any) => seat.number);
+        }
+      },
+      error: (err) => {
+        console.error('Error loading seat information:', err);
+      }
+    });
   }
 
   isSeatSelected(seat: number): boolean {
@@ -64,7 +86,7 @@ export class TripDetailComponent implements OnInit {
   }
 
   calculateTotal(): void {
-    this.totalPrice = this.selectedSeats.length * (this.trip?.price || 0);
+    this.totalPrice = this.selectedSeats.length * (this.tripDetail?.price || 0);
   }
 
   proceedToPayment(): void {
@@ -77,5 +99,9 @@ export class TripDetailComponent implements OnInit {
         }
       });
     }
+  }
+
+  goBack(): void {
+    this.router.navigate(['/search']);
   }
 } 
