@@ -1,11 +1,15 @@
 package com.sgu.backend.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sgu.backend.apiresponse.ApiResponse;
+import com.sgu.backend.dto.request.account.AccountUpdateFormForResetPassword;
 import com.sgu.backend.dto.request.auth.UserRegistrationForm;
 import com.sgu.backend.dto.request.auth.LoginRequestForm;
+import com.sgu.backend.dto.response.account.AccountResponseForAdmin;
 import com.sgu.backend.dto.response.auth.AuthResponseDTO;
 import com.sgu.backend.dto.response.auth.RegisterResponseDTO;
 import com.sgu.backend.entities.Account;
+import com.sgu.backend.entities.OTP;
 import com.sgu.backend.services.AccountService;
 import com.sgu.backend.services.AuthService;
 import com.sgu.backend.services.OTPService;
@@ -35,6 +39,7 @@ public class AuthController {
 		
 		@Autowired
 		private ModelMapper modelMapper;
+		
 		
 		/**
 		 * 📌 Kiểm tra email đã tồn tại chưa
@@ -131,10 +136,12 @@ public class AuthController {
 				));
 		}
 		
-		@PostMapping("/send-otp-reset-password")
-		public ResponseEntity<ApiResponse<String>> sendOtpForResetPassword(@RequestHeader("Authorization") String jwtToken ) {
+		@PostMapping("/send-otp-reset-password/{id}")
+		public ResponseEntity<ApiResponse<String>> sendOtpForResetPassword(@PathVariable String id ) throws JsonProcessingException {
 				
-				String request = otpService.getOTPForResetPassword(jwtToken);
+				String request = otpService.getOTPForResetPassword(id);
+				
+				
 				return ResponseEntity.ok(
 						new ApiResponse<>(
 								200, // HTTP status code
@@ -142,5 +149,17 @@ public class AuthController {
 								null
 						)
 				);
+		}
+		
+		@PatchMapping("/reset-password")
+		public ResponseEntity<ApiResponse<AccountResponseForAdmin>> resetPassword(
+				@RequestBody @Valid AccountUpdateFormForResetPassword form) {
+				
+				OTP otp = otpService.getOTPByCode(form.getOtp());
+				System.err.println(otp);
+				
+				Account updatedAccount = accountService.resetPasswordOfAccount(otp, form);
+				AccountResponseForAdmin result = modelMapper.map(updatedAccount, AccountResponseForAdmin.class);
+				return ResponseEntity.ok(new ApiResponse<>(200, "Password updated successfully", result));
 		}
 }

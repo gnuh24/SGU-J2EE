@@ -5,6 +5,7 @@ import com.sgu.backend.dto.request.account.*;
 import com.sgu.backend.dto.request.auth.UserRegistrationForm;
 import com.sgu.backend.dto.request.profile.ProfileCreateForm;
 import com.sgu.backend.entities.Account;
+import com.sgu.backend.entities.OTP;
 import com.sgu.backend.entities.Profile;
 import com.sgu.backend.redis.RedisContants;
 import com.sgu.backend.redis.RedisService;
@@ -139,93 +140,14 @@ public class AccountServiceImpl implements AccountService {
         account.setRole(role);
         return accountRepository.save(account);
     }
-
-
-//    @Override
-//    public Account updateAccount(Integer accountId, AccountUpdateForm accountUpdateForm) {
-//        Account existingAccount = getAccountById(accountId);
-//
-//        if (accountUpdateForm.getFullname() != null) {
-//            existingAccount.setFullname(accountUpdateForm.getFullname());
-//        }
-//        if (accountUpdateForm.getBirthday() != null) {
-//            existingAccount.setBirthday(accountUpdateForm.getBirthday());
-//        }
-//        if (accountUpdateForm.getGender() != null) {
-//            existingAccount.setGender(accountUpdateForm.getGender());
-//        }
-//        if (accountUpdateForm.getAvatar() != null) {
-//            existingAccount.setAvatar(accountUpdateForm.getAvatar());
-//        }
-//
-//        // Save updated account
-//        return accountRepository.save(existingAccount);
-//    }
-//
-//
-//    @Override
-//    public Account updatePasswordOfAccount(String jwtToken, AccountUpdateFormForPassword form) throws RuntimeException {
-//
-//        String email = jwtTokenProvider.getUsernameWithoutExpired(jwtToken);
-//        Account account = getAccountByEmail(email);
-//
-//        if (!passwordEncoder.matches(form.getOldPassword(), account.getPassword())) {
-//            throw new RuntimeException("Mật khẩu cũ không đúng !!");
-//        }
-//
-//        String newPassword = passwordEncoder.encode(form.getNewPassword());
-//        account.setPassword(newPassword);
-//        return accountRepository.save(account);
-//    }
-//
-//    @Override
-//    public Account updateEmailOfAccount(String jwtToken, AccountUpdateFormForEmail form) throws RuntimeException {
-//
-//        String otpCode = form.getOtp();
-//
-//        OTP otp = otpService.getOTPByCode(otpCode, OTP.Category.UPDATE_EMAIL);
-//
-//        String oldEmail = jwtTokenProvider.getUsernameWithoutExpired(jwtToken);
-//
-//        if (!oldEmail.equals(otp.getAccount().getEmail())) {
-//            throw new RuntimeException("Token bạn gửi không có chức năng thay đổi email của tài khoản này !!");
-//        }
-//
-//        if (otp.getExpirationTime().isAfter(LocalDateTime.now())) {
-//            Account account = getAccountByEmail(oldEmail);
-//            account.setEmail(form.getNewEmail());
-//            accountRepository.save(account);
-//            return account;
-//        } else {
-//            // remove Registration User Token
-//            otpService.deleteOTP(otp, OTP.Category.UPDATE_EMAIL);
-//            throw new TokenExpiredException("OTP kích hoạt tài khoản của bạn đã hết hạn !!");
-//
-//        }
-//
-//    }
-//
-//    @Override
-//    public Account resetPasswordOfAccount(String jwtToken, AccountUpdateFormForResetPassword form) throws RuntimeException {
-//        String email = jwtTokenProvider.getUsernameWithoutExpired(jwtToken);
-//        Account account = getAccountByEmail(email);
-//
-//        OTP otp = otpService.getOTPByCode(form.getOtp(), OTP.Category.RESET_PASSWORD);
-//        if (!email.equals(otp.getAccount().getEmail())){
-//            throw new RuntimeException("Token bạn gửi không có chức năng thay đổi email của tài khoản này !!");
-//        }
-//
-//
-//        if (otp.getExpirationTime().isAfter(LocalDateTime.now())) {
-//            String newPassword = passwordEncoder.encode(form.getNewPassword());
-//            account.setPassword(newPassword);
-//            return accountRepository.save(account);
-//        } else {
-//            // remove Registration User Token
-//            otpService.deleteOTP(otp, OTP.Category.RESET_PASSWORD);
-//            throw new TokenExpiredException("OTP kích hoạt tài khoản của bạn đã hết hạn !!");
-//
-//        }
-//    }
+	
+    @Override
+    public Account resetPasswordOfAccount(OTP otp, AccountUpdateFormForResetPassword form) {
+        	Account account = getAccountById(otp.getAccountId());
+            String newPassword = passwordEncoder.encode(form.getNewPassword());
+            account.setPassword(newPassword);
+            return accountRepository.save(account);
+   
+    }
 }
 

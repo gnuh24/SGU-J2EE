@@ -142,49 +142,42 @@ public class InvoiceController {
 		}
 		
 		@GetMapping("/vnpay-payment-return")
-		public InvoiceResponseDTO paymentCompleted(HttpServletRequest request, Model model) {
+		public String paymentCompleted(HttpServletRequest request, Model model) {
 				int paymentStatus = vnpayService.orderReturn(request);
 				
-				// 🔹 In tất cả tham số VNPAY gửi về
+				// In tất cả tham số VNPAY gửi về
 				System.err.println("===== Thông tin VNPAY trả về =====");
 				request.getParameterMap().forEach((key, value) ->
 						System.err.println(key + " = " + String.join(", ", value))
 				);
 				
-				// 🔹 Lấy thông tin quan trọng
-				String orderId = request.getParameter("vnp_OrderInfo"); // ✅ ID đơn hàng chính xác
-				String transactionId = request.getParameter("vnp_TransactionNo");  // Mã giao dịch
-				String paymentTime = request.getParameter("vnp_PayDate");          // Thời gian thanh toán
-				String responseCode = request.getParameter("vnp_ResponseCode");    // Mã phản hồi
-				String transactionStatus = request.getParameter("vnp_TransactionStatus"); // Trạng thái giao dịch
+				String orderId = request.getParameter("vnp_OrderInfo");
+				String transactionId = request.getParameter("vnp_TransactionNo");
+				String paymentTime = request.getParameter("vnp_PayDate");
+				String responseCode = request.getParameter("vnp_ResponseCode");
+				String transactionStatus = request.getParameter("vnp_TransactionStatus");
 				
-				// 🔹 Xác định nguyên nhân trạng thái giao dịch
 				String paymentNote = vnpayService.getPaymentNote(responseCode, transactionStatus);
-				
-				// 🔹 Xác định trạng thái thanh toán
 				Invoice.PaymentStatus paymentStatusEnum = vnpayService.getPaymentStatus(responseCode, transactionStatus);
-//				InvoiceStatus.Status orderStatus = vnpayService.getInvoiceStatus(paymentStatusEnum);
 				
 				System.out.println("🔹 Transaction ID: " + transactionId);
 				System.out.println("🔹 Payment Note: " + paymentNote);
 				System.out.println("🔹 Payment Time: " + paymentTime);
 				System.out.println("🔹 Payment Status: " + paymentStatusEnum);
 				
-				// 🔹 Gán giá trị vào `InvoiceVNPAYResponseUpdateForm`
 				InvoiceUpdateForm orderVNPAYResponseUpdateForm = new InvoiceUpdateForm();
 				orderVNPAYResponseUpdateForm.setTransactionId(transactionId);
-				orderVNPAYResponseUpdateForm.setPaymentNote(paymentNote); // Ghi lại lý do trạng thái thanh toán
+				orderVNPAYResponseUpdateForm.setPaymentNote(paymentNote);
 				orderVNPAYResponseUpdateForm.setPaymentTime(paymentTime);
-				orderVNPAYResponseUpdateForm.setPaymentStatus(paymentStatusEnum); // Cập nhật trạng thái giao dịch
+				orderVNPAYResponseUpdateForm.setPaymentStatus(paymentStatusEnum);
 				
-				// 🔹 Kiểm tra thông tin đã gán đúng chưa
 				System.out.println("✅ InvoiceVNPAYResponseUpdateForm: " + orderVNPAYResponseUpdateForm);
 				Invoice order = invoiceService.update(orderId, orderVNPAYResponseUpdateForm);
-				InvoiceResponseDTO dto = modelMapper.map(order, InvoiceResponseDTO.class);
-				String url_FE = "http://localhost:4200/home";
-				dto.setUrl(url_FE);
-				return dto;
+				
+				// Redirect về trang home (frontend)
+				return "redirect:http://localhost:4200/home";
 		}
+
 		
 //		/**
 //		 * Update an existing invoice by its ID.

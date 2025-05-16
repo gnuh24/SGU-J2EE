@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 //@Entity
 public class OTP {
 
-    private Integer id;
+    private String id;
 
     private LocalDateTime createTime;
 
@@ -19,7 +19,7 @@ public class OTP {
 
     private LocalDateTime expirationTime;
 
-    private Account account;
+    private String accountId;
 
 }
 

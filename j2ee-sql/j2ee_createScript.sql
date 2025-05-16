@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `Profile`(
 INSERT INTO `Profile` (`id`, `Email`, `Fullname`, `Phone`) 
 VALUES 
     ("P001", "admin@gmail.com",             "David Johnson",       "0123456789"),
-    ("P002", "user1@gmail.com",   "Sophia Martinez",     "0987654321"),
+    ("P002", "devilskipper@gmail.com",   "Sophia Martinez",     "0987654321"),
     ("P003", "user2@gmail.com",  "Robert Anderson",     "0912345678"),
     ("P004", "user3@gmail.com",                "Emily Thompson",      "0923456789"),
     ("P005", NULL,                "Emily Thompson",      "0938240359");
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `Account`(
 INSERT INTO `Account` (`id`, `Password`, `Email`, `CreatedAt`, `Status`, `Role`, `ProfileId`) 
 VALUES 
     ("P001", "$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi", "admin@gmail.com", "2024-03-01 08:30:00", "ACTIVE", "ADMIN", "P001"),
-    ("P002", "$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi", "user1@gmail.com", "2024-03-02 09:15:00", "ACTIVE", "USER", "P002"),
+    ("P002", "$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi", "devilskipper@gmail.com", "2024-03-02 09:15:00", "ACTIVE", "USER", "P002"),
     ("P003", "$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi", "user2@gmail.com", "2024-03-03 10:45:00", "INACTIVE", "USER", "P003"),
     ("P004", "$2a$10$W2neF9.6Agi6kAKVq8q3fec5dHW8KUA.b0VSIGdIZyUravfLpyIFi", "user3@gmail.com", "2024-03-04 14:00:00", "ACTIVE", "USER", "P004");
     

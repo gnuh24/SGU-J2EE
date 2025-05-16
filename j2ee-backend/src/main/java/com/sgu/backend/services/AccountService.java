@@ -3,6 +3,7 @@ package com.sgu.backend.services;
 import com.sgu.backend.dto.request.account.*;
 import com.sgu.backend.dto.request.auth.UserRegistrationForm;
 import com.sgu.backend.entities.Account;
+import com.sgu.backend.entities.OTP;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,5 +23,6 @@ public interface AccountService extends UserDetailsService {
     Account updateStatusOfAccount(String accountId, Account.Status status);
 
     Account updateRoleOfAccount(String accountId, Account.Role role);
-
+		
+		Account resetPasswordOfAccount(OTP otp, AccountUpdateFormForResetPassword form);
 }

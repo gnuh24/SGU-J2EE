@@ -11,6 +11,7 @@ import { TicketLookupComponent } from './components/user/ticket-lookup/ticket-lo
 import { TripSearchComponent } from './components/user/trip-search/trip-search.component';
 import { OrderHistoryComponent } from './components/user/order-history/order-history.component';
 
+import { VerifyPasswordComponent } from './components/user/verify-password/verify-password.component';
 export const routes: Routes = [
   {
     path: 'admin',
@@ -28,6 +29,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'forget-password', component: ForgetPasswordComponent },
+  { path: 'verify-password', component: VerifyPasswordComponent },
 
   {
     path: 'order-history',
