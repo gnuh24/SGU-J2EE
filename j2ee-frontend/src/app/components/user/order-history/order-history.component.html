@@ -1,28 +1,31 @@
 <div class="container mt-4">
-    <h2>Lịch sử mua vé</h2>
+    <h2>Lịch sử hóa đơn</h2>
+
     <div *ngIf="loading">Đang tải dữ liệu...</div>
     <div *ngIf="error" class="text-danger">{{ error }}</div>
+
     <table *ngIf="orders.length > 0" class="table table-bordered mt-3">
         <thead>
             <tr>
-                <th>Mã vé</th>
-                <th>Tuyến</th>
-                <th>Ngày đi</th>
-                <th>Ghế</th>
-                <th>Giá</th>
-                <th>Trạng thái</th>
+                <th>Mã hóa đơn</th>
+                <th>Ngày tạo</th>
+                <th>Tổng tiền</th>
+                <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let order of orders">
-                <td>{{ order.code }}</td>
-                <td>{{ order.routeName }}</td>
-                <td>{{ order.departureDate | date:'dd/MM/yyyy' }}</td>
-                <td>{{ order.seat }}</td>
-                <td>{{ order.price | number }} đ</td>
-                <td>{{ order.status }}</td>
+                <td>{{ order.id }}</td>
+                <td>{{ order.createdAt | date: 'HH:mm:ss dd/MM/yyyy' }}</td>
+                <td>{{ order.totalAmount | number }} đ</td>
+                <td>
+                    <button class="btn btn-danger btn-sm" (click)="exportPdf(order.id)">
+                        Xuất PDF
+                    </button>
+                </td>
             </tr>
         </tbody>
     </table>
-    <div *ngIf="!loading && orders.length === 0 && !error">Không có lịch sử mua vé.</div>
+
+    <div *ngIf="!loading && orders.length === 0 && !error">Không có hóa đơn nào.</div>
 </div>
