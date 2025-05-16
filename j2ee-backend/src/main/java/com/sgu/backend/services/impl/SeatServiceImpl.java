@@ -1,7 +1,5 @@
 package com.sgu.backend.services.impl;
 
-
-
 import com.sgu.backend.dto.request.seat.SeatCreateForm;
 import com.sgu.backend.dto.request.seat.SeatUpdateForm;
 import com.sgu.backend.dto.response.seat.SeatResponseDTO;
@@ -23,47 +21,48 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SeatServiceImpl implements SeatService {
 
-		@Autowired
-    private SeatRepository seatRepository;
-		
-		@Autowired
-    private CoachRepository coachRepository;
-	
 	@Autowired
-    private ModelMapper modelMapper;
+	private SeatRepository seatRepository;
 
+	@Autowired
+	private CoachRepository coachRepository;
 
-    @Override
-    public Seat create(SeatCreateForm form) {
-        Seat seat = new Seat();
-        seat.setNumber(form.getNumber());
-        seat.setCoach(form.getCoach());
-        return seatRepository.save(seat);
-    }
-		
-		@Override
-		public Seat getSeatById(String id) {
-				return seatRepository.findById(id).orElseThrow( () -> new EntityNotFoundException("Không tìm thấy ghế với id: " + id));
-		}
-		
-		@Override
-		public List<Seat> getByScheduleId(String scheduleId) {
-			return seatRepository.findByScheduleId(scheduleId);
-		}
-		
-		
+	@Autowired
+	private ModelMapper modelMapper;
 
-	
-//    @Override
-//    public List<Seat> createMany(List<SeatCreateForm> seatForms, Coach coach) {
-//        List<Seat> seats = seatForms.stream().map(form -> {
-//            Seat seat = modelMapper.map(form, Seat.class);
-//            seat.setCoach(coach);
-//            return seat;
-//        }).toList();
-//
-//        return seatRepository.saveAll(seats);
-//    }
+	@Override
+	public Seat create(SeatCreateForm form) {
+		Seat seat = new Seat();
+		seat.setNumber(form.getNumber());
+		seat.setCoach(form.getCoach());
+		return seatRepository.save(seat);
+	}
 
+	@Override
+	public Seat getSeatById(String id) {
+		return seatRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Không tìm thấy ghế với id: " + id));
+	}
+
+	@Override
+	public List<Seat> getByScheduleId(String scheduleId) {
+		return seatRepository.findByScheduleId(scheduleId);
+	}
+
+	@Override
+	public List<Seat> getByCoachId(String coachId) {
+		return seatRepository.findByCoachId(coachId);
+	}
+
+	// @Override
+	// public List<Seat> createMany(List<SeatCreateForm> seatForms, Coach coach) {
+	// List<Seat> seats = seatForms.stream().map(form -> {
+	// Seat seat = modelMapper.map(form, Seat.class);
+	// seat.setCoach(coach);
+	// return seat;
+	// }).toList();
+	//
+	// return seatRepository.saveAll(seats);
+	// }
 
 }

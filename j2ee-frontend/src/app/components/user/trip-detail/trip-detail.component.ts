@@ -51,13 +51,28 @@ export class TripDetailComponent implements OnInit {
   }
 
   loadSeatInformation(): void {
-    this.http.get<any>(`http://localhost:8080/api/seats/schedule/${this.tripId}`).subscribe({
+    if (!this.tripDetail?.coach?.id) {
+      console.error('No coach ID available');
+      return;
+    }
+
+    this.http.get<any>(`http://localhost:8080/api/seats/coach/${this.tripDetail.coach.id}`).subscribe({
       next: (res) => {
         console.log('Seat information:', res);
         if (res.data) {
-          this.bookedSeats = res.data
-            .filter((seat: any) => seat.status === 'BOOKED')
-            .map((seat: any) => seat.number);
+          // Get booked seats for this schedule
+          this.http.get<any>(`http://localhost:8080/api/seats/schedule/${this.tripId}`).subscribe({
+            next: (scheduleRes) => {
+              if (scheduleRes.data) {
+                this.bookedSeats = scheduleRes.data
+                  .filter((seat: any) => seat.status === 'BOOKED')
+                  .map((seat: any) => seat.number);
+              }
+            },
+            error: (err) => {
+              console.error('Error loading booked seats:', err);
+            }
+          });
         }
       },
       error: (err) => {

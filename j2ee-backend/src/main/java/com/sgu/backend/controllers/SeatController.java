@@ -29,50 +29,58 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*")
 @Tag(name = "Seat API", description = "Quản lý ghế của xe khách")
 public class SeatController {
-		
-		@Autowired
-		private SeatService seatService;
-		
-		@Autowired
-		private ModelMapper modelMapper;
-		
-		@Autowired
-		private TicketService ticketService;
-		
-		/**
-		 * Get the list of seats for a specific coach by its ID.
-		 *
-		 * @param id the ID of the coach for which to retrieve the seats
-		 * @return a list of seat responses
-		 */
-		@Operation(summary = "Lấy thông tin ghế",
-				description = "Lấy thông tin về các ghế của một xe khách cụ thể dựa trên ID của xe.")
-		@GetMapping("/schedule/{id}")
-		public ResponseEntity<ApiResponse<List<SeatDetailResponseDTO>>> getSeatById(@PathVariable String id) {
-				List<Seat> entities = seatService.getByScheduleId(id);
-				
-				List<SeatDetailResponseDTO> dto = entities.stream()
-						.map(
-								(seat) -> (
-										modelMapper.map(seat, SeatDetailResponseDTO.class)
-								)
-						).collect(Collectors.toList());
-				
-				List<Ticket> tickets = ticketService.getByScheduleId(id);
-				
-				tickets.stream()
-						.filter(ticket -> ticket.getStatus().equals(Ticket.TicketStatus.BOOKED))  // Đóng ngoặc cho filter
-						.forEach(ticket -> {  // forEach mở ngoặc nhọn
-								dto.stream()
-										.filter(seat -> ticket.getSeat().getId().equals(seat.getId()))
-										.forEach(matchingSeat -> {
-												// Thực hiện hành động khi ghế khớp
-												matchingSeat.setStatus(SeatDetailResponseDTO.Status.BOOKED);
-										});
-						});
 
+	@Autowired
+	private SeatService seatService;
 
-				return ResponseEntity.ok(new ApiResponse<>(200, "Lấy ghế thành công", dto));
-		}
-		
+	@Autowired
+	private ModelMapper modelMapper;
+
+	@Autowired
+	private TicketService ticketService;
+
+	/**
+	 * Get the list of seats for a specific coach by its ID.
+	 *
+	 * @param id the ID of the coach for which to retrieve the seats
+	 * @return a list of seat responses
+	 */
+	@Operation(summary = "Lấy thông tin ghế", description = "Lấy thông tin về các ghế của một xe khách cụ thể dựa trên ID của xe.")
+	@GetMapping("/schedule/{id}")
+	public ResponseEntity<ApiResponse<List<SeatDetailResponseDTO>>> getSeatById(@PathVariable String id) {
+		List<Seat> entities = seatService.getByScheduleId(id);
+
+		List<SeatDetailResponseDTO> dto = entities.stream()
+				.map(
+						(seat) -> (modelMapper.map(seat, SeatDetailResponseDTO.class)))
+				.collect(Collectors.toList());
+
+		List<Ticket> tickets = ticketService.getByScheduleId(id);
+
+		tickets.stream()
+				.filter(ticket -> ticket.getStatus().equals(Ticket.TicketStatus.BOOKED)) // Đóng ngoặc cho filter
+				.forEach(ticket -> { // forEach mở ngoặc nhọn
+					dto.stream()
+							.filter(seat -> ticket.getSeat().getId().equals(seat.getId()))
+							.forEach(matchingSeat -> {
+								// Thực hiện hành động khi ghế khớp
+								matchingSeat.setStatus(SeatDetailResponseDTO.Status.BOOKED);
+							});
+				});
+
+		return ResponseEntity.ok(new ApiResponse<>(200, "Lấy ghế thành công", dto));
+	}
+
+	@Operation(summary = "Lấy thông tin ghế theo xe", description = "Lấy thông tin về các ghế của một xe khách cụ thể dựa trên ID của xe.")
+	@GetMapping("/coach/{coachId}")
+	public ResponseEntity<ApiResponse<List<SeatDetailResponseDTO>>> getSeatsByCoachId(@PathVariable String coachId) {
+		List<Seat> entities = seatService.getByCoachId(coachId);
+
+		List<SeatDetailResponseDTO> dto = entities.stream()
+				.map(seat -> modelMapper.map(seat, SeatDetailResponseDTO.class))
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok(new ApiResponse<>(200, "Lấy ghế thành công", dto));
+	}
+
 }
