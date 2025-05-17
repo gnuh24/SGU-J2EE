@@ -8,78 +8,79 @@ import { ProfileService } from '../../../services/profile.service';
 import { ApiResponse } from '../../../models/apiresponse';
 
 @Component({
-  selector: 'app-profile',
-  standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, HttpClientModule],
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+    selector: 'app-profile',
+    standalone: true,
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, HttpClientModule],
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  profileForm: FormGroup;
-  loading = false;
-  error: string | null = null;
-  successMessage: string | null = null;
+    profileForm: FormGroup;
+    loading = false;
+    error: string | null = null;
+    successMessage: string | null = null;
 
-  constructor(
-    private fb: FormBuilder,
-    private profileService: ProfileService,
-    private userSession: UserSessionService
-  ) {
-    this.profileForm = this.fb.group({
-      fullName: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+    constructor(
+        private fb: FormBuilder,
+        private profileService: ProfileService,
+        private userSession: UserSessionService
+    ) {
+        this.profileForm = this.fb.group({
+            fullName: ['', Validators.required],
+            phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
 
-    });
-  }
+        });
+    }
 
-  ngOnInit(): void {
-    this.loadProfile();
-  }
+    ngOnInit(): void {
+        this.loadProfile();
+    }
 
-  loadProfile(): void {
-    this.loading = true;
-    const userId = this.userSession.getUserId();
-    if (userId) {
-      this.profileService.getProfileById(userId).subscribe({
-        next: (response: ApiResponse<any>) => {
-          if (response.data) {
-            this.profileForm.patchValue({
-              fullName: response.data.fullname,
-              phone: response.data.phone,
+    loadProfile(): void {
+        this.loading = true;
+        const userId = this.userSession.getUserId();
+        if (userId) {
+            this.profileService.getProfileById(userId).subscribe({
+                next: (response: ApiResponse<any>) => {
+                    console.log(response);
+                    if (response.data) {
+                        this.profileForm.patchValue({
+                            fullName: response.data.fullname,
+                            phone: response.data.phone,
 
+                        });
+                    }
+                    this.loading = false;
+                },
+                error: (error) => {
+                    this.error = error.error.message || 'Không thể tải thông tin profile';
+                    this.loading = false;
+                }
             });
-          }
-          this.loading = false;
-        },
-        error: (error) => {
-          this.error = error.error.message || 'Không thể tải thông tin profile';
-          this.loading = false;
         }
-      });
     }
-  }
 
-  onSubmit(): void {
-    if (this.profileForm.valid) {
-      this.loading = true;
-      this.error = null;
-      this.successMessage = null;
+    onSubmit(): void {
+        if (this.profileForm.valid) {
+            this.loading = true;
+            this.error = null;
+            this.successMessage = null;
 
-      const profileData = {
-        fullName: this.profileForm.value.fullName,
-        phone: this.profileForm.value.phone
-      };
-      this.profileService.updateProfile(profileData).subscribe({
-        next: (response: ApiResponse<any>) => {
-          this.successMessage = 'Cập nhật thông tin thành công';
-          this.userSession.setUserFullName(profileData.fullName);
-          this.loading = false;
-        },
-        error: (error) => {
-          this.error = error.error.message || 'Không thể cập nhật thông tin';
-          this.loading = false;
+            const profileData = {
+                fullName: this.profileForm.value.fullName,
+                phone: this.profileForm.value.phone
+            };
+            this.profileService.updateProfile(profileData).subscribe({
+                next: (response: ApiResponse<any>) => {
+                    this.successMessage = 'Cập nhật thông tin thành công';
+                    this.userSession.setUserFullName(profileData.fullName);
+                    this.loading = false;
+                },
+                error: (error) => {
+                    this.error = error.error.message || 'Không thể cập nhật thông tin';
+                    this.loading = false;
+                }
+            });
         }
-      });
     }
-  }
 }

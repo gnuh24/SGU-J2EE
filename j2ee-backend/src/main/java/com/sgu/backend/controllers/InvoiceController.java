@@ -142,14 +142,8 @@ public class InvoiceController {
 		}
 		
 		@GetMapping("/vnpay-payment-return")
-		public String paymentCompleted(HttpServletRequest request, Model model) {
+		public void paymentCompleted(HttpServletRequest request, HttpServletResponse response) throws IOException {
 				int paymentStatus = vnpayService.orderReturn(request);
-				
-				// In tất cả tham số VNPAY gửi về
-				System.err.println("===== Thông tin VNPAY trả về =====");
-				request.getParameterMap().forEach((key, value) ->
-						System.err.println(key + " = " + String.join(", ", value))
-				);
 				
 				String orderId = request.getParameter("vnp_OrderInfo");
 				String transactionId = request.getParameter("vnp_TransactionNo");
@@ -160,23 +154,18 @@ public class InvoiceController {
 				String paymentNote = vnpayService.getPaymentNote(responseCode, transactionStatus);
 				Invoice.PaymentStatus paymentStatusEnum = vnpayService.getPaymentStatus(responseCode, transactionStatus);
 				
-				System.out.println("🔹 Transaction ID: " + transactionId);
-				System.out.println("🔹 Payment Note: " + paymentNote);
-				System.out.println("🔹 Payment Time: " + paymentTime);
-				System.out.println("🔹 Payment Status: " + paymentStatusEnum);
-				
 				InvoiceUpdateForm orderVNPAYResponseUpdateForm = new InvoiceUpdateForm();
 				orderVNPAYResponseUpdateForm.setTransactionId(transactionId);
 				orderVNPAYResponseUpdateForm.setPaymentNote(paymentNote);
 				orderVNPAYResponseUpdateForm.setPaymentTime(paymentTime);
 				orderVNPAYResponseUpdateForm.setPaymentStatus(paymentStatusEnum);
 				
-				System.out.println("✅ InvoiceVNPAYResponseUpdateForm: " + orderVNPAYResponseUpdateForm);
-				Invoice order = invoiceService.update(orderId, orderVNPAYResponseUpdateForm);
+				invoiceService.update(orderId, orderVNPAYResponseUpdateForm);
 				
-				// Redirect về trang home (frontend)
-				return "redirect:http://localhost:4200/home";
+				// ✅ Redirect về Angular frontend
+				response.sendRedirect("http://localhost:4200/home");
 		}
+
 
 		
 //		/**
